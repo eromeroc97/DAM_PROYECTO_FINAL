@@ -5,15 +5,37 @@
  */
 package presentation;
 
+import java.awt.Color;
 import java.util.Date;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
 /**
  *
  * @author erome
  */
 public class InMailCard extends javax.swing.JPanel {
-    public InMailCard(String source, String subject, String content, boolean readed, Date date) {
+    private String source, subject, content;
+    private boolean readed;
+    private Date date;
+    private JPanel readingpanel;
+    public InMailCard(String source, String subject, String content, boolean readed, Date date, JPanel readingpanel) {
         this();
+        this.source = source;
+        this.subject = subject;
+        this.content = content;
+        this.readed = readed;
+        this.date = date;
+        this.readingpanel = readingpanel;
+        
+        this.lblSource.setText(source);
+        this.lblSubject.setText(subject);
+        this.lblDate.setText(date.toString());
+        this.lblDate.setToolTipText(date.toString());
+        
+        if(readed)
+            this.setBackground(Color.BLACK);
     }
     
     public InMailCard() {
@@ -33,8 +55,14 @@ public class InMailCard extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JSeparator();
         lblSource = new javax.swing.JLabel();
         lblSubject = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        lblDate = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
+
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
 
         MailPanel.setBackground(new java.awt.Color(0, 0, 255));
 
@@ -46,26 +74,33 @@ public class InMailCard extends javax.swing.JPanel {
         lblSubject.setForeground(new java.awt.Color(255, 255, 255));
         lblSubject.setText("Subject");
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText("Date");
+        lblDate.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblDate.setForeground(new java.awt.Color(255, 255, 255));
+        lblDate.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblDate.setText("Date");
 
         javax.swing.GroupLayout MailPanelLayout = new javax.swing.GroupLayout(MailPanel);
         MailPanel.setLayout(MailPanelLayout);
         MailPanelLayout.setHorizontalGroup(
             MailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(MailPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(MailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblSource, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblSubject, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MailPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(jSeparator1))
+            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(MailPanelLayout.createSequentialGroup()
+                .addGroup(MailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MailPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblSource, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(MailPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(MailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(MailPanelLayout.createSequentialGroup()
+                                .addComponent(lblSubject, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MailPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(lblDate, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         MailPanelLayout.setVerticalGroup(
@@ -73,14 +108,15 @@ public class InMailCard extends javax.swing.JPanel {
             .addGroup(MailPanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(3, 3, 3)
                 .addComponent(lblSource)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSubject, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
-                .addComponent(jLabel1)
+                .addGap(2, 2, 2)
+                .addComponent(lblDate)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -91,18 +127,41 @@ public class InMailCard extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(MailPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+            .addComponent(MailPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        JLabel lblSource_ = new JLabel(), lblSubject_ = new JLabel(), lblContent_ = new JLabel(), lblDate_ = new JLabel();
+        lblSource_.setText(source);
+        lblSubject_.setText(subject);
+        lblContent_.setText(content);
+        lblDate_.setText(date.toString());
+        
+        JSeparator sep = new JSeparator();
+        
+        this.readingpanel.removeAll();
+        this.readingpanel.add(lblDate_);
+        this.readingpanel.add(lblSource_);
+        this.readingpanel.add(lblSubject_);
+        this.readingpanel.add(sep);
+        this.readingpanel.add(lblContent_);
+        this.readingpanel.revalidate();
+        this.readingpanel.repaint();
+        
+        if(!readed)
+            readed = true;
+        
+        if(readed)
+            this.setBackground(Color.BLACK);
+    }//GEN-LAST:event_formMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MailPanel;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblSource;
     private javax.swing.JLabel lblSubject;
     // End of variables declaration//GEN-END:variables

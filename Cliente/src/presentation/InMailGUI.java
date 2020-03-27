@@ -5,7 +5,9 @@
  */
 package presentation;
 
+import java.util.Date;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  *
@@ -16,6 +18,7 @@ public class InMailGUI extends javax.swing.JFrame {
     private JFrame parent;
     public InMailGUI(JFrame parent) {
         this();
+        //this.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         this.parent = parent;
     }
     
@@ -25,13 +28,31 @@ public class InMailGUI extends javax.swing.JFrame {
     }
     
     public void prueba(){
-        InMailCard card = new InMailCard();
-        InMailCard card2 = new InMailCard();
+        //uso vertical layout para colocar una encima de otra
+        InMailCard card1 = new InMailCard("pepe", "asunto", "contenido del email", false, new Date(), this.ReadingPanel);
+        InMailCard card2 = new InMailCard("juan", "asuntillo", "esto es un mensaje de juan", false, new Date(), this.ReadingPanel);
+        InMailCard card3 = new InMailCard("juan2", "asuntillo", "esto es un mensaje de juan", false, new Date(), this.ReadingPanel);
+        InMailCard card4 = new InMailCard("juan3", "asuntillo", "esto es un mensaje de juan", false, new Date(), this.ReadingPanel);
+        InMailCard card5 = new InMailCard("juan4", "asuntillo", "esto es un mensaje de juan", false, new Date(), this.ReadingPanel);
+        InMailCard card6 = new InMailCard("pepe2", "asunto", "contenido del email", false, new Date(), this.ReadingPanel);
+        
+        //Actualizo el panel interno del scroll
         this.MailPanel.removeAll();
-        this.MailPanel.add(card);
-        this.MailPanel.add(card2); //VER COMO AÑADIR LA SEGUNDA DEBAJO... DEPENDE DEL LAYOUT??
-        this.MailPanel.revalidate();
-        this.MailPanel.repaint();
+        this.MailPanel.add(card1);
+        this.MailPanel.add(card2);  
+        this.MailPanel.add(card3); 
+        this.MailPanel.add(card4); 
+        this.MailPanel.add(card5);
+        this.MailPanel.add(card6);
+        //this.MailPanel.revalidate();
+        //this.MailPanel.repaint();
+        
+        
+        //aqui deberia actualizar el scroll panel //aqui estan los problemas
+        MailScroll.setViewportView(this.MailPanel);  
+        MailScroll.revalidate();  
+        MailScroll.repaint();  
+        
     }
 
     /**
@@ -43,31 +64,19 @@ public class InMailGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        MailPanel = new javax.swing.JPanel();
         ReadingPanel = new javax.swing.JPanel();
         ControlPanel = new javax.swing.JPanel();
         btnCloseInMail = new RSMaterialComponent.RSButtonIconOne();
         btnWriteInMail = new RSMaterialComponent.RSButtonIconOne();
         btnUpdate = new RSMaterialComponent.RSButtonIconOne();
+        MailScroll = new javax.swing.JScrollPane();
+        MailPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        MailPanel.setBackground(new java.awt.Color(153, 153, 255));
-        MailPanel.setPreferredSize(new java.awt.Dimension(210, 437));
-        MailPanel.setLayout(new org.jdesktop.swingx.StackLayout());
+        setUndecorated(true);
 
         ReadingPanel.setBackground(new java.awt.Color(204, 204, 255));
-
-        javax.swing.GroupLayout ReadingPanelLayout = new javax.swing.GroupLayout(ReadingPanel);
-        ReadingPanel.setLayout(ReadingPanelLayout);
-        ReadingPanelLayout.setHorizontalGroup(
-            ReadingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 473, Short.MAX_VALUE)
-        );
-        ReadingPanelLayout.setVerticalGroup(
-            ReadingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 459, Short.MAX_VALUE)
-        );
+        ReadingPanel.setLayout(new org.jdesktop.swingx.VerticalLayout());
 
         ControlPanel.setBackground(new java.awt.Color(37, 45, 223));
 
@@ -109,28 +118,38 @@ public class InMailGUI extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        MailScroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        MailScroll.setMinimumSize(new java.awt.Dimension(210, 437));
+        MailScroll.setPreferredSize(new java.awt.Dimension(210, 437));
+
+        MailPanel.setBackground(new java.awt.Color(153, 153, 255));
+        MailPanel.setMinimumSize(new java.awt.Dimension(210, 437));
+        MailPanel.setPreferredSize(new java.awt.Dimension(210, 437));
+        MailPanel.setLayout(new org.jdesktop.swingx.VerticalLayout());
+        MailScroll.setViewportView(MailPanel);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(MailPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(MailScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ReadingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(ControlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(ControlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ReadingPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(MailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(ControlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(ReadingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(MailScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCloseInMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseInMailActionPerformed
@@ -176,6 +195,7 @@ public class InMailGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ControlPanel;
     private javax.swing.JPanel MailPanel;
+    private javax.swing.JScrollPane MailScroll;
     private javax.swing.JPanel ReadingPanel;
     private RSMaterialComponent.RSButtonIconOne btnCloseInMail;
     private RSMaterialComponent.RSButtonIconOne btnUpdate;
