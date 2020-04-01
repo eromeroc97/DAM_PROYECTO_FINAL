@@ -6,12 +6,9 @@
 package presentation;
 
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import utilities.Encrypt;
+import utilities.MsgBox;
 
 /**
  *
@@ -45,10 +42,20 @@ public class LoginGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
-        MainPanel.setBackground(new java.awt.Color(204, 204, 255));
+        MainPanel.setBackground(new java.awt.Color(50, 51, 52));
+        MainPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(239, 96, 0), 3));
 
+        txtUserPassword.setForeground(new java.awt.Color(239, 96, 0));
         txtUserPassword.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtUserPassword.setColorIcon(new java.awt.Color(239, 96, 0));
+        txtUserPassword.setColorMaterial(new java.awt.Color(239, 96, 0));
+        txtUserPassword.setPhColor(new java.awt.Color(239, 96, 0));
         txtUserPassword.setPlaceholder("User Password");
         txtUserPassword.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -56,8 +63,11 @@ public class LoginGUI extends javax.swing.JFrame {
             }
         });
 
+        txtUserName.setForeground(new java.awt.Color(239, 96, 0));
         txtUserName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtUserName.setBorderColor(new java.awt.Color(255, 255, 255));
+        txtUserName.setColorIcon(new java.awt.Color(239, 96, 0));
+        txtUserName.setPhColor(new java.awt.Color(239, 96, 0));
         txtUserName.setPlaceholder("User Name");
         txtUserName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -65,11 +75,14 @@ public class LoginGUI extends javax.swing.JFrame {
             }
         });
 
+        lblTitle.setForeground(new java.awt.Color(239, 96, 0));
         lblTitle.setText("User Login");
         lblTitle.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.POWER_SETTINGS_NEW);
 
+        btnLogin.setBackground(new java.awt.Color(239, 96, 0));
         btnLogin.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         btnLogin.setText("Log In");
+        btnLogin.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnLogin.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.LOCK_OPEN);
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -78,8 +91,10 @@ public class LoginGUI extends javax.swing.JFrame {
             }
         });
 
+        btnExit.setBackground(new java.awt.Color(239, 96, 0));
         btnExit.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         btnExit.setText("Exit");
+        btnExit.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnExit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnExit.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CLOSE);
         btnExit.addActionListener(new java.awt.event.ActionListener() {
@@ -88,6 +103,8 @@ public class LoginGUI extends javax.swing.JFrame {
             }
         });
 
+        btnConfigClient.setBackground(new java.awt.Color(239, 96, 0));
+        btnConfigClient.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnConfigClient.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.PUBLIC);
         btnConfigClient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,7 +126,7 @@ public class LoginGUI extends javax.swing.JFrame {
                         .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,42 +167,22 @@ public class LoginGUI extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         try {
-            persistence.ConnectionClient connection = new persistence.ConnectionClient(txtUserName.getText(), new String(txtUserPassword.getPassword()));
-            MenuGUI menu = new MenuGUI(txtUserName.getText(), connection.getRolename(), connection.getConnectionResult(), this);
+            persistence.ConnectionClient connection = new persistence.ConnectionClient(txtUserName.getText(), Encrypt.Encriptar(new String(txtUserPassword.getPassword())));
             if(connection.getConnectionResult() != -1){
+                MenuGUI menu = new MenuGUI(txtUserName.getText(), connection.getRolename(), connection.getConnectionResult(), this);
                 this.setVisible(false);
                 menu.setVisible(true);
             }else{
-                JOptionPane.showMessageDialog(this, connection.getConnectionResultMessage());
+                MsgBox.create(this, connection.getConnectionResultMessage(), MsgBox.INFO_ICON).setVisible(true);
             }
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Could Not Create Connection Client");
+            MsgBox.create(this, "Could Not Create Connection Client", MsgBox.ERROR_ICON).setVisible(true);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnConfigClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfigClientActionPerformed
-        String input = JOptionPane.showInputDialog("INSERT CONNECTION PORT: ");
-        String clientConfPath = "./clientfiles/client.cconf";
-        
-        File dir = new File("./clientfiles/");
-        if(!dir.exists())
-            dir.mkdir();
-        
-        try{
-            int connPort = Integer.parseInt(input);
-            if(connPort <7000 || connPort >=10000)
-                JOptionPane.showMessageDialog(this, "Introduced Value is Not a Valid Port (Between 7000 and 9999)");
-            else{
-                File f = new File(clientConfPath);
-                try(FileWriter fw = new FileWriter(f)){
-                    fw.write(input);
-                } catch (IOException ex) {
-                    Logger.getLogger(LoginGUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }catch(NumberFormatException ex){
-            JOptionPane.showMessageDialog(this, "Port Must Be A Number");
-        }
+        ConnectionConfigurator cc = new ConnectionConfigurator(this);
+        cc.setVisible(true);
     }//GEN-LAST:event_btnConfigClientActionPerformed
 
     private void txtUserNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUserNameKeyPressed
@@ -199,6 +196,10 @@ public class LoginGUI extends javax.swing.JFrame {
              btnLogin.doClick();
          }
     }//GEN-LAST:event_txtUserPasswordKeyPressed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments

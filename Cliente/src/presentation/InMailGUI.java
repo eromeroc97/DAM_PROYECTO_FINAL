@@ -7,7 +7,7 @@ package presentation;
 
 import java.util.Date;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import org.jdesktop.swingx.VerticalLayout;
 
 /**
  *
@@ -24,35 +24,43 @@ public class InMailGUI extends javax.swing.JFrame {
     
     public InMailGUI() {
         initComponents();
+        refresh();
+        //se llamará a refresh
+    }
+    
+    private InMailCard createInMailCard(String source, String subject, String content, boolean readed, Date date){
+        return new InMailCard(source, subject, content, readed, date, this.ReadingPanel);
+    }
+    
+    private void addInMailCard(InMailCard card){
+        this.MailPanel.add(card);
+    }
+    
+    private void create_addInMailCard(String source, String subject, String content, boolean readed, Date date){
+        addInMailCard(createInMailCard(source, subject, content, readed, date));
+    }
+    
+    public void refresh(){
+        this.MailPanel.removeAll();
+        VerticalLayout vert = new VerticalLayout();
+        this.MailPanel.setLayout(vert);
+        
+        //Añado las tarjetas
         prueba();
+        
+        this.MailPanel.revalidate();
+        this.MailPanel.repaint();
     }
     
     public void prueba(){
-        //uso vertical layout para colocar una encima de otra
-        InMailCard card1 = new InMailCard("pepe", "asunto", "contenido del email", false, new Date(), this.ReadingPanel);
-        InMailCard card2 = new InMailCard("juan", "asuntillo", "esto es un mensaje de juan", false, new Date(), this.ReadingPanel);
-        InMailCard card3 = new InMailCard("juan2", "asuntillo", "esto es un mensaje de juan", false, new Date(), this.ReadingPanel);
-        InMailCard card4 = new InMailCard("juan3", "asuntillo", "esto es un mensaje de juan", false, new Date(), this.ReadingPanel);
-        InMailCard card5 = new InMailCard("juan4", "asuntillo", "esto es un mensaje de juan", false, new Date(), this.ReadingPanel);
-        InMailCard card6 = new InMailCard("pepe2", "asunto", "contenido del email", false, new Date(), this.ReadingPanel);
-        
-        //Actualizo el panel interno del scroll
-        this.MailPanel.removeAll();
-        this.MailPanel.add(card1);
-        this.MailPanel.add(card2);  
-        this.MailPanel.add(card3); 
-        this.MailPanel.add(card4); 
-        this.MailPanel.add(card5);
-        this.MailPanel.add(card6);
-        //this.MailPanel.revalidate();
-        //this.MailPanel.repaint();
-        
-        
-        //aqui deberia actualizar el scroll panel //aqui estan los problemas
-        MailScroll.setViewportView(this.MailPanel);  
-        MailScroll.revalidate();  
-        MailScroll.repaint();  
-        
+        create_addInMailCard("Pepe", "Asunto de pepe", "Contenido del mensaje de pepe", false, new Date());
+        create_addInMailCard("Jose", "Asunto de jose", "Contenido del mensaje de jose", false, new Date());
+        create_addInMailCard("Juan", "Asunto de juan", "Contenido del mensaje de juan", false, new Date());
+        create_addInMailCard("Manolo", "Asunto de manolo", "Contenido del mensaje de manolo", false, new Date());
+        create_addInMailCard("Loren Ipsum", "Asunto de Loren Ipsum", "Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum "
+                + "Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum "
+                + "Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum \n\n"
+                + "Loren Ipsum Loren Ipsum Loren Ipsum ", false, new Date());
     }
 
     /**
@@ -64,23 +72,22 @@ public class InMailGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        ReadingPanel = new javax.swing.JPanel();
         ControlPanel = new javax.swing.JPanel();
         btnCloseInMail = new RSMaterialComponent.RSButtonIconOne();
         btnWriteInMail = new RSMaterialComponent.RSButtonIconOne();
         btnUpdate = new RSMaterialComponent.RSButtonIconOne();
-        MailScroll = new javax.swing.JScrollPane();
+        ScrollPanel = new javax.swing.JScrollPane();
         MailPanel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        ReadingPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        ReadingPanel.setBackground(new java.awt.Color(204, 204, 255));
-        ReadingPanel.setLayout(new org.jdesktop.swingx.VerticalLayout());
-
-        ControlPanel.setBackground(new java.awt.Color(37, 45, 223));
+        ControlPanel.setBackground(new java.awt.Color(239, 96, 0));
 
         btnCloseInMail.setBackground(new java.awt.Color(204, 0, 0));
+        btnCloseInMail.setText("Close This Window");
         btnCloseInMail.setBackgroundHover(new java.awt.Color(204, 0, 0));
         btnCloseInMail.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CLOSE);
         btnCloseInMail.addActionListener(new java.awt.event.ActionListener() {
@@ -89,13 +96,20 @@ public class InMailGUI extends javax.swing.JFrame {
             }
         });
 
-        btnWriteInMail.setToolTipText("Write New In Mail");
+        btnWriteInMail.setBackground(new java.awt.Color(239, 96, 0));
+        btnWriteInMail.setToolTipText("Write New InMail");
         btnWriteInMail.setBackgroundHover(new java.awt.Color(0, 0, 153));
         btnWriteInMail.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.EDIT);
 
-        btnUpdate.setToolTipText("Update In Box");
+        btnUpdate.setBackground(new java.awt.Color(239, 96, 0));
+        btnUpdate.setToolTipText("Update Inbox");
         btnUpdate.setBackgroundHover(new java.awt.Color(0, 0, 153));
         btnUpdate.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.UPDATE);
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout ControlPanelLayout = new javax.swing.GroupLayout(ControlPanel);
         ControlPanel.setLayout(ControlPanelLayout);
@@ -118,34 +132,57 @@ public class InMailGUI extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        MailScroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        MailScroll.setMinimumSize(new java.awt.Dimension(210, 437));
-        MailScroll.setPreferredSize(new java.awt.Dimension(210, 437));
+        ScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        ScrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        MailPanel.setBackground(new java.awt.Color(153, 153, 255));
-        MailPanel.setMinimumSize(new java.awt.Dimension(210, 437));
-        MailPanel.setPreferredSize(new java.awt.Dimension(210, 437));
+        MailPanel.setBackground(new java.awt.Color(239, 96, 0));
         MailPanel.setLayout(new org.jdesktop.swingx.VerticalLayout());
-        MailScroll.setViewportView(MailPanel);
+        ScrollPanel.setViewportView(MailPanel);
+
+        jPanel1.setBackground(new java.awt.Color(50, 51, 52));
+
+        ReadingPanel.setBackground(new java.awt.Color(255, 255, 255));
+        ReadingPanel.setLayout(new org.jdesktop.swingx.VerticalLayout());
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(31, Short.MAX_VALUE)
+                .addComponent(ReadingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ReadingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(MailScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addComponent(ScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ControlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ReadingPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(ControlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(ReadingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(MailScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ScrollPanel)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(ControlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -156,6 +193,10 @@ public class InMailGUI extends javax.swing.JFrame {
         this.parent.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCloseInMailActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        refresh();
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -195,10 +236,11 @@ public class InMailGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ControlPanel;
     private javax.swing.JPanel MailPanel;
-    private javax.swing.JScrollPane MailScroll;
     private javax.swing.JPanel ReadingPanel;
+    private javax.swing.JScrollPane ScrollPanel;
     private RSMaterialComponent.RSButtonIconOne btnCloseInMail;
     private RSMaterialComponent.RSButtonIconOne btnUpdate;
     private RSMaterialComponent.RSButtonIconOne btnWriteInMail;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

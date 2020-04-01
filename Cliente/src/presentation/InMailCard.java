@@ -10,12 +10,17 @@ import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
  * @author erome
  */
 public class InMailCard extends javax.swing.JPanel {
+    
+    private static final Color NOT_READED = new Color(50,51,52);
+    private static final Color READED = new Color(102, 102, 102);
+    
     private String source, subject, content;
     private boolean readed;
     private Date date;
@@ -34,8 +39,11 @@ public class InMailCard extends javax.swing.JPanel {
         this.lblDate.setText(date.toString());
         this.lblDate.setToolTipText(date.toString());
         
-        if(readed)
-            this.setBackground(Color.BLACK);
+        if(readed){
+            this.MailPanel.setBackground(READED);
+        }else{
+            this.MailPanel.setBackground(NOT_READED);
+        }
     }
     
     public InMailCard() {
@@ -64,7 +72,8 @@ public class InMailCard extends javax.swing.JPanel {
             }
         });
 
-        MailPanel.setBackground(new java.awt.Color(0, 0, 255));
+        MailPanel.setBackground(new java.awt.Color(50, 51, 52));
+        MailPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(239, 96, 0), 2));
 
         lblSource.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblSource.setForeground(new java.awt.Color(255, 255, 255));
@@ -131,16 +140,21 @@ public class InMailCard extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private static final String html = "<html><body style='width: %1spx'>%1s"; //Se utiliza para hacer el Wrapping del texto por palabras
+    
+    //convierto el formulario en un "boton" con el contenido personalizado
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         JLabel lblSource_ = new JLabel(), lblSubject_ = new JLabel(), lblContent_ = new JLabel(), lblDate_ = new JLabel();
         lblSource_.setText(source);
-        lblSubject_.setText(subject);
-        lblContent_.setText(content);
+        lblSubject_.setText(String.format(html, this.readingpanel.getWidth()-100, subject));
+        lblContent_.setText(String.format(html, this.readingpanel.getWidth()-100, content));
         lblDate_.setText(date.toString());
+        
         
         JSeparator sep = new JSeparator();
         
         this.readingpanel.removeAll();
+        this.readingpanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         this.readingpanel.add(lblDate_);
         this.readingpanel.add(lblSource_);
         this.readingpanel.add(lblSubject_);
@@ -149,11 +163,15 @@ public class InMailCard extends javax.swing.JPanel {
         this.readingpanel.revalidate();
         this.readingpanel.repaint();
         
-        if(!readed)
+        if(!readed){
             readed = true;
+            //comunicar la lectura al servidor (solo se hara una vez)
+        }
         
-        if(readed)
-            this.setBackground(Color.BLACK);
+        if(readed){
+            this.MailPanel.setBackground(READED);
+        }
+        
     }//GEN-LAST:event_formMouseClicked
 
 

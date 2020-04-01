@@ -33,7 +33,7 @@ public class ServerConfigGUI extends javax.swing.JFrame {
         initComponents();
         txtPort.requestFocus();
         checkIfDefaultConfigExists();
-        SQLiteManager man = SQLiteManager.getSingletonInstance();
+        checkIfIsFirstRunning();
     }
 
     /**
@@ -431,6 +431,15 @@ public class ServerConfigGUI extends javax.swing.JFrame {
             f = new File("./serverfiles/");
             if(!f.exists())
                 f.mkdir();
+        }
+    }
+
+    private void checkIfIsFirstRunning() {
+        String DefPortPath = "./serverfiles/server.db";
+        File f = new File(DefPortPath);
+        if(!f.exists()){ //Si la base de datos no existe debemos configurar el usuario principal
+            FirstRunningConfigGUI conf = new FirstRunningConfigGUI(this);
+            conf.setVisible(true);
         }
     }
 }

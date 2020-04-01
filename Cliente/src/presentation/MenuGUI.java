@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import persistence.ApplicationClient;
 
 /**
@@ -52,43 +51,51 @@ public class MenuGUI extends javax.swing.JFrame {
         btnMenu = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnLogOut = new RSMaterialComponent.RSButtonMaterialIconOne();
         MainPanel = new javax.swing.JPanel();
-        btnMenuPanel = new javax.swing.JPanel();
+        btnMenuPanel = new rojerusan.RSPanelsSlider();
         jLabel1 = new javax.swing.JLabel();
         lblUsername = new RSMaterialComponent.RSLabelTextIcon();
-        jSeparator1 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
         lblRolename = new RSMaterialComponent.RSLabelTextIcon();
         btnRoleinfo = new RSMaterialComponent.RSButtonIconOne();
+        jSeparator1 = new javax.swing.JSeparator();
         ActionScroll = new javax.swing.JScrollPane();
         ActionPanel = new javax.swing.JPanel();
-        btnAdminUsers = new newscomponents.RSButtonGradientIcon_new();
-        btnAdminProfiles = new newscomponents.RSButtonGradientIcon_new();
-        btnAdminRoles = new newscomponents.RSButtonGradientIcon_new();
-        btnSendAdverts = new newscomponents.RSButtonGradientIcon_new();
-        btnSendEmail = new newscomponents.RSButtonGradientIcon_new();
+        btnAdminUsers = new RSMaterialComponent.RSButtonMaterialIconOne();
+        btnAdminProfiles = new RSMaterialComponent.RSButtonMaterialIconOne();
+        btnAdminRoles = new RSMaterialComponent.RSButtonMaterialIconOne();
+        btnSendAdverts = new RSMaterialComponent.RSButtonMaterialIconOne();
+        btnSendEmail = new RSMaterialComponent.RSButtonMaterialIconOne();
         OverMainPanel = new javax.swing.JPanel();
         btnNewSale = new newscomponents.RSButtonBigIcon_new();
-        btnPrintSaleTicket = new newscomponents.RSButtonBigIcon_new();
+        btnPrintReport = new newscomponents.RSButtonBigIcon_new();
         btnViewAdverts = new newscomponents.RSButtonBigIcon_new();
-        btnSaleStatistics = new newscomponents.RSButtonBigIcon_new();
+        btnConfirmOrders = new newscomponents.RSButtonBigIcon_new();
         btnRegisterProduct = new newscomponents.RSButtonBigIcon_new();
         btnInMail = new newscomponents.RSButtonBigIcon_new();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
-        MenuPanel.setBackground(new java.awt.Color(37, 45, 223));
+        MenuPanel.setBackground(new java.awt.Color(239, 96, 0));
 
+        btnProfile.setBackground(new java.awt.Color(239, 96, 0));
         btnProfile.setText("Profile");
-        btnProfile.setBackgroundHover(new java.awt.Color(0, 0, 51));
+        btnProfile.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnProfile.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.PERSON);
 
+        btnPreferences.setBackground(new java.awt.Color(239, 96, 0));
         btnPreferences.setText("Preferences");
-        btnPreferences.setBackgroundHover(new java.awt.Color(0, 0, 51));
+        btnPreferences.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnPreferences.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.SETTINGS);
 
+        btnMenu.setBackground(new java.awt.Color(239, 96, 0));
         btnMenu.setText("Menu");
-        btnMenu.setBackgroundHover(new java.awt.Color(0, 0, 51));
+        btnMenu.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnMenu.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.MENU);
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,8 +103,9 @@ public class MenuGUI extends javax.swing.JFrame {
             }
         });
 
+        btnLogOut.setBackground(new java.awt.Color(239, 96, 0));
         btnLogOut.setText("LogOut");
-        btnLogOut.setBackgroundHover(new java.awt.Color(255, 0, 0));
+        btnLogOut.setBackgroundHover(new java.awt.Color(204, 0, 0));
         btnLogOut.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         btnLogOut.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnLogOut.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.EXIT_TO_APP);
@@ -118,39 +126,42 @@ public class MenuGUI extends javax.swing.JFrame {
                 .addComponent(btnProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(btnPreferences, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         MenuPanelLayout.setVerticalGroup(
             MenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MenuPanelLayout.createSequentialGroup()
-                .addGroup(MenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnProfile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPreferences, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(1, 1, 1))
+            .addGroup(MenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(btnProfile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPreferences, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         MainPanel.setBackground(new java.awt.Color(204, 204, 255));
+        MainPanel.setMinimumSize(new java.awt.Dimension(670, 310));
+        MainPanel.setPreferredSize(new java.awt.Dimension(435, 317));
         MainPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnMenuPanel.setBackground(new java.awt.Color(102, 102, 255));
-        org.jdesktop.swingx.border.DropShadowBorder dropShadowBorder1 = new org.jdesktop.swingx.border.DropShadowBorder();
-        btnMenuPanel.setBorder(dropShadowBorder1);
+        btnMenuPanel.setBackground(new java.awt.Color(102, 102, 102));
+        btnMenuPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Connected as");
+        btnMenuPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
 
-        lblUsername.setForeground(new java.awt.Color(0, 0, 0));
+        lblUsername.setForeground(new java.awt.Color(255, 255, 255));
         lblUsername.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblUsername.setText("Username");
         lblUsername.setToolTipText("");
+        btnMenuPanel.add(lblUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 32, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Permission level");
+        btnMenuPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 78, -1, -1));
 
         lblRolename.setForeground(new java.awt.Color(255, 255, 255));
         lblRolename.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -158,8 +169,10 @@ public class MenuGUI extends javax.swing.JFrame {
         lblRolename.setFont(new java.awt.Font("Roboto Bold", 1, 11)); // NOI18N
         lblRolename.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.FINGERPRINT);
         lblRolename.setSizeIcon(25.0F);
+        btnMenuPanel.add(lblRolename, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 98, 145, 28));
 
-        btnRoleinfo.setBackground(new java.awt.Color(102, 102, 255));
+        btnRoleinfo.setBackground(new java.awt.Color(239, 96, 0));
+        btnRoleinfo.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnRoleinfo.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.INFO_OUTLINE);
         btnRoleinfo.setSizeIcon(18.0F);
         btnRoleinfo.addActionListener(new java.awt.event.ActionListener() {
@@ -167,44 +180,50 @@ public class MenuGUI extends javax.swing.JFrame {
                 btnRoleinfoActionPerformed(evt);
             }
         });
+        btnMenuPanel.add(btnRoleinfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 96, 30, 30));
+        btnMenuPanel.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 132, 222, 10));
 
-        ActionScroll.setBackground(new java.awt.Color(204, 204, 255));
+        ActionScroll.setBackground(new java.awt.Color(0, 0, 51));
+        ActionScroll.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 51)));
         ActionScroll.setHorizontalScrollBar(null);
 
+        btnAdminUsers.setBackground(new java.awt.Color(239, 96, 0));
         btnAdminUsers.setText("Admin Users");
-        btnAdminUsers.setEnabled(false);
-        btnAdminUsers.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnAdminUsers.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnAdminUsers.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.PEOPLE);
 
+        btnAdminProfiles.setBackground(new java.awt.Color(239, 96, 0));
         btnAdminProfiles.setText("Admin Profiles");
-        btnAdminProfiles.setEnabled(false);
-        btnAdminProfiles.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnAdminProfiles.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnAdminProfiles.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CONTACTS);
 
+        btnAdminRoles.setBackground(new java.awt.Color(239, 96, 0));
         btnAdminRoles.setText("Admin Roles");
-        btnAdminRoles.setEnabled(false);
-        btnAdminRoles.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnAdminRoles.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnAdminRoles.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.FINGERPRINT);
 
+        btnSendAdverts.setBackground(new java.awt.Color(239, 96, 0));
         btnSendAdverts.setText("Send Adverts");
-        btnSendAdverts.setEnabled(false);
-        btnSendAdverts.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnSendAdverts.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.WARNING);
+        btnSendAdverts.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnSendAdverts.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.NEW_RELEASES);
 
-        btnSendEmail.setText("Send Email");
-        btnSendEmail.setEnabled(false);
-        btnSendEmail.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnSendEmail.setBackground(new java.awt.Color(239, 96, 0));
+        btnSendEmail.setText("Send Emails");
+        btnSendEmail.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnSendEmail.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.EMAIL);
 
         javax.swing.GroupLayout ActionPanelLayout = new javax.swing.GroupLayout(ActionPanel);
         ActionPanel.setLayout(ActionPanelLayout);
         ActionPanelLayout.setHorizontalGroup(
             ActionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnAdminUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnAdminProfiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnAdminRoles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnSendAdverts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnSendEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(ActionPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(ActionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAdminUsers, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdminProfiles, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdminRoles, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSendAdverts, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSendEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         ActionPanelLayout.setVerticalGroup(
             ActionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,79 +235,50 @@ public class MenuGUI extends javax.swing.JFrame {
                 .addComponent(btnAdminRoles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(btnSendAdverts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(btnSendEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnSendEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         ActionScroll.setViewportView(ActionPanel);
 
-        javax.swing.GroupLayout btnMenuPanelLayout = new javax.swing.GroupLayout(btnMenuPanel);
-        btnMenuPanel.setLayout(btnMenuPanelLayout);
-        btnMenuPanelLayout.setHorizontalGroup(
-            btnMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(btnMenuPanelLayout.createSequentialGroup()
-                .addGroup(btnMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(btnMenuPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(btnMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(lblUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)))
-                    .addGroup(btnMenuPanelLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(lblRolename, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRoleinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(btnMenuPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(ActionScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        btnMenuPanelLayout.setVerticalGroup(
-            btnMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btnMenuPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(btnMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblRolename, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRoleinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ActionScroll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        btnMenuPanel.add(ActionScroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, 158));
 
         MainPanel.add(btnMenuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(-220, 0, 220, 317));
 
-        OverMainPanel.setBackground(new java.awt.Color(204, 204, 255));
+        OverMainPanel.setBackground(new java.awt.Color(50, 51, 52));
 
+        btnNewSale.setBackground(new java.awt.Color(239, 96, 0));
         btnNewSale.setText("New Sale");
+        btnNewSale.setBgHover(new java.awt.Color(255, 137, 25));
         btnNewSale.setEnabled(false);
         btnNewSale.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.MONETIZATION_ON);
 
-        btnPrintSaleTicket.setText("Print Sale Ticket");
-        btnPrintSaleTicket.setEnabled(false);
-        btnPrintSaleTicket.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.PRINT);
+        btnPrintReport.setBackground(new java.awt.Color(239, 96, 0));
+        btnPrintReport.setText("Print Report");
+        btnPrintReport.setBgHover(new java.awt.Color(255, 137, 25));
+        btnPrintReport.setEnabled(false);
+        btnPrintReport.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.PRINT);
 
+        btnViewAdverts.setBackground(new java.awt.Color(239, 96, 0));
         btnViewAdverts.setText("View Adverts");
-        btnViewAdverts.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.INFO);
+        btnViewAdverts.setBgHover(new java.awt.Color(255, 137, 25));
+        btnViewAdverts.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.NEW_RELEASES);
 
-        btnSaleStatistics.setText("Sale Statistics");
-        btnSaleStatistics.setEnabled(false);
-        btnSaleStatistics.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.EQUALIZER);
+        btnConfirmOrders.setBackground(new java.awt.Color(239, 96, 0));
+        btnConfirmOrders.setText("Confirm Orders");
+        btnConfirmOrders.setBgHover(new java.awt.Color(255, 137, 25));
+        btnConfirmOrders.setEnabled(false);
+        btnConfirmOrders.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.SHOP);
 
+        btnRegisterProduct.setBackground(new java.awt.Color(239, 96, 0));
         btnRegisterProduct.setText("Register Product");
+        btnRegisterProduct.setBgHover(new java.awt.Color(255, 137, 25));
         btnRegisterProduct.setEnabled(false);
         btnRegisterProduct.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.SHOPPING_CART);
 
+        btnInMail.setBackground(new java.awt.Color(239, 96, 0));
         btnInMail.setText("In Mail");
+        btnInMail.setBgHover(new java.awt.Color(255, 137, 25));
         btnInMail.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.MAIL_OUTLINE);
         btnInMail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -305,11 +295,11 @@ public class MenuGUI extends javax.swing.JFrame {
                     .addGroup(OverMainPanelLayout.createSequentialGroup()
                         .addComponent(btnRegisterProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSaleStatistics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnConfirmOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(OverMainPanelLayout.createSequentialGroup()
                         .addComponent(btnNewSale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPrintSaleTicket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(OverMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnViewAdverts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -321,31 +311,32 @@ public class MenuGUI extends javax.swing.JFrame {
             .addGroup(OverMainPanelLayout.createSequentialGroup()
                 .addGroup(OverMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnNewSale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPrintSaleTicket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnViewAdverts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(OverMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSaleStatistics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnConfirmOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRegisterProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnInMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 14, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        MainPanel.add(OverMainPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 430, 320));
+        MainPanel.add(OverMainPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 310));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(MenuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(MenuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -373,7 +364,7 @@ public class MenuGUI extends javax.swing.JFrame {
             for(String s : perms)
                 texto+=s+"\n";
             
-            JOptionPane.showMessageDialog(this, texto);            
+            utilities.MsgBox.create(this, texto, utilities.MsgBox.INFO_ICON).setVisible(true);            
             
         } catch (IOException ex) {
             Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -385,16 +376,23 @@ public class MenuGUI extends javax.swing.JFrame {
         this.setVisible(false);
         mail.setVisible(true);
     }//GEN-LAST:event_btnInMailActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        showHideMenu();
+    }//GEN-LAST:event_formWindowOpened
     
     private void showHideMenu(){
+        final int MOV = 4;
+        final int RET = 2;
         int position = OverMainPanel.getX();
         if(position > 5){
             //Libreria modificada RojeruSan de animaciones
-            Animacion.Animacion.mover_izquierda(220, 0, 2, 2, OverMainPanel);
-            Animacion.Animacion.mover_izquierda(0, -220, 2, 2, btnMenuPanel);
+            //PARAMETROS DE LOS METODOS DE ANIMACION: int inicio, int fin, long retardo, int salto, JComponent componente
+            Animacion.Animacion.mover_izquierda(220, 0, RET, MOV, OverMainPanel);
+            Animacion.Animacion.mover_izquierda(0, -220, RET, MOV, btnMenuPanel);
         }else{
-            Animacion.Animacion.mover_derecha(0, 220, 2, 2, OverMainPanel);
-            Animacion.Animacion.mover_derecha(-220, 0, 2, 2, btnMenuPanel);
+            Animacion.Animacion.mover_derecha(0, 220, RET, MOV, OverMainPanel);
+            Animacion.Animacion.mover_derecha(-220, 0, RET, MOV, btnMenuPanel);
         }
     }
     
@@ -440,22 +438,22 @@ public class MenuGUI extends javax.swing.JFrame {
     private javax.swing.JPanel MainPanel;
     private javax.swing.JPanel MenuPanel;
     private javax.swing.JPanel OverMainPanel;
-    private newscomponents.RSButtonGradientIcon_new btnAdminProfiles;
-    private newscomponents.RSButtonGradientIcon_new btnAdminRoles;
-    private newscomponents.RSButtonGradientIcon_new btnAdminUsers;
+    private RSMaterialComponent.RSButtonMaterialIconOne btnAdminProfiles;
+    private RSMaterialComponent.RSButtonMaterialIconOne btnAdminRoles;
+    private RSMaterialComponent.RSButtonMaterialIconOne btnAdminUsers;
+    private newscomponents.RSButtonBigIcon_new btnConfirmOrders;
     private newscomponents.RSButtonBigIcon_new btnInMail;
     private RSMaterialComponent.RSButtonMaterialIconOne btnLogOut;
     private RSMaterialComponent.RSButtonMaterialIconOne btnMenu;
-    private javax.swing.JPanel btnMenuPanel;
+    private rojerusan.RSPanelsSlider btnMenuPanel;
     private newscomponents.RSButtonBigIcon_new btnNewSale;
     private RSMaterialComponent.RSButtonMaterialIconOne btnPreferences;
-    private newscomponents.RSButtonBigIcon_new btnPrintSaleTicket;
+    private newscomponents.RSButtonBigIcon_new btnPrintReport;
     private RSMaterialComponent.RSButtonMaterialIconOne btnProfile;
     private newscomponents.RSButtonBigIcon_new btnRegisterProduct;
     private RSMaterialComponent.RSButtonIconOne btnRoleinfo;
-    private newscomponents.RSButtonBigIcon_new btnSaleStatistics;
-    private newscomponents.RSButtonGradientIcon_new btnSendAdverts;
-    private newscomponents.RSButtonGradientIcon_new btnSendEmail;
+    private RSMaterialComponent.RSButtonMaterialIconOne btnSendAdverts;
+    private RSMaterialComponent.RSButtonMaterialIconOne btnSendEmail;
     private newscomponents.RSButtonBigIcon_new btnViewAdverts;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

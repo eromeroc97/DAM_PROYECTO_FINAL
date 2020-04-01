@@ -125,27 +125,26 @@ public class SQLiteManager {
                 for(String s : (new TableCreator()).INSERTS_ROLES_PERM)
                     stmt2.execute(s);
                 
-                stmt2.execute(TableCreator.INSERT_SYSADMIN_USER);
-                
             }
         }
     }
     
     private class TableCreator{ /* Write here all table creation SQL queries, then call them from initialise() method*/
         public static final String USERS_TABLE = "CREATE TABLE IF NOT EXISTS USERS("
+                + "IDUSER INTEGER AUTOINCREMENT PRIMARY KEY"
                 + "USERNAME TEXT PRIMARY KEY,"
-                + "PASSWORD TEXT UNIQUE NOT NULL,"
+                + "PASSWORD TEXT NOT NULL,"
                 + "ONLINE BOOLEAN DEFAULT FALSE,"
                 + "IDROLE INTEGER NOT NULL DEFAULT 0,"
                 + "FOREIGN KEY (IDROLE) REFERENCES ROLES(IDROLE));";
         
         public static final String ROLES_TABLE = "CREATE TABLE IF NOT EXISTS ROLES("
                 + "IDROLE INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "ROLENAME TEXT NOT NULL);";
+                + "ROLENAME TEXT UNIQUE NOT NULL);";
         
         public static final String PERM_TABLE = "CREATE TABLE IF NOT EXISTS PERM("
                 + "IDPERM INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "PERMNAME TEXT NOT NULL);";
+                + "PERMNAME TEXT UNIQUE NOT NULL);";
         
         public static final String ROLES_PERM_TABLE = "CREATE TABLE IF NOT EXISTS ROLES_PERM("
                 + "IDROLE INTEGER,"
@@ -159,10 +158,10 @@ public class SQLiteManager {
             "INSERT INTO PERM (PERMNAME) VALUES('ADMINISTRATE PROFILES');",
             "INSERT INTO PERM (PERMNAME) VALUES('ADMINISTRATE ROLES');",
             "INSERT INTO PERM (PERMNAME) VALUES('SEND ADVERTS');",
-            "INSERT INTO PERM (PERMNAME) VALUES('PRINT TICKETS');",
+            "INSERT INTO PERM (PERMNAME) VALUES('PRINT REPORTS');",
             "INSERT INTO PERM (PERMNAME) VALUES('SELL PRODUCTS');",
             "INSERT INTO PERM (PERMNAME) VALUES('REGISTER PRODUCTS');",
-            "INSERT INTO PERM (PERMNAME) VALUES('VIEW SALE STATISTICS');",
+            "INSERT INTO PERM (PERMNAME) VALUES('CONFIRM ORDERS');",
             "INSERT INTO PERM (PERMNAME) VALUES('CONFIG CONNECTION');",
             "INSERT INTO PERM (PERMNAME) VALUES('SEND EMAILS');"
         };
@@ -180,12 +179,10 @@ public class SQLiteManager {
             "INSERT INTO ROLES_PERM VALUES ((SELECT IDROLE FROM ROLES WHERE ROLENAME = 'SYSADMIN'),(SELECT IDPERM FROM PERM WHERE PERMNAME='CONFIG CONNECTION'));"
         };
         
-        public static final String INSERT_SYSADMIN_USER = "INSERT INTO USERS (USERNAME, PASSWORD, IDROLE) VALUES ('SYSADMIN', '1234', (SELECT IDROLE FROM ROLES WHERE ROLENAME='SYSADMIN'));";
-        
         public static final String INMAIL_TABLE = "CREATE TABLE IF NOT EXISTS INMAIL("
                 + "IDMAIL INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "SOURCE TEXT NOT NULL,"
-                + "DESTINATION TEXT NOT NULL,"
+                + "SOURCE INTEGER NOT NULL,"
+                + "DESTINATION INTEGER NOT NULL,"
                 + "SUBJECT TEXT,"
                 + "CONTENT TEXT,"
                 + "SEND_DATE DATETIME NOT NULL,"

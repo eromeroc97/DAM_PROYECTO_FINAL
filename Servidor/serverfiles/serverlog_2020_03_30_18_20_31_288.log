@@ -1,0 +1,27 @@
+SERVER RUNNING ON PORT: 8000
+
+Connection Received From: /127.0.0.1:52361
+Checking user login...
+User login correct
+Creating Private Server on 41910
+
+Connection Received From: /127.0.0.1:52363
+Checking user login...
+User login correct
+Creating Private Server on 34217
+
+Connection Received From: /127.0.0.1:52368
+Checking user login...
+User login failure
+Connection Refused
+
+Connection Received From: /127.0.0.1:52372
+Checking user login...
+User login correct
+Creating Private Server on 39355
+
+Connection Received From: /127.0.0.1:52377
+Checking user login...
+User login correct
+Creating Private Server on 39426
+

@@ -22,31 +22,26 @@ import java.util.logging.Logger;
  * @author erome
  */
 public class ConnectionClient {
-    private static final String ServerIP = "127.0.0.1";
+    private static String ServerIP;
     private static int ServerPORT;
     
     private int CONNECTION_RESULT;
     private String ROLENAME_RESPONSE;
     
     private void getConnectionPort(){
-        FileReader fr = null;
         try {
             String clientConfPath = "./clientfiles/client.cconf";
             File f = new File(clientConfPath);
-            fr = new FileReader(f);
-            char[] cbuf = new char[4];
-            fr.read(cbuf);
-            ServerPORT = Integer.parseInt(new String(cbuf));
+            BufferedReader bfr = new BufferedReader(new FileReader(f));
+            String direc = bfr.readLine();
+            String[] direc_partida = direc.split(":");
+            ServerIP = direc_partida[0];
+            ServerPORT = Integer.parseInt(direc_partida[1]);
+            bfr.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ConnectionClient.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(ConnectionClient.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                fr.close();
-            } catch (IOException ex) {
-                Logger.getLogger(ConnectionClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
     

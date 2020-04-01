@@ -10,11 +10,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
+import utilities.INTERNALSERVER_PROTOCOL;
 import utilities.Utilidades;
 
 /**
@@ -60,6 +61,8 @@ public class ApplicationServer implements Runnable{
                 if(!exit)            
                     hiloAsociado.start();
             }
+        }catch (SocketException ex){
+            System.out.println("Connection Interrupted by user");
         } catch (IOException ex) {
             Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -98,18 +101,30 @@ public class ApplicationServer implements Runnable{
             //Getting petition code
             int code = Integer.parseInt(bfr.readLine());
             switch(code){
-                case PROTOCOL_CODES.LOGOUT:
+                case INTERNALSERVER_PROTOCOL.LOGOUT:
+                {
                     LogOutPetition();
                     break;
-                case PROTOCOL_CODES.ROLEINFO:
+                }
+                case INTERNALSERVER_PROTOCOL.ROLEINFO:
                 {
                     try {
-                        RoleInfo(bfr, pw);
+                        RoleInfoPetition(bfr, pw);
                     } catch (SQLException ex) {
                         Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
                     break;
+                }
+                case INTERNALSERVER_PROTOCOL.RECEIVED_MAIL:
+                {
+                    try {
+                        ReceivedMailPetition(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
+
 
             }
         }
@@ -118,7 +133,7 @@ public class ApplicationServer implements Runnable{
             stoppable.stop();
         }
         
-        private void RoleInfo(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException{
+        private void RoleInfoPetition(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException{
             String rolename = bfr.readLine();
             String sql = "SELECT PERMNAME FROM PERM, ROLES_PERM, ROLES WHERE ROLES.ROLENAME = '"+rolename+"' AND ROLES.IDROLE=ROLES_PERM.IDROLE AND ROLES_PERM.IDPERM=PERM.IDPERM;";
             ResultSet rs = man.executeQuery(sql);
@@ -126,14 +141,22 @@ public class ApplicationServer implements Runnable{
                 pw.println(rs.getString(1));
                 pw.flush();
             }
-            pw.println("END");
+            pw.println(INTERNALSERVER_PROTOCOL.END_INFO_TRANSFER);
             pw.flush();
         }
         
-    }
-    
-    public interface PROTOCOL_CODES{
-        public static int LOGOUT = 0;
-        public static int ROLEINFO = 1;
+        private void ReceivedMailPetition(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException{
+            String destination = bfr.readLine();
+            String sql = "SELECT * FROM INMAIL WHERE DESTINATION='"+destination+"';";
+            ResultSet rs = man.executeQuery(sql);
+            while(rs.next()){
+                pw.println(rs.getInt(1)+';'+rs.getString(2)+';'+rs.getString(3)+';'+rs.getString(4)+';'+rs.getString(5)+';'+rs.getDate(6)+';'+rs.getBoolean(7));
+                pw.flush();
+            }
+            
+            pw.println(INTERNALSERVER_PROTOCOL.END_INFO_TRANSFER);
+            
+        }
+        
     }
 }
