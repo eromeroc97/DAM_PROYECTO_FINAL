@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
+import java.util.Date;
 import utilities.INTERNALSERVER_PROTOCOL;
 import utilities.Utilidades;
 
@@ -39,7 +40,7 @@ public class ApplicationServer implements Runnable{
     
     public void stop(){
         exit = true;
-        man.executeNonQuery("UPDATE USERS SET ONLINE=FALSE WHERE USERNAME='"+username+"';");
+        man.executeNonQuery("UPDATE USERS SET ONLINE=FALSE, LASTCONNECTION='"+new Date()+"' WHERE USERNAME='"+username+"';");
         try {
             socketServidor.close();
         } catch (IOException ex) {

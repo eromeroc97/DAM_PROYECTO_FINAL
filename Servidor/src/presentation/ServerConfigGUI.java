@@ -60,7 +60,7 @@ public class ServerConfigGUI extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtOnlineUsers = new javax.swing.JTextArea();
         btnReloadOnlineUsers = new RSMaterialComponent.RSButtonIconTwo();
-        btnSaveLog = new newscomponents.RSButtonGradientIcon_new();
+        btnSaveLog = new RSMaterialComponent.RSButtonMaterialIconOne();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -70,8 +70,9 @@ public class ServerConfigGUI extends javax.swing.JFrame {
             }
         });
 
-        MainPanel.setBackground(new java.awt.Color(204, 204, 255));
+        MainPanel.setBackground(new java.awt.Color(50, 51, 52));
 
+        rSLabelTextIcon1.setForeground(new java.awt.Color(239, 96, 0));
         rSLabelTextIcon1.setText("Server Log");
         rSLabelTextIcon1.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.VIEW_AGENDA);
 
@@ -82,10 +83,15 @@ public class ServerConfigGUI extends javax.swing.JFrame {
         txtLog.setFocusable(false);
         jScrollPane1.setViewportView(txtLog);
 
+        rSLabelTextIcon2.setForeground(new java.awt.Color(239, 96, 0));
         rSLabelTextIcon2.setText("Server Config");
         rSLabelTextIcon2.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.SETTINGS);
 
+        txtPort.setForeground(new java.awt.Color(239, 96, 0));
+        txtPort.setBorderColor(new java.awt.Color(239, 96, 0));
+        txtPort.setColorIcon(new java.awt.Color(239, 96, 0));
         txtPort.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.PUBLIC);
+        txtPort.setPhColor(new java.awt.Color(239, 96, 0));
         txtPort.setPlaceholder("Server Port");
         txtPort.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -93,11 +99,15 @@ public class ServerConfigGUI extends javax.swing.JFrame {
             }
         });
 
+        rSLabelTextIcon3.setForeground(new java.awt.Color(239, 96, 0));
         rSLabelTextIcon3.setText("Server Control");
         rSLabelTextIcon3.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.DASHBOARD);
 
+        btnStartServer.setBackground(new java.awt.Color(239, 96, 0));
         btnStartServer.setText("Start Server");
+        btnStartServer.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnStartServer.setEnabled(false);
+        btnStartServer.setForegroundIcon(new java.awt.Color(0, 255, 0));
         btnStartServer.setForegroundText(new java.awt.Color(0, 255, 0));
         btnStartServer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnStartServer.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.PLAY_ARROW);
@@ -107,9 +117,12 @@ public class ServerConfigGUI extends javax.swing.JFrame {
             }
         });
 
+        btnStopServer.setBackground(new java.awt.Color(239, 96, 0));
         btnStopServer.setText("Stop Server");
+        btnStopServer.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnStopServer.setEnabled(false);
-        btnStopServer.setForegroundText(new java.awt.Color(255, 51, 51));
+        btnStopServer.setForegroundIcon(new java.awt.Color(0, 0, 204));
+        btnStopServer.setForegroundText(new java.awt.Color(0, 0, 204));
         btnStopServer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnStopServer.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.STOP);
         btnStopServer.addActionListener(new java.awt.event.ActionListener() {
@@ -118,7 +131,9 @@ public class ServerConfigGUI extends javax.swing.JFrame {
             }
         });
 
+        btnLoadDefaultConfig.setBackground(new java.awt.Color(239, 96, 0));
         btnLoadDefaultConfig.setText("Default Config");
+        btnLoadDefaultConfig.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnLoadDefaultConfig.setEnabled(false);
         btnLoadDefaultConfig.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnLoadDefaultConfig.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.ASSIGNMENT_RETURNED);
@@ -128,7 +143,9 @@ public class ServerConfigGUI extends javax.swing.JFrame {
             }
         });
 
+        btnSaveConfig.setBackground(new java.awt.Color(239, 96, 0));
         btnSaveConfig.setText("Save Config");
+        btnSaveConfig.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnSaveConfig.setEnabled(false);
         btnSaveConfig.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnSaveConfig.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.SAVE);
@@ -138,12 +155,15 @@ public class ServerConfigGUI extends javax.swing.JFrame {
             }
         });
 
+        rSLabelTextIcon4.setForeground(new java.awt.Color(239, 96, 0));
         rSLabelTextIcon4.setText("Online Users");
 
         txtOnlineUsers.setColumns(20);
         txtOnlineUsers.setRows(5);
         jScrollPane2.setViewportView(txtOnlineUsers);
 
+        btnReloadOnlineUsers.setBackground(new java.awt.Color(239, 96, 0));
+        btnReloadOnlineUsers.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnReloadOnlineUsers.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.AUTORENEW);
         btnReloadOnlineUsers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,8 +171,11 @@ public class ServerConfigGUI extends javax.swing.JFrame {
             }
         });
 
-        btnSaveLog.setText("Save Log");
+        btnSaveLog.setBackground(new java.awt.Color(239, 96, 0));
+        btnSaveLog.setText("Save Server Log");
+        btnSaveLog.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnSaveLog.setEnabled(false);
+        btnSaveLog.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnSaveLog.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.SECURITY);
         btnSaveLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,7 +224,8 @@ public class ServerConfigGUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSaveLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnSaveLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(MainPanelLayout.createSequentialGroup()
                         .addComponent(rSLabelTextIcon2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -252,6 +276,7 @@ public class ServerConfigGUI extends javax.swing.JFrame {
             try (FileWriter fw = new FileWriter(f)) {
                 fw.write(txtPort.getText());
                 txtLog.setText("PORT CONFIGURATION SAVED\n");
+                btnLoadDefaultConfig.setEnabled(true);
             }
         } catch (IOException ex) {
             txtLog.setText("COULD NOT CREATE CONFIGURATION FILE\n");
@@ -309,11 +334,6 @@ public class ServerConfigGUI extends javax.swing.JFrame {
             btnStopServer.doClick();
     }//GEN-LAST:event_formWindowClosing
 
-    private void btnSaveLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveLogActionPerformed
-        saveServerLog();
-        txtLog.setText("");
-    }//GEN-LAST:event_btnSaveLogActionPerformed
-
     private void btnReloadOnlineUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadOnlineUsersActionPerformed
         try {
             loadOnlineUsers();
@@ -321,6 +341,11 @@ public class ServerConfigGUI extends javax.swing.JFrame {
             Logger.getLogger(ServerConfigGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnReloadOnlineUsersActionPerformed
+
+    private void btnSaveLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveLogActionPerformed
+        saveServerLog();
+        txtLog.setText("");
+    }//GEN-LAST:event_btnSaveLogActionPerformed
 
     private void loadOnlineUsers() throws SQLException{
         txtOnlineUsers.setText("");
@@ -353,15 +378,17 @@ public class ServerConfigGUI extends javax.swing.JFrame {
     
     LoginServer server;
     private void saveServerLog(){
-        Date now = new Date();
-        String dateString = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_S").format(now);
-        String ServerLogFile = "./serverfiles/serverlog_"+dateString+".log";
-        File f = new File(ServerLogFile);
-        try(FileWriter fw = new FileWriter(f)){
-            fw.append(txtLog.getText());
-            fw.flush();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "LOG COULD NOT BE SAVED IN THIS SESSION");
+        if(!txtLog.getText().isBlank()){
+            Date now = new Date();
+            String dateString = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_S").format(now);
+            String ServerLogFile = "./serverfiles/serverlog_"+dateString+".log";
+            File f = new File(ServerLogFile);
+            try(FileWriter fw = new FileWriter(f)){
+                fw.append(txtLog.getText());
+                fw.flush();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "LOG COULD NOT BE SAVED IN THIS SESSION");
+            }
         }
     }
     
@@ -407,7 +434,7 @@ public class ServerConfigGUI extends javax.swing.JFrame {
     private RSMaterialComponent.RSButtonMaterialIconTwo btnLoadDefaultConfig;
     private RSMaterialComponent.RSButtonIconTwo btnReloadOnlineUsers;
     private RSMaterialComponent.RSButtonMaterialIconTwo btnSaveConfig;
-    private newscomponents.RSButtonGradientIcon_new btnSaveLog;
+    private RSMaterialComponent.RSButtonMaterialIconOne btnSaveLog;
     private RSMaterialComponent.RSButtonMaterialIconOne btnStartServer;
     private RSMaterialComponent.RSButtonMaterialIconOne btnStopServer;
     private javax.swing.JScrollPane jScrollPane1;
@@ -437,9 +464,13 @@ public class ServerConfigGUI extends javax.swing.JFrame {
     private void checkIfIsFirstRunning() {
         String DefPortPath = "./serverfiles/server.db";
         File f = new File(DefPortPath);
-        if(!f.exists()){ //Si la base de datos no existe debemos configurar el usuario principal
+        if(!f.exists()){
+            //Si la base de datos no existe debemos configurar el usuario principal y crear una nueva contraseña de encriptacion
             FirstRunningConfigGUI conf = new FirstRunningConfigGUI(this);
             conf.setVisible(true);
+            ConfigureEncryptionPasswordGUI encPass = new ConfigureEncryptionPasswordGUI(this);
+            encPass.setVisible(true);
         }
     }
+    
 }

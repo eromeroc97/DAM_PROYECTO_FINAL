@@ -11,16 +11,17 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import persistence.ServerPreferencesAdmin;
 
 /**
  *
  * @author erome
  */
 public class Encrypt {
-    private static String secretKey = "DesarrolloDeAplicacionesMultiplataformaIESMaestreDeCalatrava"; //llave para encriptar y desencriptar
     
     public static String Encriptar(String texto) {
-
+        ServerPreferencesAdmin spa = ServerPreferencesAdmin.getInstance();
+        String secretKey = spa.getPassword();
         String base64EncryptedString = "";
 
         try {
@@ -39,12 +40,15 @@ public class Encrypt {
             base64EncryptedString = new String(base64Bytes);
 
         } catch (Exception ex) {
+            System.out.println("Error durante la encriptación");
+            System.out.println(ex.getMessage());
         }
         return base64EncryptedString;
     }
     
     public static String Desencriptar(String textoEncriptado) throws Exception {
-
+        ServerPreferencesAdmin spa = ServerPreferencesAdmin.getInstance();
+        String secretKey = spa.getPassword();
         String base64EncryptedString = "";
 
         try {

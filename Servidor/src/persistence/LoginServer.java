@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 import java.util.logging.Level;
@@ -65,7 +66,7 @@ public class LoginServer implements Runnable{
     
     public void stop(){
         exit = true;
-        man.executeNonQuery("UPDATE USERS SET ONLINE=FALSE;");
+        man.executeNonQuery("UPDATE USERS SET ONLINE=FALSE, LASTCONNECTION='"+new Date()+"';");
         try {
             socketServidor.close();
         } catch (IOException ex) {

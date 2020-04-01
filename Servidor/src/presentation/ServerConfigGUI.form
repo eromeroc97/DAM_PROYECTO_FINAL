@@ -43,7 +43,7 @@
     <Container class="javax.swing.JPanel" name="MainPanel">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="cc" red="cc" type="rgb"/>
+          <Color blue="34" green="33" red="32" type="rgb"/>
         </Property>
       </Properties>
 
@@ -96,6 +96,7 @@
                           <Component id="jScrollPane1" min="-2" pref="300" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnSaveLog" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="rSLabelTextIcon2" min="-2" max="-2" attributes="0"/>
@@ -133,6 +134,9 @@
       <SubComponents>
         <Component class="RSMaterialComponent.RSLabelTextIcon" name="rSLabelTextIcon1">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Server Log"/>
             <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
               <Value id="VIEW_AGENDA"/>
@@ -159,6 +163,9 @@
         </Container>
         <Component class="RSMaterialComponent.RSLabelTextIcon" name="rSLabelTextIcon2">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Server Config"/>
             <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
               <Value id="SETTINGS"/>
@@ -167,8 +174,20 @@
         </Component>
         <Component class="RSMaterialComponent.RSTextFieldIconOne" name="txtPort">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
+            <Property name="borderColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
+            <Property name="colorIcon" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
             <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
               <Value id="PUBLIC"/>
+            </Property>
+            <Property name="phColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
             </Property>
             <Property name="placeholder" type="java.lang.String" value="Server Port"/>
           </Properties>
@@ -178,6 +197,9 @@
         </Component>
         <Component class="RSMaterialComponent.RSLabelTextIcon" name="rSLabelTextIcon3">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Server Control"/>
             <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
               <Value id="DASHBOARD"/>
@@ -186,8 +208,17 @@
         </Component>
         <Component class="RSMaterialComponent.RSButtonMaterialIconOne" name="btnStartServer">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Start Server"/>
+            <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="19" green="89" red="ff" type="rgb"/>
+            </Property>
             <Property name="enabled" type="boolean" value="false"/>
+            <Property name="foregroundIcon" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="ff" red="0" type="rgb"/>
+            </Property>
             <Property name="foregroundText" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="ff" red="0" type="rgb"/>
             </Property>
@@ -202,10 +233,19 @@
         </Component>
         <Component class="RSMaterialComponent.RSButtonMaterialIconOne" name="btnStopServer">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Stop Server"/>
+            <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="19" green="89" red="ff" type="rgb"/>
+            </Property>
             <Property name="enabled" type="boolean" value="false"/>
+            <Property name="foregroundIcon" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="cc" green="0" red="0" type="rgb"/>
+            </Property>
             <Property name="foregroundText" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="33" green="33" red="ff" type="rgb"/>
+              <Color blue="cc" green="0" red="0" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
@@ -218,7 +258,13 @@
         </Component>
         <Component class="RSMaterialComponent.RSButtonMaterialIconTwo" name="btnLoadDefaultConfig">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Default Config"/>
+            <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="19" green="89" red="ff" type="rgb"/>
+            </Property>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
@@ -231,7 +277,13 @@
         </Component>
         <Component class="RSMaterialComponent.RSButtonMaterialIconTwo" name="btnSaveConfig">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Save Config"/>
+            <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="19" green="89" red="ff" type="rgb"/>
+            </Property>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
@@ -244,6 +296,9 @@
         </Component>
         <Component class="RSMaterialComponent.RSLabelTextIcon" name="rSLabelTextIcon4">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Online Users"/>
           </Properties>
         </Component>
@@ -264,6 +319,12 @@
         </Container>
         <Component class="RSMaterialComponent.RSButtonIconTwo" name="btnReloadOnlineUsers">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
+            <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="19" green="89" red="ff" type="rgb"/>
+            </Property>
             <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
               <Value id="AUTORENEW"/>
             </Property>
@@ -272,10 +333,17 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReloadOnlineUsersActionPerformed"/>
           </Events>
         </Component>
-        <Component class="newscomponents.RSButtonGradientIcon_new" name="btnSaveLog">
+        <Component class="RSMaterialComponent.RSButtonMaterialIconOne" name="btnSaveLog">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Save Log"/>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Save Server Log"/>
+            <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="19" green="89" red="ff" type="rgb"/>
+            </Property>
             <Property name="enabled" type="boolean" value="false"/>
+            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
               <Value id="SECURITY"/>
             </Property>

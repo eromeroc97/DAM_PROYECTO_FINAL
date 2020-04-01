@@ -131,11 +131,12 @@ public class SQLiteManager {
     
     private class TableCreator{ /* Write here all table creation SQL queries, then call them from initialise() method*/
         public static final String USERS_TABLE = "CREATE TABLE IF NOT EXISTS USERS("
-                + "IDUSER INTEGER AUTOINCREMENT PRIMARY KEY"
-                + "USERNAME TEXT PRIMARY KEY,"
+                + "IDUSER INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "USERNAME TEXT UNIQUE NOT NULL,"
                 + "PASSWORD TEXT NOT NULL,"
                 + "ONLINE BOOLEAN DEFAULT FALSE,"
                 + "IDROLE INTEGER NOT NULL DEFAULT 0,"
+                + "LASTCONNECTION DATETIME,"
                 + "FOREIGN KEY (IDROLE) REFERENCES ROLES(IDROLE));";
         
         public static final String ROLES_TABLE = "CREATE TABLE IF NOT EXISTS ROLES("
