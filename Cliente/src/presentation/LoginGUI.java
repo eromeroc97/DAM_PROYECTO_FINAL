@@ -6,7 +6,11 @@
 package presentation;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import persistence.LanguageController;
 import utilities.Encrypt;
 import utilities.MsgBox;
 
@@ -21,6 +25,12 @@ public class LoginGUI extends javax.swing.JFrame {
      */
     public LoginGUI() {
         initComponents();
+        checkFirstRunning();
+    }
+    
+    private void checkFirstRunning(){
+        if(!(new File("./clientfiles/client.cconf")).exists())
+            new FirstRunningGUI().setVisible(true);
     }
 
     /**
@@ -167,7 +177,7 @@ public class LoginGUI extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         try {
-            persistence.ConnectionClient connection = new persistence.ConnectionClient(txtUserName.getText(), Encrypt.Encriptar(new String(txtUserPassword.getPassword())));
+            persistence.ConnectionClient connection = new persistence.ConnectionClient(txtUserName.getText(), Encrypt.encriptar_DESede(new String(txtUserPassword.getPassword())));
             if(connection.getConnectionResult() != -1){
                 MenuGUI menu = new MenuGUI(txtUserName.getText(), connection.getRolename(), connection.getConnectionResult(), this);
                 this.setVisible(false);
@@ -177,11 +187,13 @@ public class LoginGUI extends javax.swing.JFrame {
             }
         } catch (IOException ex) {
             MsgBox.create(this, "Could Not Create Connection Client", MsgBox.ERROR_ICON).setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(LoginGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnConfigClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfigClientActionPerformed
-        ConnectionConfigurator cc = new ConnectionConfigurator(this);
+        ConnectionConfiguratorGUI cc = new ConnectionConfiguratorGUI(this);
         cc.setVisible(true);
     }//GEN-LAST:event_btnConfigClientActionPerformed
 
@@ -198,7 +210,7 @@ public class LoginGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserPasswordKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        
+        setLanguageUI();
     }//GEN-LAST:event_formWindowOpened
 
     /**
@@ -248,4 +260,12 @@ public class LoginGUI extends javax.swing.JFrame {
     private RSMaterialComponent.RSTextFieldIconOne txtUserName;
     private RSMaterialComponent.RSPasswordMaterialIcon txtUserPassword;
     // End of variables declaration//GEN-END:variables
+
+    void setLanguageUI() {
+        this.lblTitle.setText(LanguageController.getLangValue("userlogin"));
+        this.txtUserName.setPlaceholder(LanguageController.getLangValue("username"));
+        this.txtUserPassword.setPlaceholder(LanguageController.getLangValue("userpassword"));
+        this.btnLogin.setText(LanguageController.getLangValue("login"));
+        this.btnExit.setText(LanguageController.getLangValue("exit"));
+    }
 }

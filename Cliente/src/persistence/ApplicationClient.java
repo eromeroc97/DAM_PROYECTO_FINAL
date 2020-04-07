@@ -11,8 +11,8 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.LinkedList;
-import utilities.INTERNALSERVER_PROTOCOL;
 import utilities.Utilidades;
+import utilities.IServerProtocol;
 
 /**
  *
@@ -28,7 +28,7 @@ public class ApplicationClient{
         this.port = port;
     }
     
-    public void SendLogOut() throws IOException{
+    public void AskForLogout() throws IOException{
         Socket conexion;
         InetSocketAddress direccionServidor;
         direccionServidor=
@@ -48,7 +48,7 @@ public class ApplicationClient{
         boolean check = Integer.parseInt(bfr.readLine()) == 1;
         
         if(check){
-            pw.println(INTERNALSERVER_PROTOCOL.LOGOUT);
+            pw.println(IServerProtocol.LOGOUT);
             pw.flush();
         }
 
@@ -78,7 +78,7 @@ public class ApplicationClient{
         pw.println(username);
         pw.flush();
         
-        pw.println(INTERNALSERVER_PROTOCOL.ROLEINFO);
+        pw.println(IServerProtocol.ROLEINFO);
         pw.flush();
         
         int confirmation = Integer.parseInt(bfr.readLine());
@@ -87,9 +87,9 @@ public class ApplicationClient{
             pw.flush();
 
             String linea = "";
-            while(!linea.equals(INTERNALSERVER_PROTOCOL.END_INFO_TRANSFER)){
+            while(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){
                 linea = bfr.readLine();
-                if(!linea.equals(INTERNALSERVER_PROTOCOL.END_INFO_TRANSFER))
+                if(!linea.equals(IServerProtocol.END_INFO_TRANSFER))
                     resultado.add(linea);
             }
         }

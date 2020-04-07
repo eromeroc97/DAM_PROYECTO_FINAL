@@ -16,8 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
 import java.util.Date;
-import utilities.INTERNALSERVER_PROTOCOL;
 import utilities.Utilidades;
+import utilities.IServerProtocol;
 
 /**
  *
@@ -102,12 +102,12 @@ public class ApplicationServer implements Runnable{
             //Getting petition code
             int code = Integer.parseInt(bfr.readLine());
             switch(code){
-                case INTERNALSERVER_PROTOCOL.LOGOUT:
+                case IServerProtocol.LOGOUT:
                 {
                     LogOutPetition();
                     break;
                 }
-                case INTERNALSERVER_PROTOCOL.ROLEINFO:
+                case IServerProtocol.ROLEINFO:
                 {
                     try {
                         RoleInfoPetition(bfr, pw);
@@ -116,7 +116,7 @@ public class ApplicationServer implements Runnable{
                     }
                     break;
                 }
-                case INTERNALSERVER_PROTOCOL.RECEIVED_MAIL:
+                case IServerProtocol.RECEIVED_MAIL:
                 {
                     try {
                         ReceivedMailPetition(bfr, pw);
@@ -142,7 +142,7 @@ public class ApplicationServer implements Runnable{
                 pw.println(rs.getString(1));
                 pw.flush();
             }
-            pw.println(INTERNALSERVER_PROTOCOL.END_INFO_TRANSFER);
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
             pw.flush();
         }
         
@@ -155,7 +155,7 @@ public class ApplicationServer implements Runnable{
                 pw.flush();
             }
             
-            pw.println(INTERNALSERVER_PROTOCOL.END_INFO_TRANSFER);
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
             
         }
         

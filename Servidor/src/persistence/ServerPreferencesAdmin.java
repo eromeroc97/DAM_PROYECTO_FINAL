@@ -34,4 +34,13 @@ public class ServerPreferencesAdmin {
     public String getPassword() {
        return preferences.get("encrypt_password", null);
     }
+    
+    public void setRandomKeyPath(String randomKeyPath){
+        preferences.put("randomKeyPath", randomKeyPath);
+    }
+    
+    public String getRandomKeyPath() {
+       return preferences.get("randomKeyPath", null);
+    }
+    
 }

@@ -85,11 +85,14 @@ public class MsgBox extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        MainPanel.setBackground(new java.awt.Color(204, 204, 255));
-        MainPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        MainPanel.setBackground(new java.awt.Color(50, 51, 52));
+        MainPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(239, 96, 0), 2));
 
+        icon.setForeground(new java.awt.Color(239, 96, 0));
         icon.setSizeIcon(50.0F);
 
+        btnOK.setBackground(new java.awt.Color(239, 96, 0));
+        btnOK.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnOK.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CHECK);
         btnOK.setTypeBorder(RSMaterialComponent.RSButtonIconOne.TYPEBORDER.CIRCLE);
         btnOK.addActionListener(new java.awt.event.ActionListener() {
@@ -102,9 +105,10 @@ public class MsgBox extends javax.swing.JFrame {
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         texto.setEditable(false);
-        texto.setBackground(new java.awt.Color(204, 204, 255));
+        texto.setBackground(new java.awt.Color(50, 51, 52));
         texto.setColumns(20);
         texto.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        texto.setForeground(new java.awt.Color(255, 255, 255));
         texto.setLineWrap(true);
         texto.setRows(5);
         texto.setText("Texto");

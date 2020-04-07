@@ -19,18 +19,19 @@ import utilities.Encrypt;
  *
  * @author erome
  */
-public class ConnectionConfigurator extends javax.swing.JFrame {
+public class ConnectionConfiguratorGUI extends javax.swing.JFrame {
 
     ApplicationClient appClient;
     JFrame parent;
-    public ConnectionConfigurator() {
+    public ConnectionConfiguratorGUI() {
         initComponents();
         this.setAlwaysOnTop(true);
     }
 
-    ConnectionConfigurator(JFrame parent) {
+    ConnectionConfiguratorGUI(JFrame parent) {
         this();
         this.parent = parent;
+        this.parent.setEnabled(false);
     }
 
     /**
@@ -49,20 +50,32 @@ public class ConnectionConfigurator extends javax.swing.JFrame {
         btnConfig = new RSMaterialComponent.RSButtonIconOne();
         txtIp = new RSMaterialComponent.RSTextFieldIconTwo();
         txtPort = new RSMaterialComponent.RSTextFieldIconTwo();
+        btnCancel = new RSMaterialComponent.RSButtonIconOne();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        MainPanel.setBackground(new java.awt.Color(204, 204, 255));
-        MainPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 255), 3));
+        MainPanel.setBackground(new java.awt.Color(50, 51, 52));
+        MainPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(239, 96, 0), 3));
 
+        txtUsername.setForeground(new java.awt.Color(239, 96, 0));
+        txtUsername.setBorderColor(new java.awt.Color(239, 96, 0));
+        txtUsername.setColorIcon(new java.awt.Color(239, 96, 0));
+        txtUsername.setPhColor(new java.awt.Color(239, 96, 0));
         txtUsername.setPlaceholder("User Name");
 
+        txtPassword.setForeground(new java.awt.Color(239, 96, 0));
+        txtPassword.setBorderColor(new java.awt.Color(239, 96, 0));
+        txtPassword.setColorIcon(new java.awt.Color(239, 96, 0));
+        txtPassword.setPhColor(new java.awt.Color(239, 96, 0));
         txtPassword.setPlaceholder("User Password");
 
+        rSLabelTextIcon1.setForeground(new java.awt.Color(239, 96, 0));
         rSLabelTextIcon1.setText("Network Configurator");
         rSLabelTextIcon1.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.PUBLIC);
 
+        btnConfig.setBackground(new java.awt.Color(239, 96, 0));
+        btnConfig.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnConfig.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CHECK);
         btnConfig.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,11 +83,28 @@ public class ConnectionConfigurator extends javax.swing.JFrame {
             }
         });
 
+        txtIp.setForeground(new java.awt.Color(239, 96, 0));
+        txtIp.setBorderColor(new java.awt.Color(239, 96, 0));
+        txtIp.setColorIcon(new java.awt.Color(239, 96, 0));
         txtIp.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.POWER);
+        txtIp.setPhColor(new java.awt.Color(239, 96, 0));
         txtIp.setPlaceholder("Server IP (XX.XX.XX.XX)");
 
+        txtPort.setForeground(new java.awt.Color(239, 96, 0));
+        txtPort.setBorderColor(new java.awt.Color(239, 96, 0));
+        txtPort.setColorIcon(new java.awt.Color(239, 96, 0));
         txtPort.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.POWER);
+        txtPort.setPhColor(new java.awt.Color(239, 96, 0));
         txtPort.setPlaceholder("Server Port (XXXX)");
+
+        btnCancel.setBackground(new java.awt.Color(239, 96, 0));
+        btnCancel.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnCancel.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CLOSE);
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
@@ -91,8 +121,10 @@ public class ConnectionConfigurator extends javax.swing.JFrame {
                     .addComponent(txtPort, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(MainPanelLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
+                .addGap(45, 45, 45)
                 .addComponent(btnConfig, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MainPanelLayout.setVerticalGroup(
@@ -108,9 +140,11 @@ public class ConnectionConfigurator extends javax.swing.JFrame {
                 .addComponent(txtIp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
                 .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnConfig, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -129,16 +163,16 @@ public class ConnectionConfigurator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfigActionPerformed
-        
+                    
         //Comprobaciones de datos introducidos correctamente
-        
-        //Guardado de los datos        
+
+        //Guardado de los datos
         String clientConfPath = "./clientfiles/client.cconf";
-        
+
         File dir = new File("./clientfiles/");
         if(!dir.exists())
             dir.mkdir();
-        
+
         try{
             String ip = txtIp.getText();
             String port = txtPort.getText();
@@ -158,25 +192,35 @@ public class ConnectionConfigurator extends javax.swing.JFrame {
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(this, "Port Must Be A Number");
         }
-        
-        
+
+
         String user = txtUsername.getText();
-        String password = Encrypt.Encriptar(new String(txtPassword.getPassword()));
-        
+        String password = null;
+        try {
+            password = Encrypt.encriptar_DESede(new String(txtPassword.getPassword()));
+        } catch (Exception ex) {
+            Logger.getLogger(ConnectionConfiguratorGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         try {
             persistence.ConnectionClient connection = new persistence.ConnectionClient(user, password);
             if(connection.getConnectionResult() != -1){
                 this.appClient = new ApplicationClient(user, connection.getConnectionResult());
-                this.appClient.SendLogOut();//cierro a continuacion la conexion liberando el puerto de confirmacion
+                this.appClient.AskForLogout();//cierro a continuacion la conexion liberando el puerto de confirmacion
             }else{
                 File f = new File(clientConfPath);
                 f.delete(); //destruye el fichero si no se ha validado la conexion
             }
         } catch (IOException ex) {
-            Logger.getLogger(ConnectionConfigurator.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConnectionConfiguratorGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+                    
     }//GEN-LAST:event_btnConfigActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        this.parent.setEnabled(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -195,26 +239,30 @@ public class ConnectionConfigurator extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConnectionConfigurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConnectionConfiguratorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConnectionConfigurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConnectionConfiguratorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConnectionConfigurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConnectionConfiguratorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConnectionConfigurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConnectionConfiguratorGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConnectionConfigurator().setVisible(true);
+                new ConnectionConfiguratorGUI().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MainPanel;
+    private RSMaterialComponent.RSButtonIconOne btnCancel;
     private RSMaterialComponent.RSButtonIconOne btnConfig;
     private RSMaterialComponent.RSLabelTextIcon rSLabelTextIcon1;
     private RSMaterialComponent.RSTextFieldIconTwo txtIp;

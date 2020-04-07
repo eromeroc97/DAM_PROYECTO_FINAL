@@ -1,0 +1,3 @@
+ENCRIPTADO RSA: https://www.alvarodeleon.net/encriptar-y-desencriptar-con-rsa-en-java/ (02/04/2020)
+ENCRIPTADO TRIPLEDES/DESEDE: https://www.qualityinfosolutions.com/metodos-para-encriptar-y-desencriptar-en-java/ (30/03/2020)
+GENERACION STRING ALEATORIO ALFANUMERICO: https://www.baeldung.com/java-random-string (03/04/2020)

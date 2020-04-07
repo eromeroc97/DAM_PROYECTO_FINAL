@@ -19,7 +19,7 @@ public class SysAdminDAO {
     }
     
     public void setSysAdminPassword(String password){
-        String sql = "INSERT INTO USERS (USERNAME, PASSWORD, IDROLE) VALUES ('SYSADMIN', '"+Encrypt.Encriptar(password)+"', (SELECT IDROLE FROM ROLES WHERE ROLENAME='SYSADMIN'));";
+        String sql = "INSERT INTO USERS (USERNAME, PASSWORD, IDROLE) VALUES ('SYSADMIN', '"+Encrypt.encriptar_DESede(password)+"', (SELECT IDROLE FROM ROLES WHERE ROLENAME='SYSADMIN'));";
         man.executeNonQuery(sql);
     }
 }

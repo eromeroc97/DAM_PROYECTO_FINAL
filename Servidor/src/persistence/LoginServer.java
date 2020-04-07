@@ -98,6 +98,11 @@ public class LoginServer implements Runnable{
             BufferedReader bfr = Utilidades.getBufferedReader(connection.getInputStream());
             PrintWriter pw = Utilidades.getPrintWriter(connection.getOutputStream());
             
+            //sending encrypted password to user
+            pw.println(ServerPreferencesAdmin.getInstance().getPassword());
+            pw.flush();
+            
+            //waiting for use
             String name = bfr.readLine();
             String pass = bfr.readLine();
             

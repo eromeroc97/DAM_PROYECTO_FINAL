@@ -7,6 +7,7 @@ package presentation;
 
 import javax.swing.JFrame;
 import persistence.ServerPreferencesAdmin;
+import utilities.Encrypt;
 
 /**
  *
@@ -140,7 +141,10 @@ public class ConfigureEncryptionPasswordGUI extends javax.swing.JFrame {
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         //guarda la contraseña como preferencia, encriptada
         ServerPreferencesAdmin prefAdmin = ServerPreferencesAdmin.getInstance();
-        prefAdmin.setCredentials(new String(txtPassword.getPassword()));
+        
+        String pass = Encrypt.readKey();
+        
+        prefAdmin.setCredentials(Encrypt.encriptar_DESede(new String(txtPassword.getPassword()), pass));
         //devuelve el control del parent
         parent.setEnabled(true);
         //cierro configuracion

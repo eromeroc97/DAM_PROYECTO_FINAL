@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import persistence.ApplicationClient;
+import persistence.LanguageController;
 
 /**
  *
@@ -52,9 +53,9 @@ public class MenuGUI extends javax.swing.JFrame {
         btnLogOut = new RSMaterialComponent.RSButtonMaterialIconOne();
         MainPanel = new javax.swing.JPanel();
         btnMenuPanel = new rojerusan.RSPanelsSlider();
-        jLabel1 = new javax.swing.JLabel();
+        lblConnectedAs = new javax.swing.JLabel();
         lblUsername = new RSMaterialComponent.RSLabelTextIcon();
-        jLabel2 = new javax.swing.JLabel();
+        lblPermissionLevel = new javax.swing.JLabel();
         lblRolename = new RSMaterialComponent.RSLabelTextIcon();
         btnRoleinfo = new RSMaterialComponent.RSButtonIconOne();
         jSeparator1 = new javax.swing.JSeparator();
@@ -92,6 +93,11 @@ public class MenuGUI extends javax.swing.JFrame {
         btnPreferences.setText("Preferences");
         btnPreferences.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnPreferences.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.SETTINGS);
+        btnPreferences.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPreferencesActionPerformed(evt);
+            }
+        });
 
         btnMenu.setBackground(new java.awt.Color(239, 96, 0));
         btnMenu.setText("Menu");
@@ -147,10 +153,10 @@ public class MenuGUI extends javax.swing.JFrame {
         btnMenuPanel.setBackground(new java.awt.Color(102, 102, 102));
         btnMenuPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Connected as");
-        btnMenuPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
+        lblConnectedAs.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblConnectedAs.setForeground(new java.awt.Color(255, 255, 255));
+        lblConnectedAs.setText("Connected as");
+        btnMenuPanel.add(lblConnectedAs, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
 
         lblUsername.setForeground(new java.awt.Color(255, 255, 255));
         lblUsername.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -158,10 +164,10 @@ public class MenuGUI extends javax.swing.JFrame {
         lblUsername.setToolTipText("");
         btnMenuPanel.add(lblUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 32, -1, -1));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Permission level");
-        btnMenuPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 78, -1, -1));
+        lblPermissionLevel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblPermissionLevel.setForeground(new java.awt.Color(255, 255, 255));
+        lblPermissionLevel.setText("Permission level");
+        btnMenuPanel.add(lblPermissionLevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 78, -1, -1));
 
         lblRolename.setForeground(new java.awt.Color(255, 255, 255));
         lblRolename.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -345,8 +351,9 @@ public class MenuGUI extends javax.swing.JFrame {
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         try {
-            this.appClient.SendLogOut();
+            this.appClient.AskForLogout();
             parent.setVisible(true);
+            parent.setLanguageUI();
             this.dispose();
         } catch (IOException ex) {
             Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -379,7 +386,34 @@ public class MenuGUI extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         showHideMenu();
+        setLanguageUI();
     }//GEN-LAST:event_formWindowOpened
+
+    private void btnPreferencesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreferencesActionPerformed
+        ClientPreferencesGUI prefgui = new ClientPreferencesGUI(this);
+        prefgui.setVisible(true);
+    }//GEN-LAST:event_btnPreferencesActionPerformed
+    
+    public void setLanguageUI(){
+        this.btnMenu.setText(LanguageController.getLangValue("menu"));
+        this.btnProfile.setText(LanguageController.getLangValue("profile"));
+        this.btnPreferences.setText(LanguageController.getLangValue("preferences"));
+        this.btnLogOut.setText(LanguageController.getLangValue("logout"));
+        this.btnNewSale.setText(LanguageController.getLangValue("newsale"));
+        this.btnPrintReport.setText(LanguageController.getLangValue("printreport"));
+        this.btnViewAdverts.setText(LanguageController.getLangValue("viewadverts"));
+        this.btnInMail.setText(LanguageController.getLangValue("inmail"));
+        this.btnConfirmOrders.setText(LanguageController.getLangValue("confirmorders"));
+        this.btnRegisterProduct.setText(LanguageController.getLangValue("registerproduct"));
+        this.lblConnectedAs.setText(LanguageController.getLangValue("connectedas"));
+        this.lblPermissionLevel.setText(LanguageController.getLangValue("permissionlevel"));
+        this.btnAdminUsers.setText(LanguageController.getLangValue("adminusers"));
+        this.btnAdminProfiles.setText(LanguageController.getLangValue("adminprofiles"));
+        this.btnAdminRoles.setText(LanguageController.getLangValue("adminroles"));
+        this.btnSendAdverts.setText(LanguageController.getLangValue("sendadverts"));
+        this.btnSendEmail.setText(LanguageController.getLangValue("sendemail"));
+    }
+    
     
     private void showHideMenu(){
         final int MOV = 4;
@@ -455,9 +489,9 @@ public class MenuGUI extends javax.swing.JFrame {
     private RSMaterialComponent.RSButtonMaterialIconOne btnSendAdverts;
     private RSMaterialComponent.RSButtonMaterialIconOne btnSendEmail;
     private newscomponents.RSButtonBigIcon_new btnViewAdverts;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblConnectedAs;
+    private javax.swing.JLabel lblPermissionLevel;
     private RSMaterialComponent.RSLabelTextIcon lblRolename;
     private RSMaterialComponent.RSLabelTextIcon lblUsername;
     // End of variables declaration//GEN-END:variables

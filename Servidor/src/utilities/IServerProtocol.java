@@ -9,7 +9,7 @@ package utilities;
  *
  * @author erome
  */
-public interface INTERNALSERVER_PROTOCOL {
+public interface IServerProtocol {
     public static final int LOGOUT = 0;
     public static final int ROLEINFO = 1;
     public static final int RECEIVED_MAIL = 2;

@@ -59,6 +59,10 @@ public class ConnectionClient {
         PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
         BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
         
+        //Server sends encrypted password
+        String server_pass = bfr.readLine();
+        ClientPreferencesAdmin.getInstance().setDBPassword(server_pass);
+        
         //Sending connection messages
         pw.println(name);
         pw.println(pass);
