@@ -114,6 +114,11 @@ public class SQLiteManager {
                 stmt2.execute(TableCreator.PERM_TABLE);
                 stmt2.execute(TableCreator.ROLES_PERM_TABLE);
                 stmt2.execute(TableCreator.INMAIL_TABLE);
+                stmt2.execute(TableCreator.PROFILES_TABLE);
+                stmt2.execute(TableCreator.ADVERTS_TABLE);
+                stmt2.execute(TableCreator.PRODUCTS_TABLE);
+                stmt2.execute(TableCreator.SALES_TABLE);
+                stmt2.execute(TableCreator.ORDERS_TABLE);
                 
                 //INSERTS POR DEFECTO
                 for(String s : (new TableCreator()).INSERTS_PERM)
