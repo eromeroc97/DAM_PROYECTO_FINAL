@@ -331,7 +331,7 @@ public class ServerConfigGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnStopServerActionPerformed
 
     private void btnStartServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartServerActionPerformed
-        server = new LoginServer(Integer.parseInt(txtPort.getText()), this.txtLog);
+        server = new LoginServer(Integer.parseInt(txtPort.getText()), this.txtLog, this);
         Thread serverThr = new Thread(server);
         serverThr.start();
         btnStartServer.setEnabled(false);
@@ -352,11 +352,7 @@ public class ServerConfigGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnReloadOnlineUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadOnlineUsersActionPerformed
-        try {
-            loadOnlineUsers();
-        } catch (SQLException ex) {
-            Logger.getLogger(ServerConfigGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        loadOnlineUsers();
     }//GEN-LAST:event_btnReloadOnlineUsersActionPerformed
 
     private void btnSaveLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveLogActionPerformed
@@ -369,13 +365,17 @@ public class ServerConfigGUI extends javax.swing.JFrame {
         copy.setVisible(true);
     }//GEN-LAST:event_btnCopyClientKeyActionPerformed
 
-    private void loadOnlineUsers() throws SQLException{
-        txtOnlineUsers.setText("");
-        String sql = "SELECT USERNAME FROM USERS WHERE ONLINE=TRUE;";
-        SQLiteManager man = SQLiteManager.getSingletonInstance();
-        ResultSet rs = man.executeQuery(sql);
-        while(rs.next()){
-            txtOnlineUsers.append(rs.getString(1)+"\n");
+    public void loadOnlineUsers(){
+        try {
+            txtOnlineUsers.setText("");
+            String sql = "SELECT USERNAME FROM USERS WHERE ONLINE=TRUE;";
+            SQLiteManager man = SQLiteManager.getSingletonInstance();
+            ResultSet rs = man.executeQuery(sql);
+            while(rs.next()){
+                txtOnlineUsers.append(rs.getString(1)+"\n");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerConfigGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

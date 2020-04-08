@@ -6,11 +6,16 @@
 package persistence;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import utilities.Utilidades;
 import utilities.IServerProtocol;
 
@@ -19,13 +24,22 @@ import utilities.IServerProtocol;
  * @author erome
  */
 public class ApplicationClient{
-    private static final String ServerIP = "127.0.0.1";
+    private String ServerIP;
     private String username;
     private int port;
+    private static ApplicationClient myClient = null;
     
-    public ApplicationClient(String username, int port){
+    private ApplicationClient(String username, int port){
         this.username = username;
         this.port = port;
+        this.ServerIP = getIPfromConfigFile();
+    }
+    
+    public static ApplicationClient getClient(String username, int port){
+        if(myClient == null)
+            myClient = new ApplicationClient(username, port);
+        
+        return myClient;
     }
     
     public void AskForLogout() throws IOException{
@@ -54,6 +68,7 @@ public class ApplicationClient{
 
         
         //Closing connection with login server
+        myClient = null;
         bfr.close();
         pw.close();
         conexion.close();
@@ -100,5 +115,22 @@ public class ApplicationClient{
         pw.close();
         
         return resultado;
+    }
+    
+    private String getIPfromConfigFile(){
+        try {
+            String clientConfPath = "./clientfiles/client.cconf";
+            File f = new File(clientConfPath);
+            BufferedReader bfr = new BufferedReader(new FileReader(f));
+            String direc = bfr.readLine();
+            String[] direc_partida = direc.split(":");
+            bfr.close();
+            return direc_partida[0];
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ConnectionClient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ConnectionClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

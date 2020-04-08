@@ -191,8 +191,45 @@ public class SQLiteManager {
                 + "FOREIGN KEY (SOURCE) REFERENCES USERS(USERNAME),"
                 + "FOREIGN KEY (DESTINATION) REFERENCES USERS(USERNAME));";
         
+        public static final String PROFILES_TABLE = "CREATE TABLE IF NOT EXISTS PROFILES("
+                + "IDUSER INTEGER PRIMARY KEY,"
+                + "NAME TEXT,"
+                + "SURNAME TEXT,"
+                + "EMAIL TEXT,"
+                + "PHONE LONG,"
+                + "FOREIGN KEY (IDUSER) REFERENCES USERS(IDUSER));";
         
+        public static final String ADVERTS_TABLE = "CREATE TABLE IF NOT EXISTS ADVERTS("
+                + "IDADVERT INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "IDUSER INTEGER NOT NULL,"
+                + "DATE DATETIME NOT NULL,"
+                + "MESSAGE TEXT NOT NULL,"
+                + "FOREIGN KEY (IDUSER) REFERENCES USERS(IDUSER));";
         
+        public static final String PRODUCTS_TABLE = "CREATE TABLE IF NOT EXISTS PRODUCTS("
+                + "IDPRODUCT INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "PRODUCTNAME TEXT NOT NULL,"
+                + "PRICE DOUBLE NOT NULL,"
+                + "STOCK INTEGER NOT NULL,"
+                + "SECURITYSTOCK INTEGER NOT NULL,"
+                + "MINIMUMSTOCK INTEGER NOT NULL"
+                + "DEFAULTORDERAMOUNT INTEGER NOT NULL);";
+        
+        public static final String SALES_TABLE = "CREATE TABLE IF NOT EXISTS SALES("
+                + "IDSALE INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "IDPRODUCT INTEGER NOT NULL,"
+                + "IDUSER INTEGER NOT NULL,"
+                + "SALEPRICE DOUBLE NOT NULL,"
+                + "UNITS INTEGER NOT NULL DEFAULT 1,"
+                + "SALEDATE DATETIME NOT NULL,"
+                + "FOREIGN KEY (IDPRODUCT) REFERENCES PRODUCTS(IDPRODUCT),"
+                + "FOREIGN KEY (IDUSER) REFERENCES USERS(IDUSER));";
+        
+        public static final String ORDERS_TABLE = "CREATE TABLE IF NOT EXISTS ORDERS("
+                + "IDORDER INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "IDPRODUCT INTEGER NOT NULL,"
+                + "ORDERDATE DATETIME NOT NULL,"
+                + "UNITS INTEGER NOT NULL,)";
     }
 }
 

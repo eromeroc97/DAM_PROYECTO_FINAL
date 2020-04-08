@@ -27,7 +27,7 @@ public class MenuGUI extends javax.swing.JFrame {
         this.parent = parent;
         this.username = username;
         this.rolename = rolename;
-        this.appClient = new ApplicationClient(username, port);
+        this.appClient = ApplicationClient.getClient(username, port);
         this.lblUsername.setText(username);
         this.lblRolename.setText(rolename);
     }
@@ -65,7 +65,6 @@ public class MenuGUI extends javax.swing.JFrame {
         btnAdminProfiles = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnAdminRoles = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnSendAdverts = new RSMaterialComponent.RSButtonMaterialIconOne();
-        btnSendEmail = new RSMaterialComponent.RSButtonMaterialIconOne();
         OverMainPanel = new javax.swing.JPanel();
         btnNewSale = new newscomponents.RSButtonBigIcon_new();
         btnPrintReport = new newscomponents.RSButtonBigIcon_new();
@@ -213,11 +212,6 @@ public class MenuGUI extends javax.swing.JFrame {
         btnSendAdverts.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnSendAdverts.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.NEW_RELEASES);
 
-        btnSendEmail.setBackground(new java.awt.Color(239, 96, 0));
-        btnSendEmail.setText("Send Emails");
-        btnSendEmail.setBackgroundHover(new java.awt.Color(255, 137, 25));
-        btnSendEmail.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.EMAIL);
-
         javax.swing.GroupLayout ActionPanelLayout = new javax.swing.GroupLayout(ActionPanel);
         ActionPanel.setLayout(ActionPanelLayout);
         ActionPanelLayout.setHorizontalGroup(
@@ -228,8 +222,7 @@ public class MenuGUI extends javax.swing.JFrame {
                     .addComponent(btnAdminUsers, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAdminProfiles, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAdminRoles, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSendAdverts, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSendEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnSendAdverts, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         ActionPanelLayout.setVerticalGroup(
             ActionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,8 +234,7 @@ public class MenuGUI extends javax.swing.JFrame {
                 .addComponent(btnAdminRoles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(btnSendAdverts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnSendEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         ActionScroll.setViewportView(ActionPanel);
@@ -385,8 +377,14 @@ public class MenuGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInMailActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        showHideMenu();
         setLanguageUI();
+        showHideMenu();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        showHideMenu();
     }//GEN-LAST:event_formWindowOpened
 
     private void btnPreferencesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreferencesActionPerformed
@@ -411,9 +409,7 @@ public class MenuGUI extends javax.swing.JFrame {
         this.btnAdminProfiles.setText(LanguageController.getLangValue("adminprofiles"));
         this.btnAdminRoles.setText(LanguageController.getLangValue("adminroles"));
         this.btnSendAdverts.setText(LanguageController.getLangValue("sendadverts"));
-        this.btnSendEmail.setText(LanguageController.getLangValue("sendemail"));
     }
-    
     
     private void showHideMenu(){
         final int MOV = 4;
@@ -487,7 +483,6 @@ public class MenuGUI extends javax.swing.JFrame {
     private newscomponents.RSButtonBigIcon_new btnRegisterProduct;
     private RSMaterialComponent.RSButtonIconOne btnRoleinfo;
     private RSMaterialComponent.RSButtonMaterialIconOne btnSendAdverts;
-    private RSMaterialComponent.RSButtonMaterialIconOne btnSendEmail;
     private newscomponents.RSButtonBigIcon_new btnViewAdverts;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblConnectedAs;

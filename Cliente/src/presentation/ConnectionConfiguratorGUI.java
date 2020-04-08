@@ -205,7 +205,7 @@ public class ConnectionConfiguratorGUI extends javax.swing.JFrame {
         try {
             persistence.ConnectionClient connection = new persistence.ConnectionClient(user, password);
             if(connection.getConnectionResult() != -1){
-                this.appClient = new ApplicationClient(user, connection.getConnectionResult());
+                this.appClient = ApplicationClient.getClient(user, connection.getConnectionResult());
                 this.appClient.AskForLogout();//cierro a continuacion la conexion liberando el puerto de confirmacion
             }else{
                 File f = new File(clientConfPath);

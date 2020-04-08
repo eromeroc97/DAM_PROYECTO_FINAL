@@ -9,6 +9,7 @@ import java.util.Locale;
 import javax.swing.JFrame;
 import persistence.ClientPreferencesAdmin;
 import persistence.LanguageController;
+import utilities.MsgBox;
 
 /**
  *
@@ -46,6 +47,8 @@ public class ClientPreferencesGUI extends javax.swing.JFrame {
         lblSpanish = new javax.swing.JLabel();
         lblEnglish = new javax.swing.JLabel();
         btnClose = new RSMaterialComponent.RSButtonIconOne();
+        lblAbout = new RSMaterialComponent.RSLabelTextIcon();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -92,12 +95,22 @@ public class ClientPreferencesGUI extends javax.swing.JFrame {
             }
         });
 
+        lblAbout.setForeground(new java.awt.Color(239, 96, 0));
+        lblAbout.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblAbout.setText("About");
+        lblAbout.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.INFO_OUTLINE);
+        lblAbout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAboutMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
         MainPanelLayout.setHorizontalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(MainPanelLayout.createSequentialGroup()
                         .addGap(47, 47, 47)
                         .addComponent(lblPreferneces, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -112,8 +125,13 @@ public class ClientPreferencesGUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(swLanguage, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(lblSpanish)))
+                        .addComponent(lblSpanish))
+                    .addComponent(jSeparator1))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(MainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblAbout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,7 +152,11 @@ public class ClientPreferencesGUI extends javax.swing.JFrame {
                     .addGroup(MainPanelLayout.createSequentialGroup()
                         .addGap(2, 2, 2)
                         .addComponent(swLanguage, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(236, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblAbout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -183,9 +205,14 @@ public class ClientPreferencesGUI extends javax.swing.JFrame {
         setLanguageUI();
     }//GEN-LAST:event_swLanguageMouseClicked
 
+    private void lblAboutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAboutMouseClicked
+        MsgBox.create(this, LanguageController.getLangValue("aboutmsg").replaceAll("-", "\n"), MsgBox.INFO_ICON).setVisible(true);
+    }//GEN-LAST:event_lblAboutMouseClicked
+
     private void setLanguageUI(){
         this.lblPreferneces.setText(LanguageController.getLangValue("preferences"));
         this.lblLanguage.setText(LanguageController.getLangValue("language"));
+        this.lblAbout.setText(LanguageController.getLangValue("about"));
     }
     
     /**
@@ -226,6 +253,8 @@ public class ClientPreferencesGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MainPanel;
     private RSMaterialComponent.RSButtonIconOne btnClose;
+    private javax.swing.JSeparator jSeparator1;
+    private RSMaterialComponent.RSLabelTextIcon lblAbout;
     private javax.swing.JLabel lblEnglish;
     private RSMaterialComponent.RSLabelTextIcon lblLanguage;
     private RSMaterialComponent.RSLabelTextIcon lblPreferneces;

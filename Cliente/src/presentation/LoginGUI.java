@@ -181,6 +181,8 @@ public class LoginGUI extends javax.swing.JFrame {
             if(connection.getConnectionResult() != -1){
                 MenuGUI menu = new MenuGUI(txtUserName.getText(), connection.getRolename(), connection.getConnectionResult(), this);
                 this.setVisible(false);
+                this.txtUserName.setText(""); //Limpio los campos si los datos se han introducido correctamente
+                this.txtUserPassword.setText("");
                 menu.setVisible(true);
             }else{
                 MsgBox.create(this, connection.getConnectionResultMessage(), MsgBox.INFO_ICON).setVisible(true);

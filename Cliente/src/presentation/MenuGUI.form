@@ -315,7 +315,6 @@
                                   <Component id="btnAdminProfiles" alignment="1" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnAdminRoles" alignment="1" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnSendAdverts" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnSendEmail" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -330,8 +329,7 @@
                               <Component id="btnAdminRoles" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                               <Component id="btnSendAdverts" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="btnSendEmail" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="40" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -390,20 +388,6 @@
                         </Property>
                         <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
                           <Value id="NEW_RELEASES"/>
-                        </Property>
-                      </Properties>
-                    </Component>
-                    <Component class="RSMaterialComponent.RSButtonMaterialIconOne" name="btnSendEmail">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="60" red="ef" type="rgb"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Send Emails"/>
-                        <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="19" green="89" red="ff" type="rgb"/>
-                        </Property>
-                        <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
-                          <Value id="EMAIL"/>
                         </Property>
                       </Properties>
                     </Component>

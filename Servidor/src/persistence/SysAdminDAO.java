@@ -5,6 +5,8 @@
  */
 package persistence;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import utilities.Encrypt;
 
 /**
@@ -19,7 +21,12 @@ public class SysAdminDAO {
     }
     
     public void setSysAdminPassword(String password){
-        String sql = "INSERT INTO USERS (USERNAME, PASSWORD, IDROLE) VALUES ('SYSADMIN', '"+Encrypt.encriptar_DESede(password)+"', (SELECT IDROLE FROM ROLES WHERE ROLENAME='SYSADMIN'));";
-        man.executeNonQuery(sql);
+        String sql;
+        try {
+            sql = "INSERT INTO USERS (USERNAME, PASSWORD, IDROLE) VALUES ('SYSADMIN', '"+Encrypt.encriptar_DESede(password)+"', (SELECT IDROLE FROM ROLES WHERE ROLENAME='SYSADMIN'));";
+            man.executeNonQuery(sql);
+        } catch (Exception ex) {
+            Logger.getLogger(SysAdminDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -8,6 +8,7 @@ package presentation;
 import java.util.Date;
 import javax.swing.JFrame;
 import org.jdesktop.swingx.VerticalLayout;
+import persistence.LanguageController;
 
 /**
  *
@@ -83,12 +84,16 @@ public class InMailGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         ControlPanel.setBackground(new java.awt.Color(239, 96, 0));
 
         btnCloseInMail.setBackground(new java.awt.Color(204, 0, 0));
-        btnCloseInMail.setText("Close This Window");
-        btnCloseInMail.setBackgroundHover(new java.awt.Color(204, 0, 0));
+        btnCloseInMail.setBackgroundHover(new java.awt.Color(255, 0, 0));
         btnCloseInMail.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CLOSE);
         btnCloseInMail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,12 +103,12 @@ public class InMailGUI extends javax.swing.JFrame {
 
         btnWriteInMail.setBackground(new java.awt.Color(239, 96, 0));
         btnWriteInMail.setToolTipText("Write New InMail");
-        btnWriteInMail.setBackgroundHover(new java.awt.Color(0, 0, 153));
+        btnWriteInMail.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnWriteInMail.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.EDIT);
 
         btnUpdate.setBackground(new java.awt.Color(239, 96, 0));
         btnUpdate.setToolTipText("Update Inbox");
-        btnUpdate.setBackgroundHover(new java.awt.Color(0, 0, 153));
+        btnUpdate.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnUpdate.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.UPDATE);
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -198,6 +203,15 @@ public class InMailGUI extends javax.swing.JFrame {
         refresh();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        setLanguageUI();
+        //cargar los inmail
+    }//GEN-LAST:event_formWindowOpened
+
+    private void setLanguageUI(){
+        this.btnWriteInMail.setToolTipText(LanguageController.getLangValue("writeinmail"));
+        this.btnUpdate.setToolTipText(LanguageController.getLangValue("updateinbox"));
+    }
     /**
      * @param args the command line arguments
      */

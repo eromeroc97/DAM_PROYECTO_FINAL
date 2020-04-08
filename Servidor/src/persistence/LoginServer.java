@@ -17,6 +17,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
+import presentation.ServerConfigGUI;
 import utilities.Utilidades;
 
 /**
@@ -30,12 +31,14 @@ public class LoginServer implements Runnable{
     
     private JTextArea txtLog;
     private boolean exit = false;
+    private ServerConfigGUI gui;
     
     private SQLiteManager man;
     
-    public LoginServer(int port, JTextArea txtLog){
+    public LoginServer(int port, JTextArea txtLog, ServerConfigGUI gui){
         this.txtLog = txtLog;
         this.PORT = port;
+        this.gui = gui;
         this.man = SQLiteManager.getSingletonInstance();
     }
     
@@ -61,6 +64,7 @@ public class LoginServer implements Runnable{
         try {
             this.servir();
         } catch (IOException ex) {
+            
         }
     }
     
@@ -132,9 +136,10 @@ public class LoginServer implements Runnable{
                 
                 txtLog.append("User login correct\nCreating Private Server on "+NEWPORT+"\n\n");
                 //starting internal server on new port
-                ApplicationServer aps = new ApplicationServer(NEWPORT, name);
+                ApplicationServer aps = new ApplicationServer(NEWPORT, name, gui);
                 Thread t = new Thread(aps);
                 t.start();
+                gui.loadOnlineUsers(); //actualiza cuando un usuario se conecta
             }else{
                 txtLog.append("User login failure\nConnection Refused\n\n");
                 pw.println(REFUSED);

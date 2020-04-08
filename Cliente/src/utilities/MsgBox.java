@@ -49,8 +49,8 @@ public class MsgBox extends javax.swing.JFrame {
         icon.setVisible(true);
         switch(type_icon){
             case INFO_ICON:{
-                icon.setIcons(ValoresEnum.ICONS.INFO);
-                icon.setForeground(Color.BLUE);
+                icon.setIcons(ValoresEnum.ICONS.INFO_OUTLINE);
+                icon.setForeground(Color.CYAN);
                 break;
             }
             case WARNING_ICON:{

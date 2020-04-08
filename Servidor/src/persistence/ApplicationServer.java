@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
 import java.util.Date;
+import presentation.ServerConfigGUI;
 import utilities.Utilidades;
 import utilities.IServerProtocol;
 
@@ -30,17 +31,19 @@ public class ApplicationServer implements Runnable{
     private ServerSocket socketServidor;
     private boolean exit = false;
     private SQLiteManager man;
-    
+    private ServerConfigGUI gui;
 
-    public ApplicationServer(int PORT, String username) {
+    public ApplicationServer(int PORT, String username, ServerConfigGUI gui) {
         this.PORT = PORT;
         this.username = username;
+        this.gui = gui;
         this.man = SQLiteManager.getSingletonInstance();
     }
     
     public void stop(){
         exit = true;
         man.executeNonQuery("UPDATE USERS SET ONLINE=FALSE, LASTCONNECTION='"+new Date()+"' WHERE USERNAME='"+username+"';");
+        gui.loadOnlineUsers(); //actualiza la lista cuando un usuario se desconecta
         try {
             socketServidor.close();
         } catch (IOException ex) {
