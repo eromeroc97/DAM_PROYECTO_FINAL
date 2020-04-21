@@ -66,4 +66,12 @@ public class RoleDAO {
             return list;
         }
     }
+
+    public void deleteRole(int roleid) {
+        try {
+            this.appClient.AskForDeleteRole(roleid);
+        } catch (IOException ex) {
+            Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

@@ -24,4 +24,6 @@ public interface IServerProtocol {
     public static final int SET_PROFILE = 9;
     public static final int CHANGE_PASSWORD = 10;    
     public static final int GET_ROLES_LIST = 11;
+    public static final int SET_USER_ROLE = 12;
+    public static final int DELETE_ROLE = 13;
 }

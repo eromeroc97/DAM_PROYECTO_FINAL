@@ -180,8 +180,15 @@ public class ApplicationServer implements Runnable{
                     }
                     break;
                 }
-
-
+                case IServerProtocol.SET_USER_ROLE:{
+                    SetUserRole(bfr,pw);
+                    break;
+                }
+                case IServerProtocol.DELETE_ROLE:{
+                    DeleteRole(bfr, pw);
+                    break;
+                }
+                
             }
         }
         
@@ -324,6 +331,21 @@ public class ApplicationServer implements Runnable{
             }
             pw.println(IServerProtocol.END_INFO_TRANSFER);
             pw.flush();
+        }
+
+        private void SetUserRole(BufferedReader bfr, PrintWriter pw) throws IOException {
+            int userid = Integer.parseInt(bfr.readLine());
+            int roleid = Integer.parseInt(bfr.readLine());
+            String sql = "UPDATE USERS SET IDROLE="+roleid+" WHERE IDUSER="+userid+";";
+            man.executeNonQuery(sql);
+        }
+
+        private void DeleteRole(BufferedReader bfr, PrintWriter pw) throws IOException {
+            int roleid = Integer.parseInt(bfr.readLine());
+            String sql = "DELETE FROM ROLES_PERM WHERE IDROLE="+roleid+";";
+            man.executeNonQuery(sql);
+            sql = "DELETE FROM ROLES WHERE IDROLE="+roleid+";";
+            man.executeNonQuery(sql);
         }
         
     }

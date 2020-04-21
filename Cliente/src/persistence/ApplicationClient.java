@@ -425,4 +425,59 @@ public class ApplicationClient{
         
         return roles;
     }
+
+    public void AskForSetRole(int userid, int roleid) throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.SET_USER_ROLE);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(userid);
+            pw.println(roleid);
+            pw.flush();
+        }
+    }
+
+    public void AskForDeleteRole(int roleid) throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.SET_USER_ROLE);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(roleid);
+            pw.flush();
+        }
+    }
 }

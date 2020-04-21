@@ -118,4 +118,12 @@ public class RegistredUserDAO {
             Logger.getLogger(RegistredUserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void setRole(int userid, int roleid) {
+        try {
+            this.appClient.AskForSetRole(userid, roleid);
+        } catch (IOException ex) {
+            Logger.getLogger(RegistredUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

@@ -39,7 +39,6 @@ public class AdminRolesGUI extends javax.swing.JFrame {
         this.myUser = myUser;
         
         this.parent.setEnabled(false);
-        
     }
 
     /**
@@ -62,6 +61,7 @@ public class AdminRolesGUI extends javax.swing.JFrame {
         btnCreateRole = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnAsignRole = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnRoleInfo = new RSMaterialComponent.RSButtonIconOne();
+        btnDeleteRole = new RSMaterialComponent.RSButtonIconOne();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setUndecorated(true);
@@ -161,12 +161,33 @@ public class AdminRolesGUI extends javax.swing.JFrame {
         btnAsignRole.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnAsignRole.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAsignRole.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.FINGERPRINT);
+        btnAsignRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAsignRoleActionPerformed(evt);
+            }
+        });
 
         btnRoleInfo.setBackground(new java.awt.Color(239, 96, 0));
         btnRoleInfo.setToolTipText("Role Info");
         btnRoleInfo.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnRoleInfo.setEnabled(false);
         btnRoleInfo.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.INFO_OUTLINE);
+        btnRoleInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRoleInfoActionPerformed(evt);
+            }
+        });
+
+        btnDeleteRole.setBackground(new java.awt.Color(239, 96, 0));
+        btnDeleteRole.setToolTipText("Role Info");
+        btnDeleteRole.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnDeleteRole.setEnabled(false);
+        btnDeleteRole.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.DELETE);
+        btnDeleteRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteRoleActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
@@ -182,16 +203,18 @@ public class AdminRolesGUI extends javax.swing.JFrame {
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(MainPanelLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addComponent(btnAsignRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(btnAsignRole, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnUpdateList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                        .addComponent(btnRoleInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnCreateRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnRoleInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDeleteRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCreateRole, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         MainPanelLayout.setVerticalGroup(
@@ -212,7 +235,8 @@ public class AdminRolesGUI extends javax.swing.JFrame {
                     .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnCreateRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnRoleInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnAsignRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAsignRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDeleteRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -248,6 +272,9 @@ public class AdminRolesGUI extends javax.swing.JFrame {
         if(tblUsers.getSelectedRow() != userSelectedRow){
             userSelectedRow = tblUsers.getSelectedRow();
         }
+        if(roleSelectedRow != -1 && userSelectedRow != -1){
+            this.btnAsignRole.setEnabled(true);
+        }
     }//GEN-LAST:event_tblUsersMouseClicked
 
     private void btnUpdateListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateListActionPerformed
@@ -256,11 +283,23 @@ public class AdminRolesGUI extends javax.swing.JFrame {
         tblRoles.clearSelection();
         fillUserTable(createUsersTablemodel());
         fillRolesTable(createRolesTablemodel());
+        this.btnRoleInfo.setEnabled(false);
+        this.btnAsignRole.setEnabled(false);
+        this.btnDeleteRole.setEnabled(false);
     }//GEN-LAST:event_btnUpdateListActionPerformed
 
     private void tblRolesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRolesMouseClicked
         if(tblRoles.getSelectedRow() != roleSelectedRow){
             roleSelectedRow = tblRoles.getSelectedRow();
+        }
+        if(roleSelectedRow != -1){
+            this.btnRoleInfo.setEnabled(true);
+            if(!((String)tblRoles.getValueAt(roleSelectedRow, 1)).equals("USER") || !((String)tblRoles.getValueAt(roleSelectedRow, 1)).equals("SYSADMIN")){
+                this.btnDeleteRole.setEnabled(false);
+            }
+        }
+        if(roleSelectedRow != -1 && userSelectedRow != -1){
+            this.btnAsignRole.setEnabled(true);
         }
     }//GEN-LAST:event_tblRolesMouseClicked
 
@@ -269,6 +308,30 @@ public class AdminRolesGUI extends javax.swing.JFrame {
         creRolGui.setVisible(true);
         fillRolesTable(createRolesTablemodel());
     }//GEN-LAST:event_btnCreateRoleActionPerformed
+
+    private void btnRoleInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRoleInfoActionPerformed
+        Role role = new Role();
+        LinkedList<domain.Permission> perms = role.getDao().getPermissionList((String)tblRoles.getValueAt(roleSelectedRow, 1));
+        String texto = "";
+        for(int i = 0; i < perms.size(); i++)
+            texto+=perms.get(i).getPermname()+"\n";
+        utilities.MsgBox.create(this, texto, utilities.MsgBox.INFO_ICON).setVisible(true);
+    }//GEN-LAST:event_btnRoleInfoActionPerformed
+
+    private void btnAsignRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignRoleActionPerformed
+        RegistredUser u = new RegistredUser();
+        int userid = (int)tblUsers.getValueAt(userSelectedRow, 0);
+        int roleid = (int)tblRoles.getValueAt(roleSelectedRow, 0);
+        u.getDao().setRole(userid, roleid);
+        
+        btnUpdateList.doClick();
+    }//GEN-LAST:event_btnAsignRoleActionPerformed
+
+    private void btnDeleteRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteRoleActionPerformed
+        Role r = new Role();
+        int roleid = (int)tblRoles.getValueAt(roleSelectedRow, 0);
+        r.getDao().deleteRole(roleid);
+    }//GEN-LAST:event_btnDeleteRoleActionPerformed
 
     private DefaultTableModel createRolesTablemodel(){
         DefaultTableModel model = new DefaultTableModel();
@@ -367,6 +430,7 @@ public class AdminRolesGUI extends javax.swing.JFrame {
     private RSMaterialComponent.RSButtonMaterialIconOne btnAsignRole;
     private RSMaterialComponent.RSButtonIconOne btnClose;
     private RSMaterialComponent.RSButtonMaterialIconOne btnCreateRole;
+    private RSMaterialComponent.RSButtonIconOne btnDeleteRole;
     private RSMaterialComponent.RSButtonIconOne btnRoleInfo;
     private RSMaterialComponent.RSButtonIconOne btnUpdateList;
     private javax.swing.JScrollPane jScrollPane1;

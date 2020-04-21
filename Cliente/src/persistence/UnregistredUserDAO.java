@@ -8,7 +8,6 @@ package persistence;
 import domain.RegistredUser;
 import domain.UnregistredUser;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
