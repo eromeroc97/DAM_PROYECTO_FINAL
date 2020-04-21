@@ -5,10 +5,11 @@
  */
 package presentation;
 
+import java.awt.Toolkit;
 import java.util.Locale;
 import javax.swing.JFrame;
-import persistence.ClientPreferencesAdmin;
-import persistence.LanguageController;
+import utilities.ClientPreferencesAdmin;
+import utilities.PropertiesController;
 import utilities.MsgBox;
 
 /**
@@ -22,6 +23,10 @@ public class ClientPreferencesGUI extends javax.swing.JFrame {
      */
     public ClientPreferencesGUI() {
         initComponents();
+        setProgramIcon();
+    }
+    private void setProgramIcon(){
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("resources/client_icon_32.png")));
     }
     
     private JFrame parent;
@@ -206,13 +211,13 @@ public class ClientPreferencesGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_swLanguageMouseClicked
 
     private void lblAboutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAboutMouseClicked
-        MsgBox.create(this, LanguageController.getLangValue("aboutmsg").replaceAll("-", "\n"), MsgBox.INFO_ICON).setVisible(true);
+        MsgBox.create(this, PropertiesController.getLangValue("aboutmsg").replaceAll("-", "\n"), MsgBox.INFO_ICON).setVisible(true);
     }//GEN-LAST:event_lblAboutMouseClicked
 
     private void setLanguageUI(){
-        this.lblPreferneces.setText(LanguageController.getLangValue("preferences"));
-        this.lblLanguage.setText(LanguageController.getLangValue("language"));
-        this.lblAbout.setText(LanguageController.getLangValue("about"));
+        this.lblPreferneces.setText(PropertiesController.getLangValue("preferences"));
+        this.lblLanguage.setText(PropertiesController.getLangValue("language"));
+        this.lblAbout.setText(PropertiesController.getLangValue("about"));
     }
     
     /**

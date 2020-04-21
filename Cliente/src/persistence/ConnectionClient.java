@@ -12,10 +12,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utilities.ClientPreferencesAdmin;
 
 /**
  *
@@ -26,7 +28,7 @@ public class ConnectionClient {
     private static int ServerPORT;
     
     private int CONNECTION_RESULT;
-    private String ROLENAME_RESPONSE;
+    private String REGISTRED_USER_DATA;
     
     private void getConnectionPort(){
         try {
@@ -52,33 +54,38 @@ public class ConnectionClient {
         direccionServidor=
            new InetSocketAddress(ServerIP, ServerPORT);
         conexion=new Socket();
-        //Sending HandShake
-        conexion.connect(direccionServidor);
         
-        //Getting streams
-        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
-        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
-        
-        //Server sends encrypted password
-        String server_pass = bfr.readLine();
-        ClientPreferencesAdmin.getInstance().setDBPassword(server_pass);
-        
-        //Sending connection messages
-        pw.println(name);
-        pw.println(pass);
-        pw.flush();
-        
-        //Getting a response
-        String response = bfr.readLine();
-        this.CONNECTION_RESULT = Integer.parseInt(response);
-        if(CONNECTION_RESULT != -1){
-            this.ROLENAME_RESPONSE = bfr.readLine();
+        try{
+            //Sending HandShake
+            conexion.connect(direccionServidor);
+
+            //Getting streams
+            PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+            BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+
+            //Server sends encrypted password
+            String server_pass = bfr.readLine();
+            ClientPreferencesAdmin.getInstance().setDBPassword(server_pass);
+
+            //Sending connection messages
+            pw.println(name);
+            pw.println(pass);
+            pw.flush();
+
+            //Getting a response
+            String response = bfr.readLine();
+            this.CONNECTION_RESULT = Integer.parseInt(response);
+            if(CONNECTION_RESULT != -1){
+                this.REGISTRED_USER_DATA = bfr.readLine();
+            }
+
+            //Closing connection with login server
+            bfr.close();
+            pw.close();
+            conexion.close();
+        }catch(ConnectException ex){
+            this.CONNECTION_RESULT = -2;
         }
-        
-        //Closing connection with login server
-        bfr.close();
-        pw.close();
-        conexion.close();
     }
     
     public int getConnectionResult(){
@@ -92,7 +99,7 @@ public class ConnectionClient {
             return "CONNECTION ACCEPTED";
     }
 
-    public String getRolename() {
-        return this.ROLENAME_RESPONSE;
+    public String getRegistredUserData() {
+        return this.REGISTRED_USER_DATA;
     }
 }

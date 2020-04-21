@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
@@ -70,7 +72,8 @@ public class LoginServer implements Runnable{
     
     public void stop(){
         exit = true;
-        man.executeNonQuery("UPDATE USERS SET ONLINE=FALSE, LASTCONNECTION='"+new Date()+"';");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        man.executeNonQuery("UPDATE USERS SET ONLINE=FALSE, LASTCONNECTION='"+sdf.format(new Date())+"' WHERE ONLINE=TRUE;");
         try {
             socketServidor.close();
         } catch (IOException ex) {
@@ -115,7 +118,7 @@ public class LoginServer implements Runnable{
             //check if user exists
             boolean check = false;
             User checking = new User(name, pass);
-            String sql = "SELECT USERNAME FROM USERS WHERE USERNAME='"+name+"' AND PASSWORD='"+pass+"' AND ONLINE=FALSE;";           
+            String sql = "SELECT USERNAME FROM USERS WHERE USERNAME='"+name+"' AND PASSWORD='"+pass+"' AND ONLINE=FALSE AND DELETED=FALSE;";           
             if((man.executeQuery(sql).next()))
                     check = true;
 
@@ -129,9 +132,12 @@ public class LoginServer implements Runnable{
                 pw.println(NEWPORT);
                 pw.flush();
                 
-                sql = "SELECT ROLENAME FROM ROLES, USERS WHERE ROLES.IDROLE = USERS.IDROLE AND USERS.USERNAME='"+name+"';";
-                String rolename = (man.executeQuery(sql)).getString(1);
-                pw.println(rolename);
+                sql = "SELECT U.IDUSER, U.USERNAME, U.ONLINE, R.ROLENAME, strftime(U.LASTCONNECTION) "
+                        + "FROM ROLES R, USERS U "
+                        + "WHERE R.IDROLE = U.IDROLE AND U.USERNAME='"+name+"';";
+                ResultSet rs = man.executeQuery(sql);
+                String regUser = rs.getInt(1)+";"+rs.getString(2)+";"+rs.getBoolean(3)+";"+rs.getString(4)+";"+rs.getString(5);
+                pw.println(regUser);
                 pw.flush();
                 
                 txtLog.append("User login correct\nCreating Private Server on "+NEWPORT+"\n\n");

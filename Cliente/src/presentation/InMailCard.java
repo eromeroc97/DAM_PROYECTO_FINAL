@@ -5,6 +5,7 @@
  */
 package presentation;
 
+import domain.InMail;
 import java.awt.Color;
 import java.util.Date;
 import javax.swing.JLabel;
@@ -25,13 +26,13 @@ public class InMailCard extends javax.swing.JPanel {
     private boolean readed;
     private Date date;
     private JPanel readingpanel;
-    public InMailCard(String source, String subject, String content, boolean readed, Date date, JPanel readingpanel) {
+    public InMailCard(InMail mail, JPanel readingpanel) {
         this();
-        this.source = source;
-        this.subject = subject;
-        this.content = content;
-        this.readed = readed;
-        this.date = date;
+        this.source = mail.getSource();
+        this.subject = mail.getSubject();
+        this.content = mail.getContent();
+        this.readed = mail.isReaded();
+        this.date = mail.getSend_date();
         this.readingpanel = readingpanel;
         
         this.lblSource.setText(source);

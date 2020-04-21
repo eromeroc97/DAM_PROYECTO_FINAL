@@ -1,4 +1,4 @@
-package persistence;
+package utilities;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
  *
  * @author erome
  */
-public class LanguageController {
+public class PropertiesController {
     private static Locale[] locales = 
         {
             Locale.ENGLISH,
@@ -24,5 +24,10 @@ public class LanguageController {
         ClientPreferencesAdmin prefs = ClientPreferencesAdmin.getInstance();        
         ResourceBundle lang = ResourceBundle.getBundle("resources/lang", prefs.getLocale());
         return lang.getString(key);
+    }
+    
+    public static String getValue(String key){
+        ResourceBundle value = ResourceBundle.getBundle("resources/values");
+        return value.getString(key);
     }
 }

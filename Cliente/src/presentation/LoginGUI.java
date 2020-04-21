@@ -5,14 +5,13 @@
  */
 package presentation;
 
+import domain.UnregistredUser;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import persistence.LanguageController;
-import utilities.Encrypt;
+import services.SplashScreenService;
 import utilities.MsgBox;
+import utilities.PropertiesController;
 
 /**
  *
@@ -26,6 +25,11 @@ public class LoginGUI extends javax.swing.JFrame {
     public LoginGUI() {
         initComponents();
         checkFirstRunning();
+        setProgramIcon();
+    }
+    
+    private void setProgramIcon(){
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("resources/client_icon_32.png")));
     }
     
     private void checkFirstRunning(){
@@ -176,21 +180,19 @@ public class LoginGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        try {
-            persistence.ConnectionClient connection = new persistence.ConnectionClient(txtUserName.getText(), Encrypt.encriptar_DESede(new String(txtUserPassword.getPassword())));
-            if(connection.getConnectionResult() != -1){
-                MenuGUI menu = new MenuGUI(txtUserName.getText(), connection.getRolename(), connection.getConnectionResult(), this);
-                this.setVisible(false);
-                this.txtUserName.setText(""); //Limpio los campos si los datos se han introducido correctamente
-                this.txtUserPassword.setText("");
-                menu.setVisible(true);
-            }else{
-                MsgBox.create(this, connection.getConnectionResultMessage(), MsgBox.INFO_ICON).setVisible(true);
-            }
-        } catch (IOException ex) {
-            MsgBox.create(this, "Could Not Create Connection Client", MsgBox.ERROR_ICON).setVisible(true);
-        } catch (Exception ex) {
-            Logger.getLogger(LoginGUI.class.getName()).log(Level.SEVERE, null, ex);
+        UnregistredUser unUser = new UnregistredUser(txtUserName.getText(), new String(txtUserPassword.getPassword()));
+        if(unUser.getDao().getConnectionResult() > -1){
+            MenuGUI menu = new MenuGUI(unUser.getDao().getRegistredUser(), unUser.getDao().getConnectionResult(), this);
+            SplashScreenService ssServ = new SplashScreenService(menu);
+            Thread th = new Thread(ssServ);
+            this.setVisible(false);
+            this.txtUserName.setText(""); //Limpio los campos si los datos se han introducido correctamente
+            this.txtUserPassword.setText("");
+            th.start();
+        }else if(unUser.getDao().getConnectionResult() == -2){
+            MsgBox.create(this, PropertiesController.getLangValue("no_connection_error"), MsgBox.ERROR_ICON).setVisible(true);
+        }else{
+            MsgBox.create(this, unUser.getDao().getConnectionResultMessage(), MsgBox.INFO_ICON).setVisible(true);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
@@ -263,11 +265,11 @@ public class LoginGUI extends javax.swing.JFrame {
     private RSMaterialComponent.RSPasswordMaterialIcon txtUserPassword;
     // End of variables declaration//GEN-END:variables
 
-    void setLanguageUI() {
-        this.lblTitle.setText(LanguageController.getLangValue("userlogin"));
-        this.txtUserName.setPlaceholder(LanguageController.getLangValue("username"));
-        this.txtUserPassword.setPlaceholder(LanguageController.getLangValue("userpassword"));
-        this.btnLogin.setText(LanguageController.getLangValue("login"));
-        this.btnExit.setText(LanguageController.getLangValue("exit"));
+    public void setLanguageUI() {
+        this.lblTitle.setText(PropertiesController.getLangValue("userlogin"));
+        this.txtUserName.setPlaceholder(PropertiesController.getLangValue("username"));
+        this.txtUserPassword.setPlaceholder(PropertiesController.getLangValue("userpassword"));
+        this.btnLogin.setText(PropertiesController.getLangValue("login"));
+        this.btnExit.setText(PropertiesController.getLangValue("exit"));
     }
 }

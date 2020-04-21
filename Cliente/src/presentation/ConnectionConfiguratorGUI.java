@@ -5,6 +5,7 @@
  */
 package presentation;
 
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,6 +27,10 @@ public class ConnectionConfiguratorGUI extends javax.swing.JFrame {
     public ConnectionConfiguratorGUI() {
         initComponents();
         this.setAlwaysOnTop(true);
+        setProgramIcon();
+    }
+    private void setProgramIcon(){
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("resources/client_icon_32.png")));
     }
 
     ConnectionConfiguratorGUI(JFrame parent) {

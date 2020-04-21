@@ -5,10 +5,13 @@
  */
 package presentation;
 
-import java.util.Date;
+import domain.InMail;
+import java.awt.Toolkit;
+import java.util.LinkedList;
 import javax.swing.JFrame;
 import org.jdesktop.swingx.VerticalLayout;
-import persistence.LanguageController;
+import utilities.PropertiesController;
+import utilities.MsgBox;
 
 /**
  *
@@ -25,20 +28,24 @@ public class InMailGUI extends javax.swing.JFrame {
     
     public InMailGUI() {
         initComponents();
-        refresh();
         //se llamará a refresh
+        refresh();
+        setProgramIcon();
+    }
+    private void setProgramIcon(){
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("resources/client_icon_32.png")));
     }
     
-    private InMailCard createInMailCard(String source, String subject, String content, boolean readed, Date date){
-        return new InMailCard(source, subject, content, readed, date, this.ReadingPanel);
+    private InMailCard createInMailCard(InMail mail){
+        return new InMailCard(mail, this.ReadingPanel);
     }
     
     private void addInMailCard(InMailCard card){
         this.MailPanel.add(card);
     }
     
-    private void create_addInMailCard(String source, String subject, String content, boolean readed, Date date){
-        addInMailCard(createInMailCard(source, subject, content, readed, date));
+    private void create_addInMailCard(InMail mail){
+        addInMailCard(createInMailCard(mail));
     }
     
     public void refresh(){
@@ -47,22 +54,25 @@ public class InMailGUI extends javax.swing.JFrame {
         this.MailPanel.setLayout(vert);
         
         //Añado las tarjetas
-        prueba();
+        LinkedList<InMail> inMailList;
+        try {
+            inMailList = (new InMail()).getDao().getReceivedMail();
+            
+            if(inMailList == null){
+                MsgBox.create(this, PropertiesController.getLangValue("emptyinmail")).setVisible(true);
+                return;
+            }
+            
+            for(InMail m : inMailList)
+                create_addInMailCard(m);
+        } catch (NullPointerException ex){
+            //Perdida conexion con el servidor
+        }
         
         this.MailPanel.revalidate();
         this.MailPanel.repaint();
     }
     
-    public void prueba(){
-        create_addInMailCard("Pepe", "Asunto de pepe", "Contenido del mensaje de pepe", false, new Date());
-        create_addInMailCard("Jose", "Asunto de jose", "Contenido del mensaje de jose", false, new Date());
-        create_addInMailCard("Juan", "Asunto de juan", "Contenido del mensaje de juan", false, new Date());
-        create_addInMailCard("Manolo", "Asunto de manolo", "Contenido del mensaje de manolo", false, new Date());
-        create_addInMailCard("Loren Ipsum", "Asunto de Loren Ipsum", "Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum "
-                + "Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum "
-                + "Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum Loren Ipsum \n\n"
-                + "Loren Ipsum Loren Ipsum Loren Ipsum ", false, new Date());
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -209,8 +219,8 @@ public class InMailGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void setLanguageUI(){
-        this.btnWriteInMail.setToolTipText(LanguageController.getLangValue("writeinmail"));
-        this.btnUpdate.setToolTipText(LanguageController.getLangValue("updateinbox"));
+        this.btnWriteInMail.setToolTipText(PropertiesController.getLangValue("writeinmail"));
+        this.btnUpdate.setToolTipText(PropertiesController.getLangValue("updateinbox"));
     }
     /**
      * @param args the command line arguments

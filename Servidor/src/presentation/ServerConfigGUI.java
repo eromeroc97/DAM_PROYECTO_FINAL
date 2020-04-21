@@ -5,6 +5,7 @@
  */
 package presentation;
 
+import java.awt.Toolkit;
 import utilities.CopyToGUI;
 import persistence.LoginServer;
 import java.sql.ResultSet;
@@ -33,11 +34,16 @@ public class ServerConfigGUI extends javax.swing.JFrame {
      */
     public ServerConfigGUI() {
         initComponents();
+        setProgramIcon();
         txtPort.requestFocus();
         checkIfDefaultConfigExists();
         checkIfIsFirstRunning();
     }
 
+    private void setProgramIcon(){
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("resources/server_icon_32.png")));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -327,6 +333,7 @@ public class ServerConfigGUI extends javax.swing.JFrame {
         btnSaveConfig.setEnabled(true);
         btnSaveLog.setEnabled(false);
         saveServerLog();
+        loadOnlineUsers();
         txtLog.setText("SERVER RUNNING ENDED\n");
     }//GEN-LAST:event_btnStopServerActionPerformed
 
@@ -488,6 +495,10 @@ public class ServerConfigGUI extends javax.swing.JFrame {
         String DefPortPath = "./serverfiles/server.db";
         File f = new File(DefPortPath);
         if(!f.exists()){
+            //creamos la carpeta
+            File f1 = new File("./serverfiles/");
+            if(!f1.exists())
+                f1.mkdir();
             //Si la base de datos no existe debemos configurar el usuario principal y crear una nueva contraseña de encriptacion
             FirstRunningConfigGUI conf = new FirstRunningConfigGUI(this);
             conf.setVisible(true);

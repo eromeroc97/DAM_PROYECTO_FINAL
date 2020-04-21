@@ -5,7 +5,9 @@
  */
 package presentation;
 
-import persistence.ClientPreferencesAdmin;
+import java.awt.Toolkit;
+import java.io.File;
+import utilities.ClientPreferencesAdmin;
 import rojeru_san.efectos.ValoresEnum;
 import utilities.CopyToGUI;
 
@@ -22,6 +24,10 @@ public class FirstRunningGUI extends javax.swing.JFrame {
         initComponents();
         this.setAlwaysOnTop(true);
         ClientPreferencesAdmin.getInstance().setLocale("en_EN");
+        setProgramIcon();
+    }
+    private void setProgramIcon(){
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("resources/client_icon_32.png")));
     }
 
     /**
@@ -100,6 +106,10 @@ public class FirstRunningGUI extends javax.swing.JFrame {
     private void btnSetKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetKeyActionPerformed
         if(!added){
             this.setAlwaysOnTop(false);
+            File dir = new File("./clientfiles/");
+            if(!dir.exists())
+                dir.mkdir();
+            
             CopyToGUI copy = new CopyToGUI("./clientfiles/","client.key");
             copy.setVisible(true);
             btnSetKey.setIcons(ValoresEnum.ICONS.LOCK_OPEN);

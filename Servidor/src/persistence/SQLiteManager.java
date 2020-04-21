@@ -82,6 +82,7 @@ public class SQLiteManager {
         } catch (SQLException ex) {
             System.out.println("Error executing query");
             System.out.println(ex.getMessage());
+            System.out.println(sql);
             return null;
         }
     }
@@ -93,6 +94,7 @@ public class SQLiteManager {
         } catch (SQLException ex) {
             System.out.println("Error executing non query");
             System.out.println(ex.getMessage());
+            System.out.println(sql);
         }
     }
         
@@ -140,8 +142,9 @@ public class SQLiteManager {
                 + "USERNAME TEXT UNIQUE NOT NULL,"
                 + "PASSWORD TEXT NOT NULL,"
                 + "ONLINE BOOLEAN DEFAULT FALSE,"
-                + "IDROLE INTEGER NOT NULL DEFAULT 0,"
-                + "LASTCONNECTION DATETIME,"
+                + "IDROLE INTEGER NOT NULL DEFAULT 1,"
+                + "LASTCONNECTION DATETIME DEFAULT '01-01-2000 00:00:00',"
+                + "DELETED BOOLEAN DEFAULT FALSE,"
                 + "FOREIGN KEY (IDROLE) REFERENCES ROLES(IDROLE));";
         
         public static final String ROLES_TABLE = "CREATE TABLE IF NOT EXISTS ROLES("
@@ -168,8 +171,7 @@ public class SQLiteManager {
             "INSERT INTO PERM (PERMNAME) VALUES('SELL PRODUCTS');",
             "INSERT INTO PERM (PERMNAME) VALUES('REGISTER PRODUCTS');",
             "INSERT INTO PERM (PERMNAME) VALUES('CONFIRM ORDERS');",
-            "INSERT INTO PERM (PERMNAME) VALUES('CONFIG CONNECTION');",
-            "INSERT INTO PERM (PERMNAME) VALUES('SEND EMAILS');"
+            "INSERT INTO PERM (PERMNAME) VALUES('CONFIG CONNECTION');"
         };
         
         public String[] INSERTS_ROLES = new String[]{
@@ -217,7 +219,7 @@ public class SQLiteManager {
                 + "PRICE DOUBLE NOT NULL,"
                 + "STOCK INTEGER NOT NULL,"
                 + "SECURITYSTOCK INTEGER NOT NULL,"
-                + "MINIMUMSTOCK INTEGER NOT NULL"
+                + "MINIMUMSTOCK INTEGER NOT NULL,"
                 + "DEFAULTORDERAMOUNT INTEGER NOT NULL);";
         
         public static final String SALES_TABLE = "CREATE TABLE IF NOT EXISTS SALES("
@@ -234,7 +236,8 @@ public class SQLiteManager {
                 + "IDORDER INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "IDPRODUCT INTEGER NOT NULL,"
                 + "ORDERDATE DATETIME NOT NULL,"
-                + "UNITS INTEGER NOT NULL,)";
+                + "UNITS INTEGER NOT NULL,"
+                + "FOREIGN KEY (IDPRODUCT) REFERENCES PRODUCTS(IDPRODUCT));";
     }
 }
 

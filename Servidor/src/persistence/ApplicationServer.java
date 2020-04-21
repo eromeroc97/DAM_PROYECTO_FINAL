@@ -15,8 +15,10 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import presentation.ServerConfigGUI;
+import utilities.Encrypt;
 import utilities.Utilidades;
 import utilities.IServerProtocol;
 
@@ -42,7 +44,9 @@ public class ApplicationServer implements Runnable{
     
     public void stop(){
         exit = true;
-        man.executeNonQuery("UPDATE USERS SET ONLINE=FALSE, LASTCONNECTION='"+new Date()+"' WHERE USERNAME='"+username+"';");
+        man.executeNonQuery("UPDATE USERS "
+                + "SET ONLINE=FALSE, LASTCONNECTION='"+new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date())+"' "
+                + "WHERE USERNAME='"+username+"';");
         gui.loadOnlineUsers(); //actualiza la lista cuando un usuario se desconecta
         try {
             socketServidor.close();
@@ -128,6 +132,54 @@ public class ApplicationServer implements Runnable{
                     }
                     break;
                 }
+                case IServerProtocol.GET_USERS_LIST:{
+                    try {
+                        GetUsersListPetition(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
+                case IServerProtocol.CREATE_NEW_USER:{
+                    try {
+                        CreateNewUserPetition(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
+                case IServerProtocol.DELETE_USER:{
+                    DeleteUserPetition(bfr, pw);
+                    break;
+                }
+                case IServerProtocol.GET_PROFILE:{
+                    try {
+                        GetUserProfile(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
+                case IServerProtocol.SET_PROFILE:{
+                    try {
+                        SetUserProfile(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;                    
+                }
+                case IServerProtocol.CHANGE_PASSWORD:{
+                    ChangeUserPassword(bfr, pw);
+                    break;
+                }
+                case IServerProtocol.GET_ROLES_LIST:{
+                    try {
+                        GetRolesList(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
 
 
             }
@@ -139,10 +191,10 @@ public class ApplicationServer implements Runnable{
         
         private void RoleInfoPetition(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException{
             String rolename = bfr.readLine();
-            String sql = "SELECT PERMNAME FROM PERM, ROLES_PERM, ROLES WHERE ROLES.ROLENAME = '"+rolename+"' AND ROLES.IDROLE=ROLES_PERM.IDROLE AND ROLES_PERM.IDPERM=PERM.IDPERM;";
+            String sql = "SELECT PERM.IDPERM, PERM.PERMNAME FROM PERM, ROLES_PERM, ROLES WHERE ROLES.ROLENAME = '"+rolename+"' AND ROLES.IDROLE=ROLES_PERM.IDROLE AND ROLES_PERM.IDPERM=PERM.IDPERM;";
             ResultSet rs = man.executeQuery(sql);
             while(rs.next()){
-                pw.println(rs.getString(1));
+                pw.println(rs.getInt(1)+";"+rs.getString(2));
                 pw.flush();
             }
             pw.println(IServerProtocol.END_INFO_TRANSFER);
@@ -151,7 +203,10 @@ public class ApplicationServer implements Runnable{
         
         private void ReceivedMailPetition(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException{
             String destination = bfr.readLine();
-            String sql = "SELECT * FROM INMAIL WHERE DESTINATION='"+destination+"';";
+            String sql = "SELECT I.IDINMAIL, U1.USERNAME, U2.USERNAME, I.SUBJECT, I.CONTENT, I.SEND_DATE, I.READED"
+                    + "FROM INMAIL I, USERS U1, USERS U2 "
+                    + "WHERE I.SOURCE = U1.IDUSER AND I.DESTINATION = U2.IDUSER AND U2.USERNAME = '"+username+"' "
+                    + "ORDER BY I.SEND_DATE DESC;";
             ResultSet rs = man.executeQuery(sql);
             while(rs.next()){
                 pw.println(rs.getInt(1)+';'+rs.getString(2)+';'+rs.getString(3)+';'+rs.getString(4)+';'+rs.getString(5)+';'+rs.getDate(6)+';'+rs.getBoolean(7));
@@ -159,7 +214,116 @@ public class ApplicationServer implements Runnable{
             }
             
             pw.println(IServerProtocol.END_INFO_TRANSFER);
-            
+            pw.flush();
+        }
+
+        private void GetUsersListPetition(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
+            String sql = "SELECT U.IDUSER, U.USERNAME, U.ONLINE, R.ROLENAME, U.LASTCONNECTION "
+                    + "FROM USERS U, ROLES R "
+                    + "WHERE U.IDROLE = R.IDROLE AND U.DELETED=FALSE "
+                    + "ORDER BY IDUSER ASC;";
+            ResultSet rs = man.executeQuery(sql);
+            while(rs.next()){
+                pw.println(rs.getInt(1)+";"+rs.getString(2)+";"+rs.getInt(3)+";"+rs.getString(4)+";"+rs.getString(5));
+                pw.flush();
+            }
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();
+        }
+
+        private void CreateNewUserPetition(BufferedReader bfr, PrintWriter pw) throws SQLException, IOException {
+            String username = bfr.readLine();
+            String password = bfr.readLine();
+            String email = bfr.readLine();
+            String sql = "SELECT IDUSER FROM USERS WHERE USERNAME='"+username+"';";
+            ResultSet rs = man.executeQuery(sql);
+            if(rs.next()){
+                pw.println("false");
+                pw.flush();
+            }else{
+                sql = "INSERT INTO USERS(USERNAME, PASSWORD) VALUES ('"+username+"','"+password+"')";
+                man.executeNonQuery(sql);
+                sql = "SELECT IDUSER FROM USERS WHERE USERNAME='"+username+"';";
+                rs = man.executeQuery(sql);
+                rs.next();
+                int id = rs.getInt(1);
+                sql = "INSERT INTO PROFILES(IDUSER, EMAIL) VALUES ("+id+",'"+email+"');";
+                man.executeNonQuery(sql);
+                
+                try { //Envio del email de contraseña
+                    MailSender ms = new MailSender();
+                    ms.sendMail(username, Encrypt.desencriptar_DESede(password), email);
+                } catch (Exception ex) {
+                    Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                pw.println("true");
+                pw.flush();
+            }
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();
+        }
+        
+        public void DeleteUserPetition(BufferedReader bfr, PrintWriter pw) throws IOException{
+            int iduser = Integer.parseInt(bfr.readLine());
+            String sql = "UPDATE USERS SET DELETED=TRUE WHERE IDUSER="+iduser+" AND ONLINE=FALSE;";
+            man.executeNonQuery(sql);
+        }
+
+        private void GetUserProfile(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
+            int iduser = Integer.parseInt(bfr.readLine());
+            String sql = "SELECT IDUSER, NAME, SURNAME, EMAIL, PHONE FROM PROFILES WHERE IDUSER = "+iduser+";";
+            if((man.executeQuery(sql)).next()){
+                String name = (man.executeQuery(sql)).getString(2);
+                String surname = (man.executeQuery(sql)).getString(3);
+                String email = (man.executeQuery(sql)).getString(4);
+                Long phone = (man.executeQuery(sql)).getLong(5);
+                
+                if(name == null)
+                    name = " ";
+                if(surname == null)
+                    surname = " ";
+                if(email == null)
+                    email = " ";
+                
+                pw.println((man.executeQuery(sql)).getInt(1)+";"+name+";"+surname+";"+email+";"+phone);
+                pw.flush();
+            }
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();
+        }
+
+        private void SetUserProfile(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
+            int iduser = Integer.parseInt(bfr.readLine());
+            String linea = bfr.readLine();
+            String[] datos = linea.split(";");
+            String name = datos[0], surname = datos[1], email = datos[2];
+            Long phone = Long.parseLong(datos[3]);
+            String sql = "SELECT IDUSER FROM PROFILES WHERE IDUSER = "+iduser+";";
+            if((man.executeQuery(sql)).next()){ //Ya existe el perfil
+                sql = "UPDATE PROFILES SET NAME = '"+name+"', SURNAME = '"+surname+"', EMAIL = '"+email+"', PHONE = "+phone+" WHERE IDUSER = "+iduser+";";
+                man.executeNonQuery(sql);
+            }else{ //No existe el perfil
+                sql = "INSERT INTO PROFILES VALUES("+iduser+", '"+name+"', '"+surname+"', '"+email+"', "+phone+")";
+                man.executeNonQuery(sql);
+            }
+        }
+
+        private void ChangeUserPassword(BufferedReader bfr, PrintWriter pw) throws IOException {
+             int iduser = Integer.parseInt(bfr.readLine());
+             String pass = bfr.readLine();
+             String sql = "UPDATE USERS SET PASSWORD='"+pass+"', LASTCONNECTION='"+new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date())+"' WHERE IDUSER = "+iduser+";";
+             man.executeNonQuery(sql);
+        }
+
+        private void GetRolesList(BufferedReader bfr, PrintWriter pw) throws SQLException {
+            String sql = "SELECT IDROLE, ROLENAME FROM ROLES ORDER BY IDROLE ASC;";
+            ResultSet rs = man.executeQuery(sql);
+            while(rs.next()){
+                pw.println(rs.getInt(1)+";"+rs.getString(2));
+                pw.flush();
+            }
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();
         }
         
     }

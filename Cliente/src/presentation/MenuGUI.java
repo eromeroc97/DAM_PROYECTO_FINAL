@@ -5,36 +5,40 @@
  */
 package presentation;
 
-import java.io.IOException;
+import domain.RegistredUser;
+import domain.Role;
+import java.awt.Toolkit;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import persistence.ApplicationClient;
-import persistence.LanguageController;
+import utilities.PropertiesController;
 
 /**
  *
  * @author erome
  */
 public class MenuGUI extends javax.swing.JFrame {
-    ApplicationClient appClient;
-    LoginGUI parent;
-    String username;
-    String rolename;
+    LoginGUI parent;   
+    RegistredUser myUser;
     
-    public MenuGUI(String username,String rolename, int port, LoginGUI parent) {
+    public MenuGUI(RegistredUser myUser, int port, LoginGUI parent) {
         this();
+        RegistredUser appClientCreator = new RegistredUser(myUser.getUsername(), port);
+        this.myUser = myUser;
         this.parent = parent;
-        this.username = username;
-        this.rolename = rolename;
-        this.appClient = ApplicationClient.getClient(username, port);
-        this.lblUsername.setText(username);
-        this.lblRolename.setText(rolename);
+        this.lblUsername.setText(myUser.getUsername());
+        this.lblRolename.setText(myUser.getRole());
     }
     
     public MenuGUI() {
         initComponents();
         this.setLocationRelativeTo(this);
+        setProgramIcon();
+    }
+    private void setProgramIcon(){
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("resources/client_icon_32.png")));
     }
     
     /**
@@ -87,6 +91,11 @@ public class MenuGUI extends javax.swing.JFrame {
         btnProfile.setText("Profile");
         btnProfile.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnProfile.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.PERSON);
+        btnProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProfileActionPerformed(evt);
+            }
+        });
 
         btnPreferences.setBackground(new java.awt.Color(239, 96, 0));
         btnPreferences.setText("Preferences");
@@ -195,21 +204,40 @@ public class MenuGUI extends javax.swing.JFrame {
         btnAdminUsers.setBackground(new java.awt.Color(239, 96, 0));
         btnAdminUsers.setText("Admin Users");
         btnAdminUsers.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnAdminUsers.setEnabled(false);
         btnAdminUsers.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.PEOPLE);
+        btnAdminUsers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdminUsersActionPerformed(evt);
+            }
+        });
 
         btnAdminProfiles.setBackground(new java.awt.Color(239, 96, 0));
         btnAdminProfiles.setText("Admin Profiles");
         btnAdminProfiles.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnAdminProfiles.setEnabled(false);
         btnAdminProfiles.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CONTACTS);
+        btnAdminProfiles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdminProfilesActionPerformed(evt);
+            }
+        });
 
         btnAdminRoles.setBackground(new java.awt.Color(239, 96, 0));
         btnAdminRoles.setText("Admin Roles");
         btnAdminRoles.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnAdminRoles.setEnabled(false);
         btnAdminRoles.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.FINGERPRINT);
+        btnAdminRoles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdminRolesActionPerformed(evt);
+            }
+        });
 
         btnSendAdverts.setBackground(new java.awt.Color(239, 96, 0));
         btnSendAdverts.setText("Send Adverts");
         btnSendAdverts.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnSendAdverts.setEnabled(false);
         btnSendAdverts.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.NEW_RELEASES);
 
         javax.swing.GroupLayout ActionPanelLayout = new javax.swing.GroupLayout(ActionPanel);
@@ -233,8 +261,7 @@ public class MenuGUI extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(btnAdminRoles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(btnSendAdverts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addComponent(btnSendAdverts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         ActionScroll.setViewportView(ActionPanel);
@@ -342,14 +369,11 @@ public class MenuGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
-        try {
-            this.appClient.AskForLogout();
-            parent.setVisible(true);
-            parent.setLanguageUI();
-            this.dispose();
-        } catch (IOException ex) {
-            Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        myUser.getDao().LogOut();
+        endConnection(); //Deletes all dao's instances
+        parent.setVisible(true);
+        parent.setLanguageUI();
+        this.dispose();
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
@@ -357,17 +381,12 @@ public class MenuGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMenuActionPerformed
 
     private void btnRoleinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRoleinfoActionPerformed
-        try {
-            LinkedList<String> perms = this.appClient.AskForRoleInfo(rolename);
-            String texto = "";
-            for(String s : perms)
-                texto+=s+"\n";
-            
-            utilities.MsgBox.create(this, texto, utilities.MsgBox.INFO_ICON).setVisible(true);            
-            
-        } catch (IOException ex) {
-            Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Role role = new Role();
+        LinkedList<domain.Permission> perms = role.getDao().getPermissionList(myUser.getRole());
+        String texto = "";
+        for(int i = 0; i < perms.size(); i++)
+            texto+=perms.get(i).getPermname()+"\n";
+        utilities.MsgBox.create(this, texto, utilities.MsgBox.INFO_ICON).setVisible(true);
     }//GEN-LAST:event_btnRoleinfoActionPerformed
 
     private void btnInMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInMailActionPerformed
@@ -378,6 +397,7 @@ public class MenuGUI extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         setLanguageUI();
+        checkUserPermissions();
         showHideMenu();
         try {
             Thread.sleep(1000);
@@ -385,30 +405,105 @@ public class MenuGUI extends javax.swing.JFrame {
             Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         showHideMenu();
+        isFirstConnection();
     }//GEN-LAST:event_formWindowOpened
 
     private void btnPreferencesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreferencesActionPerformed
         ClientPreferencesGUI prefgui = new ClientPreferencesGUI(this);
         prefgui.setVisible(true);
     }//GEN-LAST:event_btnPreferencesActionPerformed
+
+    private void btnAdminUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminUsersActionPerformed
+        AdminUsersGUI gui = new AdminUsersGUI(this, this.myUser);
+        gui.setVisible(true);
+    }//GEN-LAST:event_btnAdminUsersActionPerformed
+
+    private void btnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileActionPerformed
+        ProfileEditorGUI pEditGui = new ProfileEditorGUI(this, true, myUser);
+        pEditGui.setVisible(true);
+    }//GEN-LAST:event_btnProfileActionPerformed
+
+    private void btnAdminProfilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminProfilesActionPerformed
+        AdminProfilesGUI admProfGui = new AdminProfilesGUI(this, myUser);
+        admProfGui.setVisible(true);
+    }//GEN-LAST:event_btnAdminProfilesActionPerformed
+
+    private void btnAdminRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminRolesActionPerformed
+        AdminRolesGUI rolGui = new AdminRolesGUI(this, myUser);
+        rolGui.setVisible(true);
+    }//GEN-LAST:event_btnAdminRolesActionPerformed
     
     public void setLanguageUI(){
-        this.btnMenu.setText(LanguageController.getLangValue("menu"));
-        this.btnProfile.setText(LanguageController.getLangValue("profile"));
-        this.btnPreferences.setText(LanguageController.getLangValue("preferences"));
-        this.btnLogOut.setText(LanguageController.getLangValue("logout"));
-        this.btnNewSale.setText(LanguageController.getLangValue("newsale"));
-        this.btnPrintReport.setText(LanguageController.getLangValue("printreport"));
-        this.btnViewAdverts.setText(LanguageController.getLangValue("viewadverts"));
-        this.btnInMail.setText(LanguageController.getLangValue("inmail"));
-        this.btnConfirmOrders.setText(LanguageController.getLangValue("confirmorders"));
-        this.btnRegisterProduct.setText(LanguageController.getLangValue("registerproduct"));
-        this.lblConnectedAs.setText(LanguageController.getLangValue("connectedas"));
-        this.lblPermissionLevel.setText(LanguageController.getLangValue("permissionlevel"));
-        this.btnAdminUsers.setText(LanguageController.getLangValue("adminusers"));
-        this.btnAdminProfiles.setText(LanguageController.getLangValue("adminprofiles"));
-        this.btnAdminRoles.setText(LanguageController.getLangValue("adminroles"));
-        this.btnSendAdverts.setText(LanguageController.getLangValue("sendadverts"));
+        this.btnMenu.setText(PropertiesController.getLangValue("menu"));
+        this.btnProfile.setText(PropertiesController.getLangValue("profile"));
+        this.btnPreferences.setText(PropertiesController.getLangValue("preferences"));
+        this.btnLogOut.setText(PropertiesController.getLangValue("logout"));
+        this.btnNewSale.setText(PropertiesController.getLangValue("newsale"));
+        this.btnPrintReport.setText(PropertiesController.getLangValue("printreport"));
+        this.btnViewAdverts.setText(PropertiesController.getLangValue("viewadverts"));
+        this.btnInMail.setText(PropertiesController.getLangValue("inmail"));
+        this.btnConfirmOrders.setText(PropertiesController.getLangValue("confirmorders"));
+        this.btnRegisterProduct.setText(PropertiesController.getLangValue("registerproduct"));
+        this.lblConnectedAs.setText(PropertiesController.getLangValue("connectedas"));
+        this.lblPermissionLevel.setText(PropertiesController.getLangValue("permissionlevel"));
+        this.btnAdminUsers.setText(PropertiesController.getLangValue("adminusers"));
+        this.btnAdminProfiles.setText(PropertiesController.getLangValue("adminprofiles"));
+        this.btnAdminRoles.setText(PropertiesController.getLangValue("adminroles"));
+        this.btnSendAdverts.setText(PropertiesController.getLangValue("sendadverts"));
+    }
+    
+    private void checkUserPermissions(){
+        LinkedList<domain.Permission> permissions = (new Role()).getDao().getPermissionList(this.myUser.getRole());
+        
+        LinkedList<String> perms = new LinkedList<>();
+        for(int i = 0; i < permissions.size(); i++)
+            perms.add(permissions.get(i).getPermname());
+            
+        if(perms.contains(PropertiesController.getValue("perm_administrate_users")))
+            this.btnAdminUsers.setEnabled(true);
+        else
+            this.btnAdminUsers.setEnabled(false);
+
+        if(perms.contains(PropertiesController.getValue("perm_administrate_profiles")))
+            this.btnAdminProfiles.setEnabled(true);
+        else
+            this.btnAdminProfiles.setEnabled(false);
+
+        if(perms.contains(PropertiesController.getValue("perm_administrate_roles")))
+            this.btnAdminRoles.setEnabled(true);
+        else
+            this.btnAdminRoles.setEnabled(false);
+
+        if(perms.contains(PropertiesController.getValue("perm_send_adverts")))
+            this.btnSendAdverts.setEnabled(true);
+        else
+            this.btnSendAdverts.setEnabled(false);
+
+        if(perms.contains(PropertiesController.getValue("perm_print_reports")))
+            this.btnPrintReport.setEnabled(true);
+        else
+            this.btnPrintReport.setEnabled(false);
+
+        if(perms.contains(PropertiesController.getValue("perm_sell_products")))
+            this.btnNewSale.setEnabled(true);
+        else
+            this.btnNewSale.setEnabled(false);
+
+        if(perms.contains(PropertiesController.getValue("perm_register_products")))
+            this.btnRegisterProduct.setEnabled(true);
+        else
+            this.btnRegisterProduct.setEnabled(false);
+
+        if(perms.contains(PropertiesController.getValue("perm_confirm_orders")))
+            this.btnConfirmOrders.setEnabled(true);
+        else
+            this.btnConfirmOrders.setEnabled(false);
+        
+    }
+    
+    private void endConnection(){
+        new domain.Role().getDao().endConnection();
+        new domain.InMail().getDao().endConnection();
     }
     
     private void showHideMenu(){
@@ -423,6 +518,17 @@ public class MenuGUI extends javax.swing.JFrame {
         }else{
             Animacion.Animacion.mover_derecha(0, 220, RET, MOV, OverMainPanel);
             Animacion.Animacion.mover_derecha(-220, 0, RET, MOV, btnMenuPanel);
+        }
+    }
+    
+    private void isFirstConnection(){
+        try {
+            if(myUser.getLastConnection().equals(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("01-01-2000 00:00:00"))){
+                ChangePasswordGUI cpass = new ChangePasswordGUI(this, true, myUser);
+                cpass.setVisible(true);
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

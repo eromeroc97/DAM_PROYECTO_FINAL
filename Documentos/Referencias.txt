@@ -1,3 +1,6 @@
 ENCRIPTADO RSA: https://www.alvarodeleon.net/encriptar-y-desencriptar-con-rsa-en-java/ (02/04/2020)
 ENCRIPTADO TRIPLEDES/DESEDE: https://www.qualityinfosolutions.com/metodos-para-encriptar-y-desencriptar-en-java/ (30/03/2020)
 GENERACION STRING ALEATORIO ALFANUMERICO: https://www.baeldung.com/java-random-string (03/04/2020)
+ENVIO DE EMAIL JAVA: https://es.stackoverflow.com/questions/138220/enviar-correo-desde-java (13/04/2020)
+	LIBRERIA JAVAMAIL: https://github.com/javaee/javamail/releases (13/04/2020)
+	SOLUCION ERROR TLS: https://dzone.com/articles/sending-mail-using-javamail-api-for-gmail-server (13/04/2020)

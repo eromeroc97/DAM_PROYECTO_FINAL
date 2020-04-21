@@ -90,6 +90,9 @@
               <Value id="PERSON"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProfileActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonMaterialIconOne" name="btnPreferences">
           <Properties>
@@ -329,7 +332,6 @@
                               <Component id="btnAdminRoles" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                               <Component id="btnSendAdverts" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="40" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -344,10 +346,14 @@
                         <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="19" green="89" red="ff" type="rgb"/>
                         </Property>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
                           <Value id="PEOPLE"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAdminUsersActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="RSMaterialComponent.RSButtonMaterialIconOne" name="btnAdminProfiles">
                       <Properties>
@@ -358,10 +364,14 @@
                         <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="19" green="89" red="ff" type="rgb"/>
                         </Property>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
                           <Value id="CONTACTS"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAdminProfilesActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="RSMaterialComponent.RSButtonMaterialIconOne" name="btnAdminRoles">
                       <Properties>
@@ -372,10 +382,14 @@
                         <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="19" green="89" red="ff" type="rgb"/>
                         </Property>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
                           <Value id="FINGERPRINT"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAdminRolesActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="RSMaterialComponent.RSButtonMaterialIconOne" name="btnSendAdverts">
                       <Properties>
@@ -386,6 +400,7 @@
                         <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="19" green="89" red="ff" type="rgb"/>
                         </Property>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
                           <Value id="NEW_RELEASES"/>
                         </Property>

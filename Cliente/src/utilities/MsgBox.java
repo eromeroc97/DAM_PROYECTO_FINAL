@@ -14,6 +14,7 @@ import rojeru_san.efectos.ValoresEnum;
  * @author erome
  */
 public class MsgBox extends javax.swing.JFrame {
+    private static final String html = "<html><body style='width: %1spx'>%1s"; //Se utiliza para hacer el Wrapping del texto por palabras
     
     public static final int INFO_ICON = 0;
     public static final int WARNING_ICON = 1;
@@ -94,7 +95,6 @@ public class MsgBox extends javax.swing.JFrame {
         btnOK.setBackground(new java.awt.Color(239, 96, 0));
         btnOK.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnOK.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CHECK);
-        btnOK.setTypeBorder(RSMaterialComponent.RSButtonIconOne.TYPEBORDER.CIRCLE);
         btnOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOKActionPerformed(evt);
