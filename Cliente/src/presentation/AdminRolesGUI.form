@@ -95,10 +95,8 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="btnUpdateList" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnCreateRole" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnRoleInfo" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="btnRoleInfo" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnCreateRole" min="-2" max="-2" attributes="0"/>
                       <Component id="btnAsignRole" min="-2" max="-2" attributes="0"/>
                       <Component id="btnDeleteRole" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -262,7 +260,7 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="60" red="ef" type="rgb"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Role Info"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="19" green="89" red="ff" type="rgb"/>
             </Property>
@@ -280,7 +278,7 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="60" red="ef" type="rgb"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Role Info"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="19" green="89" red="ff" type="rgb"/>
             </Property>

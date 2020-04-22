@@ -126,4 +126,12 @@ public class RegistredUserDAO {
             Logger.getLogger(RegistredUserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void generateNewPassword(int iduser) {
+        try {
+            this.appClient.AskForNewPassword(iduser);
+        } catch (IOException ex) {
+            Logger.getLogger(RegistredUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

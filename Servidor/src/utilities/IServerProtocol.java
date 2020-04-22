@@ -26,4 +26,7 @@ public interface IServerProtocol {
     public static final int GET_ROLES_LIST = 11;
     public static final int SET_USER_ROLE = 12;
     public static final int DELETE_ROLE = 13;
+    public static final int GET_PERMS_LIST = 14;
+    public static final int CREATE_NEW_ROLE = 15;
+    public static final int NEW_PASSWORD = 16;
 }

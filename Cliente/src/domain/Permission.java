@@ -5,6 +5,8 @@
  */
 package domain;
 
+import persistence.PermissionDAO;
+
 /**
  *
  * @author erome
@@ -12,10 +14,16 @@ package domain;
 public class Permission{
         private int idPermission;
         private String permname;
+        private PermissionDAO dao;
 
         public Permission(int idPermission, String permname) {
             this.idPermission = idPermission;
             this.permname = permname;
+            this.dao = PermissionDAO.getInstance();
+        }
+
+        public Permission() {
+            this.dao = PermissionDAO.getInstance();
         }
 
         public int getIdPermission() {
@@ -24,6 +32,10 @@ public class Permission{
 
         public String getPermname() {
             return permname;
+        }
+
+        public PermissionDAO getDao() {
+            return this.dao;
         }
         
     }

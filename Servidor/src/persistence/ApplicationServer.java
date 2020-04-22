@@ -188,6 +188,26 @@ public class ApplicationServer implements Runnable{
                     DeleteRole(bfr, pw);
                     break;
                 }
+                case IServerProtocol.GET_PERMS_LIST:{
+                    try {
+                        GetPermsList(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
+                case IServerProtocol.CREATE_NEW_ROLE:{
+                    CreateNewRole(bfr, pw);
+                    break;
+                }
+                case IServerProtocol.NEW_PASSWORD:{
+                    try {
+                        SetNewPassword(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
                 
             }
         }
@@ -342,10 +362,70 @@ public class ApplicationServer implements Runnable{
 
         private void DeleteRole(BufferedReader bfr, PrintWriter pw) throws IOException {
             int roleid = Integer.parseInt(bfr.readLine());
-            String sql = "DELETE FROM ROLES_PERM WHERE IDROLE="+roleid+";";
+            //Cambio el rol de los usuarios que lo tengan asignado
+            String sql = "UPDATE USERS SET IDROLE=1 WHERE IDROLE="+roleid+";";
             man.executeNonQuery(sql);
+            //elimino todas las entradas del rol en Roles_Perm
+            sql = "DELETE FROM ROLES_PERM WHERE IDROLE="+roleid+";";
+            man.executeNonQuery(sql);
+            // elimino el rol
             sql = "DELETE FROM ROLES WHERE IDROLE="+roleid+";";
             man.executeNonQuery(sql);
+        }
+
+        private void GetPermsList(BufferedReader bfr, PrintWriter pw) throws SQLException {
+            String sql = "SELECT IDPERM, PERMNAME FROM PERM ORDER BY IDPERM ASC;";
+            ResultSet rs = man.executeQuery(sql);
+            while(rs.next()){
+                pw.println(rs.getInt(1)+";"+rs.getString(2));
+                pw.flush();
+            }
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();
+        }
+
+        private void CreateNewRole(BufferedReader bfr, PrintWriter pw) throws IOException {
+            String rolename = bfr.readLine();
+            String sql = "INSERT INTO ROLES (ROLENAME) VALUES ('"+rolename+"');";
+            man.executeNonQuery(sql);
+            String linea = "";
+            while(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){
+                linea = bfr.readLine();
+                if(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){
+                    String[] dato = linea.split(";");
+                    int idperm = Integer.parseInt(dato[0]);
+                    
+                    sql = "INSERT INTO ROLES_PERM VALUES((SELECT IDROLE FROM ROLES WHERE ROLENAME='"+rolename+"'), "+idperm+");";
+                    man.executeNonQuery(sql);
+                }
+            }
+        }
+
+        private void SetNewPassword(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
+            int iduser = Integer.parseInt(bfr.readLine());
+            String sql = "SELECT EMAIL FROM PROFILES WHERE IDUSER="+iduser+";";
+            ResultSet rs = man.executeQuery(sql);
+            if(rs.next()){
+                String email = rs.getString(1);
+                
+                try {
+                    String encrypted = Encrypt.encriptar_DESede(Utilidades.generateRandomKey(5));
+                    
+                    try { //Envio del email de contraseña
+                        MailSender ms = new MailSender();
+                        ms.sendMail(username, Encrypt.desencriptar_DESede(encrypted), email);
+                        //Cambio la contraseña solo si he conseguido enviar el mail
+                        sql = "UPDATE USERS SET PASSWORD='"+encrypted+"', LASTCONNECTION='01-01-2000 00:00:00' WHERE IDUSER="+iduser+";";
+                        man.executeNonQuery(sql);
+                    } catch (Exception ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                } catch (Exception ex) {
+                    Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
         }
         
     }

@@ -5,6 +5,7 @@
  */
 package persistence;
 
+import domain.Permission;
 import domain.Role;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -70,6 +71,14 @@ public class RoleDAO {
     public void deleteRole(int roleid) {
         try {
             this.appClient.AskForDeleteRole(roleid);
+        } catch (IOException ex) {
+            Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void createNewRole(String rolename, LinkedList<Permission> perms) {
+        try {
+            this.appClient.AskForCreateRole(rolename, perms);
         } catch (IOException ex) {
             Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -62,8 +62,8 @@
                           <Component id="jScrollPane3" min="-2" pref="207" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="rSButtonIconOne1" min="-2" max="-2" attributes="0"/>
-                              <Component id="rSButtonIconOne2" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnInclude" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnExclude" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                           <Component id="jScrollPane4" min="-2" pref="207" max="-2" attributes="0"/>
@@ -101,10 +101,10 @@
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
-                          <Component id="rSButtonIconOne1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                          <Component id="rSButtonIconOne2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
+                          <Component id="btnInclude" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                          <Component id="btnExclude" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -169,7 +169,7 @@
             <Property name="placeholder" type="java.lang.String" value="Role Name"/>
           </Properties>
         </Component>
-        <Component class="RSMaterialComponent.RSButtonIconOne" name="rSButtonIconOne1">
+        <Component class="RSMaterialComponent.RSButtonIconOne" name="btnInclude">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="60" red="ef" type="rgb"/>
@@ -182,8 +182,11 @@
               <Value id="ARROW_FORWARD"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIncludeActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="RSMaterialComponent.RSButtonIconOne" name="rSButtonIconOne2">
+        <Component class="RSMaterialComponent.RSButtonIconOne" name="btnExclude">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="60" red="ef" type="rgb"/>
@@ -196,6 +199,9 @@
               <Value id="ARROW_BACK"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExcludeActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonMaterialIconOne" name="btnFinish">
           <Properties>
@@ -212,6 +218,9 @@
               <Value id="CHECK"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFinishActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane3">
           <AuxValues>
@@ -231,7 +240,16 @@
                 <Property name="backgoundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="19" green="89" red="ff" type="rgb"/>
                 </Property>
+                <Property name="colorPrimaryText" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" red="0" type="rgb"/>
+                </Property>
+                <Property name="colorSecundaryText" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" red="0" type="rgb"/>
+                </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblAvailablePermissionsMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -260,6 +278,9 @@
                   <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblSelectedPermissionsMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

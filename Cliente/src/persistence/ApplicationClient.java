@@ -6,6 +6,7 @@
 package persistence;
 
 import domain.InMail;
+import domain.Permission;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -471,12 +472,111 @@ public class ApplicationClient{
         pw.println(this.username);
         pw.flush();
         
-        pw.println(IServerProtocol.SET_USER_ROLE);
+        pw.println(IServerProtocol.DELETE_ROLE);
         pw.flush();
         
         int confirmation = Integer.parseInt(bfr.readLine());
         if(confirmation == 1){
             pw.println(roleid);
+            pw.flush();
+        }
+    }
+
+    public LinkedList<String> AskForPermList() throws IOException {
+        LinkedList<String> resultado = new LinkedList<>();
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.GET_PERMS_LIST);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            String linea = "";
+            while(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){
+                linea = bfr.readLine();
+                if(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){
+                    resultado.add(linea);
+                }
+            }
+        }
+
+        
+        //Closing connection with login server
+        bfr.close();
+        pw.close();
+        
+        return resultado;
+    }
+
+    public void AskForCreateRole(String rolename, LinkedList<Permission> perms) throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.CREATE_NEW_ROLE);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(rolename);
+            pw.flush();
+            for(int i = 0; i < perms.size(); i++){
+                pw.println(perms.get(i).getIdPermission()+";"+perms.get(i).getPermname());
+            }
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();
+        }
+    }
+
+    public void AskForNewPassword(int iduser) throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.NEW_PASSWORD);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(iduser);
             pw.flush();
         }
     }

@@ -17,9 +17,6 @@ import utilities.PropertiesController;
  */
 public class CreateRoleGUI extends javax.swing.JDialog {
 
-    /**
-     * Creates new form CreateRoleGUI
-     */
     public CreateRoleGUI(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -38,8 +35,8 @@ public class CreateRoleGUI extends javax.swing.JDialog {
         btnClose = new RSMaterialComponent.RSButtonIconOne();
         lblCreateRole = new RSMaterialComponent.RSLabelTextIcon();
         txtRolename = new RSMaterialComponent.RSTextFieldMaterialIcon();
-        rSButtonIconOne1 = new RSMaterialComponent.RSButtonIconOne();
-        rSButtonIconOne2 = new RSMaterialComponent.RSButtonIconOne();
+        btnInclude = new RSMaterialComponent.RSButtonIconOne();
+        btnExclude = new RSMaterialComponent.RSButtonIconOne();
         btnFinish = new RSMaterialComponent.RSButtonMaterialIconOne();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblAvailablePermissions = new RSMaterialComponent.RSTableMetroCustom();
@@ -78,15 +75,25 @@ public class CreateRoleGUI extends javax.swing.JDialog {
         txtRolename.setPhColor(new java.awt.Color(239, 96, 0));
         txtRolename.setPlaceholder("Role Name");
 
-        rSButtonIconOne1.setBackground(new java.awt.Color(239, 96, 0));
-        rSButtonIconOne1.setBackgroundHover(new java.awt.Color(255, 137, 25));
-        rSButtonIconOne1.setEnabled(false);
-        rSButtonIconOne1.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.ARROW_FORWARD);
+        btnInclude.setBackground(new java.awt.Color(239, 96, 0));
+        btnInclude.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnInclude.setEnabled(false);
+        btnInclude.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.ARROW_FORWARD);
+        btnInclude.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIncludeActionPerformed(evt);
+            }
+        });
 
-        rSButtonIconOne2.setBackground(new java.awt.Color(239, 96, 0));
-        rSButtonIconOne2.setBackgroundHover(new java.awt.Color(255, 137, 25));
-        rSButtonIconOne2.setEnabled(false);
-        rSButtonIconOne2.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.ARROW_BACK);
+        btnExclude.setBackground(new java.awt.Color(239, 96, 0));
+        btnExclude.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnExclude.setEnabled(false);
+        btnExclude.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.ARROW_BACK);
+        btnExclude.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcludeActionPerformed(evt);
+            }
+        });
 
         btnFinish.setBackground(new java.awt.Color(239, 96, 0));
         btnFinish.setText("Finish");
@@ -94,6 +101,11 @@ public class CreateRoleGUI extends javax.swing.JDialog {
         btnFinish.setEnabled(false);
         btnFinish.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnFinish.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CHECK);
+        btnFinish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinishActionPerformed(evt);
+            }
+        });
 
         tblAvailablePermissions.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -108,6 +120,13 @@ public class CreateRoleGUI extends javax.swing.JDialog {
         ));
         tblAvailablePermissions.setBackgoundHead(new java.awt.Color(239, 96, 0));
         tblAvailablePermissions.setBackgoundHover(new java.awt.Color(255, 137, 25));
+        tblAvailablePermissions.setColorPrimaryText(new java.awt.Color(0, 0, 0));
+        tblAvailablePermissions.setColorSecundaryText(new java.awt.Color(0, 0, 0));
+        tblAvailablePermissions.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblAvailablePermissionsMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblAvailablePermissions);
 
         tblSelectedPermissions.setModel(new javax.swing.table.DefaultTableModel(
@@ -125,6 +144,11 @@ public class CreateRoleGUI extends javax.swing.JDialog {
         tblSelectedPermissions.setBackgoundHover(new java.awt.Color(255, 137, 25));
         tblSelectedPermissions.setColorPrimaryText(new java.awt.Color(0, 0, 0));
         tblSelectedPermissions.setColorSecundaryText(new java.awt.Color(0, 0, 0));
+        tblSelectedPermissions.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblSelectedPermissionsMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tblSelectedPermissions);
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
@@ -138,8 +162,8 @@ public class CreateRoleGUI extends javax.swing.JDialog {
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rSButtonIconOne1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rSButtonIconOne2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnInclude, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnExclude, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(11, 11, 11)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
@@ -167,10 +191,10 @@ public class CreateRoleGUI extends javax.swing.JDialog {
                     .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(81, 81, 81)
-                        .addComponent(rSButtonIconOne1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addComponent(rSButtonIconOne2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(80, 80, 80)
+                        .addComponent(btnInclude, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)
+                        .addComponent(btnExclude, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -206,8 +230,96 @@ public class CreateRoleGUI extends javax.swing.JDialog {
         tblSelectedPermissions.setModel(createPermissionsTablemodel());
     }//GEN-LAST:event_formWindowOpened
 
-    private void setLanguageUI(){
+    private void btnIncludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncludeActionPerformed
+        int idperm = (int) tblAvailablePermissions.getValueAt(availableRow, 0);
+        String permname = (String) tblAvailablePermissions.getValueAt(availableRow, 1);
+        Object[] row = new Object[]{idperm, permname};
         
+        DefaultTableModel model = (DefaultTableModel)tblAvailablePermissions.getModel();
+        model.removeRow(availableRow);
+        
+        DefaultTableModel model2 = (DefaultTableModel)tblSelectedPermissions.getModel();
+        model2.addRow(row);
+        
+        if(tblAvailablePermissions.getRowCount() == 0){
+            this.btnInclude.setEnabled(false);
+        }
+        
+        if(tblSelectedPermissions.getRowCount() > 0 && !txtRolename.getText().isBlank()){
+            btnFinish.setEnabled(true);
+        }else{
+            btnFinish.setEnabled(false);
+        }
+        
+    }//GEN-LAST:event_btnIncludeActionPerformed
+
+    private void btnExcludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcludeActionPerformed
+        int idperm = (int) tblSelectedPermissions.getValueAt(selectedRow, 0);
+        String permname = (String) tblSelectedPermissions.getValueAt(selectedRow, 1);
+        Object[] row = new Object[]{idperm, permname};
+        
+        DefaultTableModel model = (DefaultTableModel)tblSelectedPermissions.getModel();
+        model.removeRow(selectedRow);
+        
+        DefaultTableModel model2 = (DefaultTableModel)tblAvailablePermissions.getModel();
+        model2.addRow(row);
+        
+        if(tblSelectedPermissions.getRowCount() == 0){
+            this.btnExclude.setEnabled(false);
+        }
+        
+        if(tblSelectedPermissions.getRowCount() > 0 && !txtRolename.getText().isBlank()){
+            btnFinish.setEnabled(true);
+        }else{
+            btnFinish.setEnabled(false);
+        }
+        
+    }//GEN-LAST:event_btnExcludeActionPerformed
+
+    private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
+        String rolename = txtRolename.getText().trim();
+        LinkedList<Permission> perms = new LinkedList<>();
+        
+        for(int i = 0; i < tblSelectedPermissions.getRowCount(); i++){
+            int id = (int) tblSelectedPermissions.getValueAt(i, 0);
+            String name = (String) tblSelectedPermissions.getValueAt(i, 1);
+            Permission p = new Permission(id, name);
+            perms.add(p);
+        }
+        
+        Role r = new Role();
+        r.getDao().createNewRole(rolename, perms);
+        
+        tblSelectedPermissions.setModel(createPermissionsTablemodel());
+        fillAvailablePermissionsTable(createPermissionsTablemodel());
+        btnInclude.setEnabled(false);
+        btnExclude.setEnabled(false);
+        txtRolename.setText("");
+    }//GEN-LAST:event_btnFinishActionPerformed
+
+    int availableRow = -1;
+    int selectedRow = -1;
+    private void tblAvailablePermissionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAvailablePermissionsMouseClicked
+        if(tblAvailablePermissions.getSelectedRow() != availableRow){
+            availableRow = tblAvailablePermissions.getSelectedRow();
+        }
+        if(availableRow != -1){
+            btnInclude.setEnabled(true);
+        }
+    }//GEN-LAST:event_tblAvailablePermissionsMouseClicked
+
+    private void tblSelectedPermissionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSelectedPermissionsMouseClicked
+        if(tblSelectedPermissions.getSelectedRow() != selectedRow){
+            selectedRow = tblSelectedPermissions.getSelectedRow();
+        }
+        if(availableRow != -1){
+            btnExclude.setEnabled(true);
+        }
+    }//GEN-LAST:event_tblSelectedPermissionsMouseClicked
+
+    private void setLanguageUI(){
+        this.lblCreateRole.setText(PropertiesController.getLangValue("createrole"));
+        this.btnFinish.setText(PropertiesController.getLangValue("finish"));
     }
     
     private DefaultTableModel createPermissionsTablemodel(){
@@ -219,7 +331,7 @@ public class CreateRoleGUI extends javax.swing.JDialog {
     
     private void fillAvailablePermissionsTable(DefaultTableModel model){
         //recoge datos de usuarios del servidor
-        LinkedList<Permission> perms = new LinkedList<>() ;
+        LinkedList<Permission> perms = (new Permission()).getDao().getAllPermissions() ;
         //añade los datos al table model
         for(int i = 0; i < perms.size(); i++){                
             Object[] rowData = new Object[]{
@@ -228,8 +340,13 @@ public class CreateRoleGUI extends javax.swing.JDialog {
             };
             model.addRow(rowData);
         }
+        
         //asigna el table model a la tabla
         this.tblAvailablePermissions.setModel(model);
+        //limpiamos lo anterior
+        this.tblAvailablePermissions.clearSelection();
+        this.btnInclude.setEnabled(false);
+        availableRow = -1;
     }
     
     
@@ -277,13 +394,13 @@ public class CreateRoleGUI extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private RSMaterialComponent.RSButtonIconOne btnClose;
+    private RSMaterialComponent.RSButtonIconOne btnExclude;
     private RSMaterialComponent.RSButtonMaterialIconOne btnFinish;
+    private RSMaterialComponent.RSButtonIconOne btnInclude;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private RSMaterialComponent.RSLabelTextIcon lblCreateRole;
     private javax.swing.JPanel mainPanel;
-    private RSMaterialComponent.RSButtonIconOne rSButtonIconOne1;
-    private RSMaterialComponent.RSButtonIconOne rSButtonIconOne2;
     private RSMaterialComponent.RSTableMetroCustom tblAvailablePermissions;
     private RSMaterialComponent.RSTableMetroCustom tblSelectedPermissions;
     private RSMaterialComponent.RSTextFieldMaterialIcon txtRolename;

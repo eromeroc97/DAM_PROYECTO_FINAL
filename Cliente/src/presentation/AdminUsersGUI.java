@@ -61,6 +61,7 @@ public class AdminUsersGUI extends javax.swing.JFrame {
         btnCreateUser = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnDeleteUser = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnUpdateList = new RSMaterialComponent.RSButtonIconOne();
+        btnNewPassword = new RSMaterialComponent.RSButtonMaterialIconOne();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -140,6 +141,19 @@ public class AdminUsersGUI extends javax.swing.JFrame {
             }
         });
 
+        btnNewPassword.setBackground(new java.awt.Color(239, 96, 0));
+        btnNewPassword.setText("New Password");
+        btnNewPassword.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnNewPassword.setEnabled(false);
+        btnNewPassword.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnNewPassword.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.LOCK);
+        btnNewPassword.setInheritsPopupMenu(true);
+        btnNewPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewPasswordActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
         MainPanelLayout.setHorizontalGroup(
@@ -155,7 +169,9 @@ public class AdminUsersGUI extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addGroup(MainPanelLayout.createSequentialGroup()
                         .addComponent(btnUpdateList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCreateUser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDeleteUser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -176,7 +192,8 @@ public class AdminUsersGUI extends javax.swing.JFrame {
                     .addComponent(btnUpdateList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnDeleteUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnCreateUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnCreateUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -216,8 +233,10 @@ public class AdminUsersGUI extends javax.swing.JFrame {
             //No podrá eliminar al usuario SYSADMIN, al propio usuario o a un usuario online
             if(!user.equals("SYSADMIN") && !user.equals(myUser.getUsername()) && !online){
                 btnDeleteUser.setEnabled(true);
+                btnNewPassword.setEnabled(true);
             }else{
                 btnDeleteUser.setEnabled(false);
+                btnNewPassword.setEnabled(false);
             }
         }
     }//GEN-LAST:event_tblUsersMouseClicked
@@ -241,6 +260,7 @@ public class AdminUsersGUI extends javax.swing.JFrame {
         //reiniciar selected index y recargar tabla
         selectedRow = -1;
         btnDeleteUser.setEnabled(false);
+        btnNewPassword.setEnabled(false);
         tblUsers.clearSelection();
         fillUserTable(createTableModel());
     }//GEN-LAST:event_btnDeleteUserActionPerformed
@@ -248,6 +268,7 @@ public class AdminUsersGUI extends javax.swing.JFrame {
     private void btnUpdateListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateListActionPerformed
         selectedRow = -1;
         btnDeleteUser.setEnabled(false);
+        btnNewPassword.setEnabled(false);
         tblUsers.clearSelection();
         fillUserTable(createTableModel());
     }//GEN-LAST:event_btnUpdateListActionPerformed
@@ -257,6 +278,11 @@ public class AdminUsersGUI extends javax.swing.JFrame {
         cuGui.setVisible(true);
         fillUserTable(createTableModel());
     }//GEN-LAST:event_btnCreateUserActionPerformed
+
+    private void btnNewPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewPasswordActionPerformed
+        myUser.getDao().generateNewPassword((int) tblUsers.getValueAt(selectedRow, 0));
+        this.btnUpdateList.doClick();
+    }//GEN-LAST:event_btnNewPasswordActionPerformed
 
     private DefaultTableModel createTableModel(){
         DefaultTableModel model = new DefaultTableModel();
@@ -297,6 +323,7 @@ public class AdminUsersGUI extends javax.swing.JFrame {
         this.lblAdminUsers.setText(PropertiesController.getLangValue("administrateusers"));
         this.btnCreateUser.setText(PropertiesController.getLangValue("createuser"));
         this.btnDeleteUser.setText(PropertiesController.getLangValue("deleteuser"));
+        this.btnNewPassword.setText(PropertiesController.getLangValue("newpassword"));
     }
     
     /**
@@ -340,6 +367,7 @@ public class AdminUsersGUI extends javax.swing.JFrame {
     private RSMaterialComponent.RSButtonIconOne btnClose;
     private RSMaterialComponent.RSButtonMaterialIconOne btnCreateUser;
     private RSMaterialComponent.RSButtonMaterialIconOne btnDeleteUser;
+    private RSMaterialComponent.RSButtonMaterialIconOne btnNewPassword;
     private RSMaterialComponent.RSButtonIconOne btnUpdateList;
     private javax.swing.JScrollPane jScrollPane1;
     private RSMaterialComponent.RSLabelTextIcon lblAdminUsers;
