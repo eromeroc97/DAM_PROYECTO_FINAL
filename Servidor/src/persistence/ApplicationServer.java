@@ -132,6 +132,18 @@ public class ApplicationServer implements Runnable{
                     }
                     break;
                 }
+                case IServerProtocol.SENT_MAIL:{
+                    try {
+                        SentMailPetition(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
+                case IServerProtocol.SEND_INMAIL:{
+                    SendInMailPetition(bfr, pw);
+                    break;
+                }
                 case IServerProtocol.GET_USERS_LIST:{
                     try {
                         GetUsersListPetition(bfr, pw);
@@ -154,7 +166,7 @@ public class ApplicationServer implements Runnable{
                 }
                 case IServerProtocol.GET_PROFILE:{
                     try {
-                        GetUserProfile(bfr, pw);
+                        GetUserProfilePetition(bfr, pw);
                     } catch (SQLException ex) {
                         Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -162,51 +174,54 @@ public class ApplicationServer implements Runnable{
                 }
                 case IServerProtocol.SET_PROFILE:{
                     try {
-                        SetUserProfile(bfr, pw);
+                        SetUserProfilePetition(bfr, pw);
                     } catch (SQLException ex) {
                         Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;                    
                 }
                 case IServerProtocol.CHANGE_PASSWORD:{
-                    ChangeUserPassword(bfr, pw);
+                    ChangeUserPasswordPetition(bfr, pw);
                     break;
                 }
                 case IServerProtocol.GET_ROLES_LIST:{
                     try {
-                        GetRolesList(bfr, pw);
+                        GetRolesListPetition(bfr, pw);
                     } catch (SQLException ex) {
                         Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
                 }
                 case IServerProtocol.SET_USER_ROLE:{
-                    SetUserRole(bfr,pw);
+                    SetUserRolePetition(bfr,pw);
                     break;
                 }
                 case IServerProtocol.DELETE_ROLE:{
-                    DeleteRole(bfr, pw);
+                    DeleteRolePetition(bfr, pw);
                     break;
                 }
                 case IServerProtocol.GET_PERMS_LIST:{
                     try {
-                        GetPermsList(bfr, pw);
+                        GetPermsListPetition(bfr, pw);
                     } catch (SQLException ex) {
                         Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
                 }
                 case IServerProtocol.CREATE_NEW_ROLE:{
-                    CreateNewRole(bfr, pw);
+                    CreateNewRolePetition(bfr, pw);
                     break;
                 }
                 case IServerProtocol.NEW_PASSWORD:{
                     try {
-                        SetNewPassword(bfr, pw);
+                        SetNewPasswordPetition(bfr, pw);
                     } catch (SQLException ex) {
                         Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
+                }
+                case IServerProtocol.COMMUNICATE_READED_MAIL:{
+                    CommunicateReadedInMailPetition(bfr, pw);
                 }
                 
             }
@@ -229,14 +244,30 @@ public class ApplicationServer implements Runnable{
         }
         
         private void ReceivedMailPetition(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException{
-            String destination = bfr.readLine();
-            String sql = "SELECT I.IDINMAIL, U1.USERNAME, U2.USERNAME, I.SUBJECT, I.CONTENT, I.SEND_DATE, I.READED"
+            int destination = Integer.parseInt(bfr.readLine());
+            String sql = "SELECT I.IDMAIL, U1.USERNAME, U2.USERNAME, I.SUBJECT, I.CONTENT, I.SEND_DATE, I.READED "
                     + "FROM INMAIL I, USERS U1, USERS U2 "
-                    + "WHERE I.SOURCE = U1.IDUSER AND I.DESTINATION = U2.IDUSER AND U2.USERNAME = '"+username+"' "
+                    + "WHERE I.SOURCE = U1.IDUSER AND I.DESTINATION = U2.IDUSER AND U2.IDUSER="+destination+" "
                     + "ORDER BY I.SEND_DATE DESC;";
             ResultSet rs = man.executeQuery(sql);
             while(rs.next()){
-                pw.println(rs.getInt(1)+';'+rs.getString(2)+';'+rs.getString(3)+';'+rs.getString(4)+';'+rs.getString(5)+';'+rs.getDate(6)+';'+rs.getBoolean(7));
+                pw.println(rs.getInt(1)+";"+rs.getString(2)+";"+rs.getString(3)+";"+rs.getString(4)+";"+rs.getString(5)+";"+rs.getString(6)+";"+rs.getInt(7));
+                pw.flush();
+            }
+            
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();
+        }
+        
+        private void SentMailPetition(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException{
+            int source = Integer.parseInt(bfr.readLine());
+            String sql = "SELECT I.IDMAIL, U1.USERNAME, U2.USERNAME, I.SUBJECT, I.CONTENT, I.SEND_DATE, I.READED "
+                    + "FROM INMAIL I, USERS U1, USERS U2 "
+                    + "WHERE I.SOURCE = U1.IDUSER AND I.DESTINATION = U2.IDUSER AND U1.IDUSER="+source+" "
+                    + "ORDER BY I.SEND_DATE DESC;";
+            ResultSet rs = man.executeQuery(sql);
+            while(rs.next()){
+                pw.println(rs.getInt(1)+";"+rs.getString(2)+";"+rs.getString(3)+";"+rs.getString(4)+";"+rs.getString(5)+";"+rs.getString(6)+";"+rs.getInt(7));
                 pw.flush();
             }
             
@@ -296,7 +327,7 @@ public class ApplicationServer implements Runnable{
             man.executeNonQuery(sql);
         }
 
-        private void GetUserProfile(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
+        private void GetUserProfilePetition(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
             int iduser = Integer.parseInt(bfr.readLine());
             String sql = "SELECT IDUSER, NAME, SURNAME, EMAIL, PHONE FROM PROFILES WHERE IDUSER = "+iduser+";";
             if((man.executeQuery(sql)).next()){
@@ -319,7 +350,7 @@ public class ApplicationServer implements Runnable{
             pw.flush();
         }
 
-        private void SetUserProfile(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
+        private void SetUserProfilePetition(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
             int iduser = Integer.parseInt(bfr.readLine());
             String linea = bfr.readLine();
             String[] datos = linea.split(";");
@@ -335,14 +366,14 @@ public class ApplicationServer implements Runnable{
             }
         }
 
-        private void ChangeUserPassword(BufferedReader bfr, PrintWriter pw) throws IOException {
+        private void ChangeUserPasswordPetition(BufferedReader bfr, PrintWriter pw) throws IOException {
              int iduser = Integer.parseInt(bfr.readLine());
              String pass = bfr.readLine();
              String sql = "UPDATE USERS SET PASSWORD='"+pass+"', LASTCONNECTION='"+new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date())+"' WHERE IDUSER = "+iduser+";";
              man.executeNonQuery(sql);
         }
 
-        private void GetRolesList(BufferedReader bfr, PrintWriter pw) throws SQLException {
+        private void GetRolesListPetition(BufferedReader bfr, PrintWriter pw) throws SQLException {
             String sql = "SELECT IDROLE, ROLENAME FROM ROLES ORDER BY IDROLE ASC;";
             ResultSet rs = man.executeQuery(sql);
             while(rs.next()){
@@ -353,14 +384,14 @@ public class ApplicationServer implements Runnable{
             pw.flush();
         }
 
-        private void SetUserRole(BufferedReader bfr, PrintWriter pw) throws IOException {
+        private void SetUserRolePetition(BufferedReader bfr, PrintWriter pw) throws IOException {
             int userid = Integer.parseInt(bfr.readLine());
             int roleid = Integer.parseInt(bfr.readLine());
             String sql = "UPDATE USERS SET IDROLE="+roleid+" WHERE IDUSER="+userid+";";
             man.executeNonQuery(sql);
         }
 
-        private void DeleteRole(BufferedReader bfr, PrintWriter pw) throws IOException {
+        private void DeleteRolePetition(BufferedReader bfr, PrintWriter pw) throws IOException {
             int roleid = Integer.parseInt(bfr.readLine());
             //Cambio el rol de los usuarios que lo tengan asignado
             String sql = "UPDATE USERS SET IDROLE=1 WHERE IDROLE="+roleid+";";
@@ -373,7 +404,7 @@ public class ApplicationServer implements Runnable{
             man.executeNonQuery(sql);
         }
 
-        private void GetPermsList(BufferedReader bfr, PrintWriter pw) throws SQLException {
+        private void GetPermsListPetition(BufferedReader bfr, PrintWriter pw) throws SQLException {
             String sql = "SELECT IDPERM, PERMNAME FROM PERM ORDER BY IDPERM ASC;";
             ResultSet rs = man.executeQuery(sql);
             while(rs.next()){
@@ -384,7 +415,7 @@ public class ApplicationServer implements Runnable{
             pw.flush();
         }
 
-        private void CreateNewRole(BufferedReader bfr, PrintWriter pw) throws IOException {
+        private void CreateNewRolePetition(BufferedReader bfr, PrintWriter pw) throws IOException {
             String rolename = bfr.readLine();
             String sql = "INSERT INTO ROLES (ROLENAME) VALUES ('"+rolename+"');";
             man.executeNonQuery(sql);
@@ -401,7 +432,7 @@ public class ApplicationServer implements Runnable{
             }
         }
 
-        private void SetNewPassword(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
+        private void SetNewPasswordPetition(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
             int iduser = Integer.parseInt(bfr.readLine());
             String sql = "SELECT EMAIL FROM PROFILES WHERE IDUSER="+iduser+";";
             ResultSet rs = man.executeQuery(sql);
@@ -426,6 +457,26 @@ public class ApplicationServer implements Runnable{
                 }
                 
             }
+        }
+
+        private void SendInMailPetition(BufferedReader bfr, PrintWriter pw) throws IOException {
+            String source = bfr.readLine();
+            String destination = bfr.readLine();
+            String subject = bfr.readLine();
+            String content = bfr.readLine();
+            
+            String sql = "INSERT INTO INMAIL (SOURCE, DESTINATION, SUBJECT, CONTENT, SEND_DATE, READED) VALUES ("
+                    + "(SELECT IDUSER FROM USERS WHERE USERNAME='"+source+"'), "
+                    + "(SELECT IDUSER FROM USERS WHERE USERNAME='"+destination+"'), "
+                    + "'"+subject+"', '"+content+"', '"+(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()))+"', FALSE);";
+            man.executeNonQuery(sql);
+        }
+
+        private void CommunicateReadedInMailPetition(BufferedReader bfr, PrintWriter pw) throws IOException {
+            int mailid = Integer.parseInt(bfr.readLine());
+            //Cambio el rol de los usuarios que lo tengan asignado
+            String sql = "UPDATE INMAIL SET READED=TRUE WHERE IDMAIL="+mailid+";";
+            man.executeNonQuery(sql);
         }
         
     }

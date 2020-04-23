@@ -29,4 +29,5 @@ public interface IServerProtocol {
     public static final int GET_PERMS_LIST = 14;
     public static final int CREATE_NEW_ROLE = 15;
     public static final int NEW_PASSWORD = 16;
+    public static final int SEND_INMAIL = 17;
 }

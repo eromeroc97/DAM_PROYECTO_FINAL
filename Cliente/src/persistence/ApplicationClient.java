@@ -142,8 +142,8 @@ public class ApplicationClient{
         return resultado;
     }
     
-    public LinkedList<InMail> AskForInMail_Received() throws IOException{
-        LinkedList<InMail> resultado = new LinkedList<>();
+    public LinkedList<String> AskForInMail_Received(int idUser) throws IOException{
+        LinkedList<String> resultado = new LinkedList<>();
         
         Socket conexion;
         InetSocketAddress direccionServidor;
@@ -166,22 +166,14 @@ public class ApplicationClient{
         
         int confirmation = Integer.parseInt(bfr.readLine());
         if(confirmation == 1){
-            pw.println(this.username);
+            pw.println(idUser);
             pw.flush();
 
             String linea = "";
             while(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){
                 linea = bfr.readLine();
-                if(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){
-                    String[] datos = linea.split(";");
-                    int id = Integer.parseInt(datos[0]);
-                    String source = datos[1];
-                    String destination = datos[2];
-                    String subject = datos[3];
-                    String content = datos[4];
-                    Date send_date = new Date(datos[5]);
-                    boolean readed = datos[6].equals("true");
-                    resultado.add(new InMail(id, source, destination, subject, content, send_date, readed));
+                if(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){                        
+                    resultado.add(linea);
                 }
             }
         }
@@ -577,6 +569,107 @@ public class ApplicationClient{
         int confirmation = Integer.parseInt(bfr.readLine());
         if(confirmation == 1){
             pw.println(iduser);
+            pw.flush();
+        }
+    }
+
+    public void AskForSendInMail(InMail mail) throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.SEND_INMAIL);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(mail.getSource());
+            pw.println(mail.getDestination());
+            pw.println(mail.getSubject());
+            pw.println(mail.getContent());
+            pw.flush();
+        }
+    }
+
+    LinkedList<String> AskForInMail_Sent(int idUser) throws IOException {
+        LinkedList<String> resultado = new LinkedList<>();
+        
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.SENT_MAIL);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(idUser);
+            pw.flush();
+
+            String linea = "";
+            while(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){
+                linea = bfr.readLine();
+                if(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){                        
+                    resultado.add(linea);
+                }
+            }
+        }
+
+        
+        //Closing connection with login server
+        bfr.close();
+        pw.close();
+        
+        return resultado;
+    }
+
+    public void AskForCommunicateReadedMail(int idInMail) throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.COMMUNICATE_READED_MAIL);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(idInMail);
             pw.flush();
         }
     }

@@ -390,7 +390,7 @@ public class MenuGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRoleinfoActionPerformed
 
     private void btnInMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInMailActionPerformed
-        InMailGUI mail = new InMailGUI(this);
+        InMailGUI mail = new InMailGUI(this, myUser);
         this.setVisible(false);
         mail.setVisible(true);
     }//GEN-LAST:event_btnInMailActionPerformed

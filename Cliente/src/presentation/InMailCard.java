@@ -6,6 +6,7 @@
 package presentation;
 
 import domain.InMail;
+import domain.RegistredUser;
 import java.awt.Color;
 import java.util.Date;
 import javax.swing.JLabel;
@@ -22,14 +23,20 @@ public class InMailCard extends javax.swing.JPanel {
     private static final Color NOT_READED = new Color(50,51,52);
     private static final Color READED = new Color(102, 102, 102);
     
-    private String source, subject, content;
+    private String source, destination, subject, content;
     private boolean readed;
     private Date date;
     private JPanel readingpanel;
-    public InMailCard(InMail mail, JPanel readingpanel) {
+    private RegistredUser myUser;
+    private InMail mail;
+    public InMailCard(InMail mail, JPanel readingpanel, RegistredUser myUser) {
         this();
+        this.myUser = myUser;
+        this.mail = mail;
+        
         this.source = mail.getSource();
         this.subject = mail.getSubject();
+        this.destination = mail.getDestination();
         this.content = mail.getContent();
         this.readed = mail.isReaded();
         this.date = mail.getSend_date();
@@ -145,8 +152,9 @@ public class InMailCard extends javax.swing.JPanel {
     
     //convierto el formulario en un "boton" con el contenido personalizado
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        JLabel lblSource_ = new JLabel(), lblSubject_ = new JLabel(), lblContent_ = new JLabel(), lblDate_ = new JLabel();
-        lblSource_.setText(source);
+        JLabel lblSource_ = new JLabel(), lblDestination_ = new JLabel(), lblSubject_ = new JLabel(), lblContent_ = new JLabel(), lblDate_ = new JLabel();
+        lblSource_.setText("From: "+source);
+        lblDestination_.setText("To: "+destination);
         lblSubject_.setText(String.format(html, this.readingpanel.getWidth()-100, subject));
         lblContent_.setText(String.format(html, this.readingpanel.getWidth()-100, content));
         lblDate_.setText(date.toString());
@@ -158,15 +166,17 @@ public class InMailCard extends javax.swing.JPanel {
         this.readingpanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         this.readingpanel.add(lblDate_);
         this.readingpanel.add(lblSource_);
+        this.readingpanel.add(lblDestination_);
         this.readingpanel.add(lblSubject_);
         this.readingpanel.add(sep);
         this.readingpanel.add(lblContent_);
         this.readingpanel.revalidate();
         this.readingpanel.repaint();
         
-        if(!readed){
+        if(!readed && !source.equals(myUser.getUsername())){
             readed = true;
             //comunicar la lectura al servidor (solo se hara una vez)
+            mail.getDao().communicateReaded(mail);
         }
         
         if(readed){

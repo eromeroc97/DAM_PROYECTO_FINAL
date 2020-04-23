@@ -37,6 +37,15 @@ public class InMail {
         this.send_date = send_date;
         this.readed = readed;
     }
+    
+    public InMail(String source, String destination, String subject, String content) {
+        this();
+        this.source = source;
+        this.destination = destination;
+        this.subject = subject;
+        this.content = content;
+        this.readed = false;
+    }
 
     public int getIdInMail() {
         return idInMail;

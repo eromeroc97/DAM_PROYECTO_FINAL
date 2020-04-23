@@ -70,6 +70,8 @@
                   <Component id="btnWriteInMail" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Component id="btnUpdate" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <Component id="btnReceivedSent" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="btnCloseInMail" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -82,6 +84,7 @@
                       <Component id="btnCloseInMail" min="-2" max="-2" attributes="0"/>
                       <Component id="btnWriteInMail" min="-2" max="-2" attributes="0"/>
                       <Component id="btnUpdate" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnReceivedSent" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
@@ -118,6 +121,9 @@
               <Value id="EDIT"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnWriteInMailActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonIconOne" name="btnUpdate">
           <Properties>
@@ -134,6 +140,27 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="RSMaterialComponent.RSButtonMaterialIconOne" name="btnReceivedSent">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="60" red="ef" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Inbox"/>
+            <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="19" green="89" red="ff" type="rgb"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
+              <Value id="INBOX"/>
+            </Property>
+            <Property name="positionIcon" type="rojeru_san.efectos.ValoresEnum$POSITIONICON" editor="org.netbeans.modules.form.editors.EnumEditor">
+              <Value id="RIGHT"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReceivedSentActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

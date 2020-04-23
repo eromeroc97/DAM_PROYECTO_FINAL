@@ -6,6 +6,7 @@
 package presentation;
 
 import domain.InMail;
+import domain.RegistredUser;
 import java.awt.Toolkit;
 import java.util.LinkedList;
 import javax.swing.JFrame;
@@ -20,16 +21,17 @@ import utilities.MsgBox;
 public class InMailGUI extends javax.swing.JFrame {
 
     private JFrame parent;
-    public InMailGUI(JFrame parent) {
+    private RegistredUser myUser;
+    public InMailGUI(JFrame parent, RegistredUser myUser) {
         this();
         //this.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         this.parent = parent;
+        this.myUser = myUser;
     }
     
     public InMailGUI() {
         initComponents();
         //se llamará a refresh
-        refresh();
         setProgramIcon();
     }
     private void setProgramIcon(){
@@ -37,7 +39,7 @@ public class InMailGUI extends javax.swing.JFrame {
     }
     
     private InMailCard createInMailCard(InMail mail){
-        return new InMailCard(mail, this.ReadingPanel);
+        return new InMailCard(mail, this.ReadingPanel, myUser);
     }
     
     private void addInMailCard(InMailCard card){
@@ -54,9 +56,15 @@ public class InMailGUI extends javax.swing.JFrame {
         this.MailPanel.setLayout(vert);
         
         //Añado las tarjetas
-        LinkedList<InMail> inMailList;
+        LinkedList<InMail> inMailList = null;
         try {
-            inMailList = (new InMail()).getDao().getReceivedMail();
+            
+            if(btnReceivedSent.getText().equals(PropertiesController.getLangValue("inbox"))){
+                inMailList = (new InMail()).getDao().getReceivedMail(myUser);            
+            }else if(btnReceivedSent.getText().equals(PropertiesController.getLangValue("outbox"))){
+                inMailList = (new InMail()).getDao().getSentMail(myUser);
+            }
+            
             
             if(inMailList == null){
                 MsgBox.create(this, PropertiesController.getLangValue("emptyinmail")).setVisible(true);
@@ -87,6 +95,7 @@ public class InMailGUI extends javax.swing.JFrame {
         btnCloseInMail = new RSMaterialComponent.RSButtonIconOne();
         btnWriteInMail = new RSMaterialComponent.RSButtonIconOne();
         btnUpdate = new RSMaterialComponent.RSButtonIconOne();
+        btnReceivedSent = new RSMaterialComponent.RSButtonMaterialIconOne();
         ScrollPanel = new javax.swing.JScrollPane();
         MailPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -115,6 +124,11 @@ public class InMailGUI extends javax.swing.JFrame {
         btnWriteInMail.setToolTipText("Write New InMail");
         btnWriteInMail.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnWriteInMail.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.EDIT);
+        btnWriteInMail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnWriteInMailActionPerformed(evt);
+            }
+        });
 
         btnUpdate.setBackground(new java.awt.Color(239, 96, 0));
         btnUpdate.setToolTipText("Update Inbox");
@@ -126,6 +140,18 @@ public class InMailGUI extends javax.swing.JFrame {
             }
         });
 
+        btnReceivedSent.setBackground(new java.awt.Color(239, 96, 0));
+        btnReceivedSent.setText("Inbox");
+        btnReceivedSent.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnReceivedSent.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnReceivedSent.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.INBOX);
+        btnReceivedSent.setPositionIcon(rojeru_san.efectos.ValoresEnum.POSITIONICON.RIGHT);
+        btnReceivedSent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReceivedSentActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ControlPanelLayout = new javax.swing.GroupLayout(ControlPanel);
         ControlPanel.setLayout(ControlPanelLayout);
         ControlPanelLayout.setHorizontalGroup(
@@ -134,6 +160,8 @@ public class InMailGUI extends javax.swing.JFrame {
                 .addComponent(btnWriteInMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(btnReceivedSent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCloseInMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -143,7 +171,8 @@ public class InMailGUI extends javax.swing.JFrame {
                 .addGroup(ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCloseInMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnWriteInMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnReceivedSent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -216,12 +245,31 @@ public class InMailGUI extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         setLanguageUI();
         //cargar los inmail
+        refresh();
     }//GEN-LAST:event_formWindowOpened
+
+    private void btnWriteInMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWriteInMailActionPerformed
+        WriteInMailGUI wr = new WriteInMailGUI(this, true, myUser);
+        wr.setVisible(true);
+        refresh();
+    }//GEN-LAST:event_btnWriteInMailActionPerformed
+
+    private void btnReceivedSentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReceivedSentActionPerformed
+        if(btnReceivedSent.getText().equals(PropertiesController.getLangValue("inbox"))){
+            btnReceivedSent.setText(PropertiesController.getLangValue("outbox"));
+            refresh();
+        }else if(btnReceivedSent.getText().equals(PropertiesController.getLangValue("outbox"))){
+            btnReceivedSent.setText(PropertiesController.getLangValue("inbox"));
+            refresh();
+        }
+    }//GEN-LAST:event_btnReceivedSentActionPerformed
 
     private void setLanguageUI(){
         this.btnWriteInMail.setToolTipText(PropertiesController.getLangValue("writeinmail"));
         this.btnUpdate.setToolTipText(PropertiesController.getLangValue("updateinbox"));
+        this.btnReceivedSent.setText(PropertiesController.getLangValue("inbox"));
     }
+    
     /**
      * @param args the command line arguments
      */
@@ -263,6 +311,7 @@ public class InMailGUI extends javax.swing.JFrame {
     private javax.swing.JPanel ReadingPanel;
     private javax.swing.JScrollPane ScrollPanel;
     private RSMaterialComponent.RSButtonIconOne btnCloseInMail;
+    private RSMaterialComponent.RSButtonMaterialIconOne btnReceivedSent;
     private RSMaterialComponent.RSButtonIconOne btnUpdate;
     private RSMaterialComponent.RSButtonIconOne btnWriteInMail;
     private javax.swing.JPanel jPanel1;
