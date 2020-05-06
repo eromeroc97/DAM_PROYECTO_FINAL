@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import utilities.PropertiesController;
 
 /**
@@ -300,6 +301,11 @@ public class MenuGUI extends javax.swing.JFrame {
         btnRegisterProduct.setBgHover(new java.awt.Color(255, 137, 25));
         btnRegisterProduct.setEnabled(false);
         btnRegisterProduct.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.SHOPPING_CART);
+        btnRegisterProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterProductActionPerformed(evt);
+            }
+        });
 
         btnInMail.setBackground(new java.awt.Color(239, 96, 0));
         btnInMail.setText("In Mail");
@@ -432,6 +438,11 @@ public class MenuGUI extends javax.swing.JFrame {
         AdminRolesGUI rolGui = new AdminRolesGUI(this, myUser);
         rolGui.setVisible(true);
     }//GEN-LAST:event_btnAdminRolesActionPerformed
+
+    private void btnRegisterProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterProductActionPerformed
+        ProductsGUI prod = new ProductsGUI(this, true);
+        prod.setVisible(true);
+    }//GEN-LAST:event_btnRegisterProductActionPerformed
     
     public void setLanguageUI(){
         this.btnMenu.setText(PropertiesController.getLangValue("menu"));

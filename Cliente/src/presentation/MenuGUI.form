@@ -542,6 +542,9 @@
                   <Value id="SHOPPING_CART"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegisterProductActionPerformed"/>
+              </Events>
             </Component>
             <Component class="newscomponents.RSButtonBigIcon_new" name="btnInMail">
               <Properties>

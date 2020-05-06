@@ -220,7 +220,8 @@ public class SQLiteManager {
                 + "STOCK INTEGER NOT NULL,"
                 + "SECURITYSTOCK INTEGER NOT NULL,"
                 + "MINIMUMSTOCK INTEGER NOT NULL,"
-                + "DEFAULTORDERAMOUNT INTEGER NOT NULL);";
+                + "DEFAULTORDERAMOUNT INTEGER NOT NULL,"
+                + "DELETED BOOLEAN DEFAULT FALSE);";
         
         public static final String SALES_TABLE = "CREATE TABLE IF NOT EXISTS SALES("
                 + "IDSALE INTEGER PRIMARY KEY AUTOINCREMENT,"

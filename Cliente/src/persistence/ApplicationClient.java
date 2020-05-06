@@ -673,4 +673,8 @@ public class ApplicationClient{
             pw.flush();
         }
     }
+
+    LinkedList<String> AskForProductsList() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
