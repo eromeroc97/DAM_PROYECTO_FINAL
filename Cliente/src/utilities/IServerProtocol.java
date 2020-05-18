@@ -30,4 +30,9 @@ public interface IServerProtocol {
     public static final int CREATE_NEW_ROLE = 15;
     public static final int NEW_PASSWORD = 16;
     public static final int SEND_INMAIL = 17;
+    public static final int GET_PRODUCTS_LIST = 18;
+    public static final int CREATE_NEW_PRODUCT = 19;
+    public static final int EDIT_PRODUCT = 20;
+    public static final int DELETE_PRODUCT = 21;
+    public static final int RECOVER_PRODUCT = 22;
 }

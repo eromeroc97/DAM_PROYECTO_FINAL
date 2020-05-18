@@ -18,7 +18,7 @@ public class Product {
     private int stock;
     private int securitystock;
     private int minimumstock;
-    private int degaultorderamount;
+    private int defaultorderamount;
     private boolean deleted;
     private ProductDAO dao;
 
@@ -26,7 +26,7 @@ public class Product {
         this.dao = ProductDAO.getInstance();
     }
 
-    public Product(int idproduct, String productname, double price, int stock, int securitystock, int minimumstock, int degaultorderamount, boolean deleted) {
+    public Product(int idproduct, String productname, double price, int stock, int securitystock, int minimumstock, int defaultorderamount, boolean deleted) {
         this();
         this.idproduct = idproduct;
         this.productname = productname;
@@ -34,19 +34,32 @@ public class Product {
         this.stock = stock;
         this.securitystock = securitystock;
         this.minimumstock = minimumstock;
-        this.degaultorderamount = degaultorderamount;
+        this.defaultorderamount = defaultorderamount;
         this.deleted = deleted;
     }
 
-    public Product(String productname, double price, int stock, int securitystock, int minimumstock, int degaultorderamount) {
+    public Product(String productname, double price, int stock, int securitystock, int minimumstock, int defaultorderamount) {
         this();
         this.productname = productname;
         this.price = price;
         this.stock = stock;
         this.securitystock = securitystock;
         this.minimumstock = minimumstock;
-        this.degaultorderamount = degaultorderamount;
+        this.defaultorderamount = defaultorderamount;
     }
+
+    public Product(int idproduct, String productname, double price, int stock, int securitystock, int minimumstock, int defaultorderamount) {
+        this();
+        this.idproduct = idproduct;
+        this.productname = productname;
+        this.price = price;
+        this.stock = stock;
+        this.securitystock = securitystock;
+        this.minimumstock = minimumstock;
+        this.defaultorderamount = defaultorderamount;
+    }
+    
+    
 
     public int getIdproduct() {
         return idproduct;
@@ -72,8 +85,36 @@ public class Product {
         return minimumstock;
     }
 
-    public int getDegaultorderamount() {
-        return degaultorderamount;
+    public int getDefaultorderamount() {
+        return defaultorderamount;
+    }
+    
+    public boolean isDeleted(){
+        return deleted;
+    }
+
+    public void setProductname(String productname) {
+        this.productname = productname;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public void setSecuritystock(int securitystock) {
+        this.securitystock = securitystock;
+    }
+
+    public void setMinimumstock(int minimumstock) {
+        this.minimumstock = minimumstock;
+    }
+
+    public void setDefaultorderamount(int defaultorderamount) {
+        this.defaultorderamount = defaultorderamount;
     }
 
     public ProductDAO getDao() {

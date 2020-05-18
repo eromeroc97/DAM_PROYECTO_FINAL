@@ -6,8 +6,11 @@
 package presentation;
 
 
+import domain.Product;
+import java.util.LinkedList;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
+import rojeru_san.efectos.ValoresEnum;
 import utilities.PropertiesController;
 /**
  *
@@ -40,6 +43,7 @@ public class ProductsGUI extends javax.swing.JDialog {
         btnEdit = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnDelete = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnClose = new RSMaterialComponent.RSButtonIconOne();
+        chkShowDeleted = new RSMaterialComponent.RSCheckBoxMaterial();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
@@ -72,6 +76,11 @@ public class ProductsGUI extends javax.swing.JDialog {
         tblProducts.setBackgoundHover(new java.awt.Color(239, 96, 0));
         tblProducts.setColorPrimaryText(new java.awt.Color(0, 0, 0));
         tblProducts.setColorSecundaryText(new java.awt.Color(0, 0, 0));
+        tblProducts.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProductsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblProducts);
 
         btnCreate.setBackground(new java.awt.Color(239, 96, 0));
@@ -89,12 +98,22 @@ public class ProductsGUI extends javax.swing.JDialog {
         btnEdit.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnEdit.setEnabled(false);
         btnEdit.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.EDIT);
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnDelete.setBackground(new java.awt.Color(239, 96, 0));
         btnDelete.setText("Delete Product");
         btnDelete.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnDelete.setEnabled(false);
         btnDelete.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.DELETE);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnClose.setBackground(new java.awt.Color(204, 0, 0));
         btnClose.setBackgroundHover(new java.awt.Color(255, 0, 0));
@@ -102,6 +121,16 @@ public class ProductsGUI extends javax.swing.JDialog {
         btnClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCloseActionPerformed(evt);
+            }
+        });
+
+        chkShowDeleted.setForeground(new java.awt.Color(239, 96, 0));
+        chkShowDeleted.setText("Show Deleted");
+        chkShowDeleted.setColorCheck(new java.awt.Color(255, 137, 25));
+        chkShowDeleted.setColorUnCheck(new java.awt.Color(239, 96, 0));
+        chkShowDeleted.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkShowDeletedActionPerformed(evt);
             }
         });
 
@@ -113,7 +142,9 @@ public class ProductsGUI extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(lblProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 577, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(chkShowDeleted, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(57, 57, 57)
+                        .addComponent(lblProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -134,7 +165,9 @@ public class ProductsGUI extends javax.swing.JDialog {
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lblProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(chkShowDeleted, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -163,6 +196,7 @@ public class ProductsGUI extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         setLanguageUI();
+        fillProductTable(createProductTableModel());
     }//GEN-LAST:event_formWindowOpened
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
@@ -170,18 +204,66 @@ public class ProductsGUI extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
-        ProductEditorGUI pedit = new ProductEditorGUI(this.parent, true);
+        ProductEditorGUI pedit = new ProductEditorGUI(this.parent, true); //editionmode = false
         pedit.setVisible(true);
+        fillProductTable(createProductTableModel());
     }//GEN-LAST:event_btnCreateActionPerformed
+
+    int selectedIndex = -1;
+    private void tblProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductsMouseClicked
+        selectedIndex = tblProducts.getSelectedRow();
+        if(selectedIndex != -1 && ((String)tblProducts.getValueAt(selectedIndex, 7)).equals(PropertiesController.getLangValue("no"))){
+            btnEdit.setEnabled(true);
+            btnDelete.setEnabled(true);
+            this.btnDelete.setText(PropertiesController.getLangValue("deleteproduct"));
+            this.btnDelete.setIcons(ValoresEnum.ICONS.DELETE);
+        }else if(selectedIndex != -1 && ((String)tblProducts.getValueAt(selectedIndex, 7)).equals(PropertiesController.getLangValue("yes"))){
+            btnEdit.setEnabled(false);
+            btnDelete.setEnabled(true);
+            this.btnDelete.setText(PropertiesController.getLangValue("recoverproduct"));
+            this.btnDelete.setIcons(ValoresEnum.ICONS.RESTORE_PAGE);
+        }
+    }//GEN-LAST:event_tblProductsMouseClicked
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        int pId = (int)tblProducts.getValueAt(selectedIndex, 0);
+        String pName = (String)tblProducts.getValueAt(selectedIndex,1);
+        double pPrice = (double)tblProducts.getValueAt(selectedIndex, 2);
+        int pStock = (int)tblProducts.getValueAt(selectedIndex, 3);
+        int pSecStock = (int)tblProducts.getValueAt(selectedIndex, 4);
+        int pMinStock = (int)tblProducts.getValueAt(selectedIndex, 5);
+        int pDefOrdAmount = (int)tblProducts.getValueAt(selectedIndex, 6);
+        
+        Product p = new Product(pId, pName, pPrice, pStock, pSecStock, pMinStock, pDefOrdAmount);
+        ProductEditorGUI pedit = new ProductEditorGUI(this.parent, true, p); //editionmode = true
+        pedit.setVisible(true);
+        fillProductTable(createProductTableModel());
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        Product p = new Product();
+        if(btnDelete.getText().equals(PropertiesController.getLangValue("deleteproduct"))){
+            p.getDao().deleteProduct((int)tblProducts.getValueAt(selectedIndex, 0));
+        }else if(btnDelete.getText().equals(PropertiesController.getLangValue("recoverproduct"))){
+            p.getDao().recoverProduct((int)tblProducts.getValueAt(selectedIndex, 0));
+        }
+        fillProductTable(createProductTableModel());
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void chkShowDeletedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowDeletedActionPerformed
+        fillProductTable(createProductTableModel());
+    }//GEN-LAST:event_chkShowDeletedActionPerformed
 
     private void setLanguageUI(){
         this.lblProducts.setText(PropertiesController.getLangValue("products"));
         this.btnCreate.setText(PropertiesController.getLangValue("createproduct"));
         this.btnEdit.setText(PropertiesController.getLangValue("editproduct"));
         this.btnDelete.setText(PropertiesController.getLangValue("deleteproduct"));
+        this.btnDelete.setIcons(ValoresEnum.ICONS.DELETE);
+        this.chkShowDeleted.setText(PropertiesController.getLangValue("showdeleted"));
     }
     
-    private DefaultTableModel createProductModel(){
+    private DefaultTableModel createProductTableModel(){
         DefaultTableModel model = new DefaultTableModel();
         
         model.addColumn(PropertiesController.getLangValue("idproduct"));
@@ -197,7 +279,34 @@ public class ProductsGUI extends javax.swing.JDialog {
     }
     
     private void fillProductTable(DefaultTableModel model){
+        Product p = new Product();
+        LinkedList<Product> productsList = p.getDao().getProductsList();
         
+        for(int i = 0; i < productsList.size(); i++){
+            String deleted = PropertiesController.getLangValue("no");;
+            if(productsList.get(i).isDeleted()){
+                deleted = PropertiesController.getLangValue("yes");
+            }
+            Object[] row = new Object[]{
+                productsList.get(i).getIdproduct(),
+                productsList.get(i).getProductname(),
+                productsList.get(i).getPrice(),
+                productsList.get(i).getStock(),
+                productsList.get(i).getSecuritystock(),
+                productsList.get(i).getMinimumstock(),
+                productsList.get(i).getDefaultorderamount(),
+                deleted
+            };
+            if((chkShowDeleted.isSelected() && productsList.get(i).isDeleted()) || !productsList.get(i).isDeleted())
+                model.addRow(row);
+        }
+        
+        this.tblProducts.setModel(model);
+        tblProducts.clearSelection();
+        selectedIndex = -1;
+        
+        btnDelete.setEnabled(false);
+        btnEdit.setEnabled(false);
     }
     
     
@@ -249,6 +358,7 @@ public class ProductsGUI extends javax.swing.JDialog {
     private RSMaterialComponent.RSButtonMaterialIconOne btnCreate;
     private RSMaterialComponent.RSButtonMaterialIconOne btnDelete;
     private RSMaterialComponent.RSButtonMaterialIconOne btnEdit;
+    private RSMaterialComponent.RSCheckBoxMaterial chkShowDeleted;
     private javax.swing.JScrollPane jScrollPane1;
     private RSMaterialComponent.RSLabelTextIcon lblProducts;
     private javax.swing.JPanel mainPanel;

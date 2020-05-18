@@ -6,7 +6,10 @@
 package persistence;
 
 import domain.Product;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,8 +32,59 @@ public class ProductDAO {
     
     public LinkedList<Product> getProductsList(){
         LinkedList<Product> products = new LinkedList<>();
-        LinkedList<String> prodData = this.appClient.AskForProductsList();
+        LinkedList<String> prodData = new LinkedList<>();
+        try {
+            prodData = this.appClient.AskForProductsList();
+        } catch (IOException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for(int i = 0; i < prodData.size(); i++){
+            String[] data = prodData.get(i).split(";");
+            Product p = new Product(Integer.parseInt(data[0]),
+                    data[1],
+                Double.parseDouble(data[2]),
+                Integer.parseInt(data[3]),
+                Integer.parseInt(data[4]),
+                Integer.parseInt(data[5]),
+                Integer.parseInt(data[6]),
+                data[7].equals("1"));
+            products.add(p);
+        }
+        
         
         return products;
+    }
+
+    public void createProduct(Product product) {
+        try {
+            this.appClient.AskForCreateProduct(product);
+        } catch (IOException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void editProduct(Product product) {
+        try {
+            this.appClient.AskForEditProduct(product);
+        } catch (IOException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void deleteProduct(int idprod){
+        try {
+            this.appClient.AskForDeleteProduct(idprod);
+        } catch (IOException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void recoverProduct(int idprod){
+        try {
+            this.appClient.AskForRecoverProduct(idprod);
+        } catch (IOException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

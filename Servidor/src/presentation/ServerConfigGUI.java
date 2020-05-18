@@ -338,6 +338,7 @@ public class ServerConfigGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnStopServerActionPerformed
 
     private void btnStartServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartServerActionPerformed
+        btnSaveConfig.doClick();
         server = new LoginServer(Integer.parseInt(txtPort.getText()), this.txtLog, this);
         Thread serverThr = new Thread(server);
         serverThr.start();

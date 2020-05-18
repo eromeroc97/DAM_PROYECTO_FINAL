@@ -222,6 +222,31 @@ public class ApplicationServer implements Runnable{
                 }
                 case IServerProtocol.COMMUNICATE_READED_MAIL:{
                     CommunicateReadedInMailPetition(bfr, pw);
+                    break;
+                }
+                case IServerProtocol.GET_PRODUCTS_LIST:{
+                    try {
+                        GetProductsList(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
+                case IServerProtocol.CREATE_NEW_PRODUCT:{
+                    CreateNewProduct(bfr,pw);
+                    break;
+                }
+                case IServerProtocol.EDIT_PRODUCT:{
+                    EditProduct(bfr,pw);
+                    break;
+                }
+                case IServerProtocol.DELETE_PRODUCT:{
+                    DeleteProduct(bfr, pw);
+                    break;
+                }
+                case IServerProtocol.RECOVER_PRODUCT:{
+                    RecoverProduct(bfr, pw);
+                    break;
                 }
                 
             }
@@ -478,6 +503,67 @@ public class ApplicationServer implements Runnable{
             String sql = "UPDATE INMAIL SET READED=TRUE WHERE IDMAIL="+mailid+";";
             man.executeNonQuery(sql);
         }
+
+        private void GetProductsList(BufferedReader bfr, PrintWriter pw) throws SQLException {
+            String sql = "SELECT * FROM PRODUCTS ORDER BY IDPRODUCT ASC;";
+            ResultSet rs = man.executeQuery(sql);
+            
+            while(rs.next()){
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int stock = rs.getInt(4);
+                int secStock = rs.getInt(5);
+                int minStock = rs.getInt(6);
+                int defaultorderamount = rs.getInt(7);
+                int deleted = rs.getInt(8);
+                String product = id+";"+name+";"+price+";"+stock+";"+secStock+";"+minStock+";"+defaultorderamount+";"+deleted;
+                pw.println(product);
+                pw.flush();
+            }
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();
+        }
+
+        private void CreateNewProduct(BufferedReader bfr, PrintWriter pw) throws IOException {
+            String pName = bfr.readLine();
+            double pPrice = Double.parseDouble(bfr.readLine());
+            int pStock = Integer.parseInt(bfr.readLine());
+            int pSecStock = Integer.parseInt(bfr.readLine());
+            int pMinStock = Integer.parseInt(bfr.readLine());
+            int pDefOrdAmount = Integer.parseInt(bfr.readLine());
+            
+            String sql = "INSERT INTO PRODUCTS (PRODUCTNAME, PRICE, STOCK, SECURITYSTOCK, MINIMUMSTOCK, DEFAULTORDERAMOUNT, DELETED) "
+                    + "VALUES('"+pName.toUpperCase()+"', "+pPrice+", "+pStock+", "+pSecStock+", "+pMinStock+", "+pDefOrdAmount+", FALSE);";
+            man.executeNonQuery(sql);
+        }
+
+        private void EditProduct(BufferedReader bfr, PrintWriter pw) throws IOException {
+            int pId = Integer.parseInt(bfr.readLine());
+            String pName = bfr.readLine();
+            double pPrice = Double.parseDouble(bfr.readLine());
+            int pStock = Integer.parseInt(bfr.readLine());
+            int pSecStock = Integer.parseInt(bfr.readLine());
+            int pMinStock = Integer.parseInt(bfr.readLine());
+            int pDefOrdAmount = Integer.parseInt(bfr.readLine());
+            
+            String sql = "UPDATE PRODUCTS SET PRODUCTNAME = '"+pName.toUpperCase()+"', PRICE = "+pPrice+", STOCK = "+pStock+", SECURITYSTOCK = "+pSecStock+","
+                    + " MINIMUMSTOCK = "+pMinStock+", DEFATULTORDERAMOUNT = "+pDefOrdAmount+" WHERE IDPRODUCT="+pId+";";
+            man.executeNonQuery(sql);
+        }
+
+        private void DeleteProduct(BufferedReader bfr, PrintWriter pw) throws IOException {
+            int pId = Integer.parseInt(bfr.readLine());
+            String sql = "UPDATE PRODUCTS SET DELETED = TRUE WHERE IDPRODUCT="+pId+";";
+            man.executeNonQuery(sql);
+        }
+
+        private void RecoverProduct(BufferedReader bfr, PrintWriter pw) throws IOException {
+            int pId = Integer.parseInt(bfr.readLine());
+            String sql = "UPDATE PRODUCTS SET DELETED = FALSE WHERE IDPRODUCT="+pId+";";
+            man.executeNonQuery(sql);
+        }
+
         
     }
 }

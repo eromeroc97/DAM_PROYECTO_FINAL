@@ -7,7 +7,6 @@ package presentation;
 
 import domain.Product;
 import java.awt.event.KeyEvent;
-import java.text.DecimalFormat;
 
 /**
  *
@@ -28,6 +27,16 @@ public class ProductEditorGUI extends javax.swing.JDialog {
         this(parent, modal);
         this.product = product;
         editionmode = true;
+        this.txtName.setText(product.getProductname());
+        this.txtPrice.setText(Double.toString(product.getPrice()));
+        this.txtStock.setText(Integer.toString(product.getStock()));
+        this.txtSecStock.setText(Integer.toString(product.getSecuritystock()));
+        this.txtMinStock.setText(Integer.toString(product.getMinimumstock()));
+        this.txtOrderAmount.setText(Integer.toString(product.getDefaultorderamount()));
+        if(product.getDefaultorderamount() == 0){
+            this.chkOrderAmount.setSelected(false);
+            this.txtOrderAmount.setEnabled(false);
+        }
     }
 
     /**
@@ -80,6 +89,14 @@ public class ProductEditorGUI extends javax.swing.JDialog {
         txtPrice.setPhColor(new java.awt.Color(239, 96, 0));
         txtPrice.setPlaceholder("Product Price");
         txtPrice.setPositionIcon(rojeru_san.efectos.ValoresEnum.POSITIONICON.RIGHT);
+        txtPrice.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtPriceFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtPriceFocusLost(evt);
+            }
+        });
         txtPrice.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtPriceKeyTyped(evt);
@@ -125,6 +142,11 @@ public class ProductEditorGUI extends javax.swing.JDialog {
         btnDone.setBackground(new java.awt.Color(0, 204, 0));
         btnDone.setBackgroundHover(new java.awt.Color(0, 153, 0));
         btnDone.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.DONE);
+        btnDone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDoneActionPerformed(evt);
+            }
+        });
 
         txtStock.setForeground(new java.awt.Color(239, 96, 0));
         txtStock.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -132,6 +154,11 @@ public class ProductEditorGUI extends javax.swing.JDialog {
         txtStock.setBorderColor(new java.awt.Color(239, 96, 0));
         txtStock.setPhColor(new java.awt.Color(239, 96, 0));
         txtStock.setPlaceholder("");
+        txtStock.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtStockFocusGained(evt);
+            }
+        });
         txtStock.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtStockKeyTyped(evt);
@@ -144,6 +171,11 @@ public class ProductEditorGUI extends javax.swing.JDialog {
         txtSecStock.setBorderColor(new java.awt.Color(239, 96, 0));
         txtSecStock.setPhColor(new java.awt.Color(239, 96, 0));
         txtSecStock.setPlaceholder("");
+        txtSecStock.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtSecStockFocusGained(evt);
+            }
+        });
         txtSecStock.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtSecStockKeyTyped(evt);
@@ -156,6 +188,11 @@ public class ProductEditorGUI extends javax.swing.JDialog {
         txtMinStock.setBorderColor(new java.awt.Color(239, 96, 0));
         txtMinStock.setPhColor(new java.awt.Color(239, 96, 0));
         txtMinStock.setPlaceholder("");
+        txtMinStock.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtMinStockFocusGained(evt);
+            }
+        });
         txtMinStock.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtMinStockKeyTyped(evt);
@@ -168,6 +205,11 @@ public class ProductEditorGUI extends javax.swing.JDialog {
         txtOrderAmount.setBorderColor(new java.awt.Color(239, 96, 0));
         txtOrderAmount.setPhColor(new java.awt.Color(239, 96, 0));
         txtOrderAmount.setPlaceholder("");
+        txtOrderAmount.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtOrderAmountFocusGained(evt);
+            }
+        });
         txtOrderAmount.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtOrderAmountKeyTyped(evt);
@@ -276,8 +318,7 @@ public class ProductEditorGUI extends javax.swing.JDialog {
             txtOrderAmount.setEnabled(false);
         }
     }//GEN-LAST:event_chkOrderAmountActionPerformed
-
-    private boolean pricecomma = false;
+ 
     private void txtPriceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPriceKeyTyped
         char c = evt.getKeyChar();
         if (!((c >= '0') && (c <= '9') ||
@@ -286,18 +327,16 @@ public class ProductEditorGUI extends javax.swing.JDialog {
                 (c == '.') || (c == ','))) {
           getToolkit().beep();
           evt.consume();
-        }else{
-            pricecomma = txtPrice.getText().contains(".");
-            if(c == ','){
-                evt.setKeyChar('.');
-                c = evt.getKeyChar();
-            }
-            if(c == '.' && pricecomma){
-                getToolkit().beep();
-                evt.consume();
-            }
         }
-        
+        boolean dot = txtPrice.getText().contains("."); //Si existe un '.' previamente
+        if(c == ','){
+            evt.setKeyChar('.');
+            c = evt.getKeyChar();
+        }
+        if(c == '.' && dot){
+            getToolkit().beep();
+            evt.consume();
+        }
     }//GEN-LAST:event_txtPriceKeyTyped
 
     private void txtStockKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStockKeyTyped
@@ -339,6 +378,58 @@ public class ProductEditorGUI extends javax.swing.JDialog {
           evt.consume();
         }
     }//GEN-LAST:event_txtOrderAmountKeyTyped
+
+    private void txtPriceFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPriceFocusLost
+        String price = txtPrice.getText();
+        double parser = Double.parseDouble(price);
+        parser = Math.floor(parser * 100) / 100;
+        txtPrice.setText(Double.toString(parser));
+    }//GEN-LAST:event_txtPriceFocusLost
+
+    private void btnDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoneActionPerformed
+        if(editionmode){ //editar
+            product.setProductname(txtName.getText());
+            product.setPrice(Double.parseDouble(txtPrice.getText()));
+            product.setStock(Integer.parseInt(txtStock.getText()));
+            product.setSecuritystock(Integer.parseInt(txtSecStock.getText()));
+            product.setMinimumstock(Integer.parseInt(txtMinStock.getText()));
+            product.setDefaultorderamount(Integer.parseInt(txtOrderAmount.getText()));
+            
+            product.getDao().editProduct(product);
+        }else{ //crear
+            Product prod = new Product(txtName.getText(),
+            Double.parseDouble(txtPrice.getText()),
+            Integer.parseInt(txtStock.getText()),
+            Integer.parseInt(txtSecStock.getText()),
+            Integer.parseInt(txtMinStock.getText()),
+            Integer.parseInt(txtOrderAmount.getText()));
+            
+            prod.getDao().createProduct(prod);
+        }
+        
+        this.dispose();
+    }//GEN-LAST:event_btnDoneActionPerformed
+
+    private void txtPriceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPriceFocusGained
+        txtPrice.selectAll();
+    }//GEN-LAST:event_txtPriceFocusGained
+
+    private void txtStockFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtStockFocusGained
+        txtStock.selectAll();
+    }//GEN-LAST:event_txtStockFocusGained
+
+    private void txtSecStockFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSecStockFocusGained
+        txtSecStock.selectAll();
+    }//GEN-LAST:event_txtSecStockFocusGained
+
+    private void txtMinStockFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMinStockFocusGained
+        txtMinStock.selectAll();
+    }//GEN-LAST:event_txtMinStockFocusGained
+
+    private void txtOrderAmountFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtOrderAmountFocusGained
+        if(txtOrderAmount.isEnabled())
+            txtOrderAmount.selectAll();
+    }//GEN-LAST:event_txtOrderAmountFocusGained
 
     /**
      * @param args the command line arguments
