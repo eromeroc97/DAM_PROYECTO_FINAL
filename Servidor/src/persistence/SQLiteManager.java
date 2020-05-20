@@ -122,6 +122,12 @@ public class SQLiteManager {
                 stmt2.execute(TableCreator.SALES_TABLE);
                 stmt2.execute(TableCreator.ORDERS_TABLE);
                 
+                //TRIGGERS
+                stmt2.execute(TableCreator.VALIDATE_SALE_TRIGGER);
+                stmt2.execute(TableCreator.AUTO_ORDER_TRIGGER);
+                stmt2.execute(TableCreator.CONFIRMED_ORDER_TRIGGER);
+                stmt2.execute(TableCreator.VALIDATE_ORDER_TRIGGER);
+                
                 //INSERTS POR DEFECTO
                 for(String s : (new TableCreator()).INSERTS_PERM)
                     stmt2.execute(s);
@@ -238,7 +244,41 @@ public class SQLiteManager {
                 + "IDPRODUCT INTEGER NOT NULL,"
                 + "ORDERDATE DATETIME NOT NULL,"
                 + "UNITS INTEGER NOT NULL,"
+                + "CONFIRMED BOOLEAN NOT NULL DEFAULT FALSE,"
                 + "FOREIGN KEY (IDPRODUCT) REFERENCES PRODUCTS(IDPRODUCT));";
+        
+        public static final String VALIDATE_SALE_TRIGGER = "CREATE TRIGGER IF NOT EXISTS VALIDATE_SALE " +
+                "BEFORE INSERT ON SALES " +
+                "BEGIN " +
+                "	SELECT RAISE(ABORT, 'CAN_T SELL MORE THAN AVAILABLE') " +
+                "	WHERE EXISTS (SELECT 1 FROM PRODUCTS WHERE NEW.UNITS > PRODUCTS.STOCK AND " +
+                "	NEW.IDPRODUCT = PRODUCTS.IDPRODUCT); " +
+                "	UPDATE PRODUCTS SET STOCK=(SELECT PRODUCTS.STOCK-NEW.UNITS " +
+                "	FROM PRODUCTS WHERE PRODUCTS.IDPRODUCT=NEW.IDPRODUCT); " +
+                "END;";
+        
+        public static final String AUTO_ORDER_TRIGGER = "CREATE TRIGGER IF NOT EXISTS AUTO_ORDER " +
+                "AFTER UPDATE OF STOCK ON PRODUCTS " +
+                "WHEN NEW.STOCK <= OLD.SECURITYSTOCK AND (SELECT 1 FROM ORDERS WHERE IDPRODUCT=NEW.IDPRODUCT AND CONFIRMED=FALSE) <> 1 " +
+                "BEGIN " +
+                "	INSERT INTO ORDERS (IDPRODUCT, ORDERDATE, UNITS) " +
+                "	VALUES (NEW.IDPRODUCT, date('now'), " +
+                "	(SELECT DEFAULTORDERAMOUNT FROM PRODUCTS " +
+                "	WHERE PRODUCTS.IDPRODUCT=NEW.IDPRODUCT AND DEFAULTORDERAMOUNT > 0 )); " +
+                "END;";
+        
+        public static final String CONFIRMED_ORDER_TRIGGER = "CREATE TRIGGER IF NOT EXISTS CONFIRMED_ORDER " +
+                "AFTER UPDATE OF CONFIRMED ON ORDERS "+
+                "BEGIN " +
+                "	UPDATE PRODUCTS SET STOCK = STOCK + OLD.UNITS WHERE PRODUCTS.IDPRODUCT = OLD.IDPRODUCT; " +
+                "END;";
+        
+        public static final String VALIDATE_ORDER_TRIGGER = "CREATE TRIGGER IF NOT EXISTS VALIDATE_ORDER\n" +
+                "AFTER INSERT ON ORDERS " +
+                "BEGIN " +
+                "	SELECT RAISE(IGNORE) " +
+                "	WHERE EXISTS (SELECT 1 FROM ORDERS WHERE IDPRODUCT=NEW.IDPRODUCT AND CONFIRMED=FALSE); " +
+                "END;";
     }
 }
 
