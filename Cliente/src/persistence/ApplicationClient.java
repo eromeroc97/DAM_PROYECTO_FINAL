@@ -8,6 +8,7 @@ package persistence;
 import domain.InMail;
 import domain.Permission;
 import domain.Product;
+import domain.Ticket;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -830,6 +832,72 @@ public class ApplicationClient{
         if(confirmation == 1){
             pw.println(idprod);
             pw.flush();
+        }
+    }
+
+    public double AskForProductPrice(String productname) throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.GET_PRODUCT_PRICE);
+        pw.flush();
+        
+        double productprice = 0.0;
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(productname);
+            pw.flush();
+            String data = bfr.readLine();
+            productprice = Double.parseDouble(data);
+        }
+        return productprice;
+    }
+
+    public void AskForCreateSales(Ticket ticket) throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.CREATE_SALES);
+        pw.flush();
+        
+        double productprice = 0.0;
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(ticket.getIdUser());
+            pw.println(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(ticket.getSaledate()));
+            pw.flush();
+            
+            for(int i = 0; i < ticket.size(); i++)
+                pw.println(ticket.getFormattedString(i));
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();
+            
         }
     }
 }

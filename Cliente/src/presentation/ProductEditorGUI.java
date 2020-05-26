@@ -382,10 +382,19 @@ public class ProductEditorGUI extends javax.swing.JDialog {
     private void txtPriceFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPriceFocusLost
         String price = txtPrice.getText();
         double parser = Double.parseDouble(price);
-        parser = Math.floor(parser * 100) / 100;
+        parser = round(parser, 2);
         txtPrice.setText(Double.toString(parser));
     }//GEN-LAST:event_txtPriceFocusLost
 
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+    
     private void btnDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoneActionPerformed
         if(editionmode){ //editar
             product.setProductname(txtName.getText());

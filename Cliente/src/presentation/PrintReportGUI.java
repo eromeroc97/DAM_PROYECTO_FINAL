@@ -57,6 +57,11 @@ public class PrintReportGUI extends javax.swing.JDialog {
         btnClose.setBackground(new java.awt.Color(204, 0, 0));
         btnClose.setBackgroundHover(new java.awt.Color(255, 0, 0));
         btnClose.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CLOSE);
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
 
         btnUsersReport.setBackground(new java.awt.Color(239, 96, 0));
         btnUsersReport.setText("Users Report");
@@ -206,6 +211,10 @@ public class PrintReportGUI extends javax.swing.JDialog {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCloseActionPerformed
 
     /**
      * @param args the command line arguments

@@ -35,4 +35,6 @@ public interface IServerProtocol {
     public static final int EDIT_PRODUCT = 20;
     public static final int DELETE_PRODUCT = 21;
     public static final int RECOVER_PRODUCT = 22;
+    public static final int GET_PRODUCT_PRICE = 23;
+    public static final int CREATE_SALES = 24;
 }

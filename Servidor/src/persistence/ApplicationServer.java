@@ -248,6 +248,18 @@ public class ApplicationServer implements Runnable{
                     RecoverProduct(bfr, pw);
                     break;
                 }
+                case IServerProtocol.GET_PRODUCT_PRICE:{
+                    try {
+                        GetProductPrice(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
+                case IServerProtocol.CREATE_SALES:{
+                    CreateSales(bfr, pw);
+                    break;
+                }
                 
             }
         }
@@ -562,6 +574,33 @@ public class ApplicationServer implements Runnable{
             int pId = Integer.parseInt(bfr.readLine());
             String sql = "UPDATE PRODUCTS SET DELETED = FALSE WHERE IDPRODUCT="+pId+";";
             man.executeNonQuery(sql);
+        }
+
+        private void GetProductPrice(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
+            String pName = bfr.readLine();
+            String sql = "SELECT PRICE FROM PRODUCTS WHERE PRODUCTNAME='"+pName+"';";
+            ResultSet rs = man.executeQuery(sql);
+            if(rs.next())
+                pw.println(rs.getDouble(1));
+            else
+                pw.println("0.0");
+            pw.flush();
+        }
+
+        private void CreateSales(BufferedReader bfr, PrintWriter pw) throws IOException {
+            String uID = bfr.readLine();
+            String formatDate = bfr.readLine();
+            
+            String data = "";
+            while(!data.equals(IServerProtocol.END_INFO_TRANSFER)){
+                data = bfr.readLine();
+                if(!data.equals(IServerProtocol.END_INFO_TRANSFER)){
+                    String[] valores = data.split(";");
+                    String sql = "INSERT INTO SALES(IDPRODUCT, IDUSER, SALEPRICE, UNITS, SALEDATE) "
+                            + "VALUES((SELECT IDPRODUCT FROM PRODUCTS WHERE PRODUCTNAME='"+valores[0]+"'),"+uID+","+valores[2]+","+valores[1]+",'"+formatDate+"');";
+                    man.executeNonQuery(sql);
+                }
+            }
         }
 
         

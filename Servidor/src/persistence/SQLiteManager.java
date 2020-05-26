@@ -124,9 +124,10 @@ public class SQLiteManager {
                 
                 //TRIGGERS
                 stmt2.execute(TableCreator.VALIDATE_SALE_TRIGGER);
+                stmt2.execute(TableCreator.VALIDATE_ORDER_TRIGGER);
+                stmt2.execute(TableCreator.VALIDATE_DELETE_ORDER_TRIGGER);
                 stmt2.execute(TableCreator.AUTO_ORDER_TRIGGER);
                 stmt2.execute(TableCreator.CONFIRMED_ORDER_TRIGGER);
-                stmt2.execute(TableCreator.VALIDATE_ORDER_TRIGGER);
                 
                 //INSERTS POR DEFECTO
                 for(String s : (new TableCreator()).INSERTS_PERM)
@@ -221,7 +222,7 @@ public class SQLiteManager {
         
         public static final String PRODUCTS_TABLE = "CREATE TABLE IF NOT EXISTS PRODUCTS("
                 + "IDPRODUCT INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "PRODUCTNAME TEXT NOT NULL,"
+                + "PRODUCTNAME TEXT UNIQUE NOT NULL,"
                 + "PRICE DOUBLE NOT NULL,"
                 + "STOCK INTEGER NOT NULL,"
                 + "SECURITYSTOCK INTEGER NOT NULL,"
@@ -251,10 +252,9 @@ public class SQLiteManager {
                 "BEFORE INSERT ON SALES " +
                 "BEGIN " +
                 "	SELECT RAISE(ABORT, 'CAN_T SELL MORE THAN AVAILABLE') " +
-                "	WHERE EXISTS (SELECT 1 FROM PRODUCTS WHERE NEW.UNITS > PRODUCTS.STOCK AND " +
-                "	NEW.IDPRODUCT = PRODUCTS.IDPRODUCT); " +
-                "	UPDATE PRODUCTS SET STOCK=(SELECT PRODUCTS.STOCK-NEW.UNITS " +
-                "	FROM PRODUCTS WHERE PRODUCTS.IDPRODUCT=NEW.IDPRODUCT); " +
+                "	WHERE EXISTS (SELECT 1 FROM PRODUCTS WHERE NEW.UNITS > PRODUCTS.STOCK AND NEW.UNITS <= 0 AND NEW.IDPRODUCT = PRODUCTS.IDPRODUCT);" +
+                
+                "	UPDATE PRODUCTS SET STOCK=(SELECT PRODUCTS.STOCK-NEW.UNITS FROM PRODUCTS WHERE PRODUCTS.IDPRODUCT=NEW.IDPRODUCT) WHERE PRODUCTS.IDPRODUCT=NEW.IDPRODUCT;" +
                 "END;";
         
         public static final String AUTO_ORDER_TRIGGER = "CREATE TRIGGER IF NOT EXISTS AUTO_ORDER " +
@@ -278,6 +278,13 @@ public class SQLiteManager {
                 "BEGIN " +
                 "	SELECT RAISE(IGNORE) " +
                 "	WHERE EXISTS (SELECT 1 FROM ORDERS WHERE IDPRODUCT=NEW.IDPRODUCT AND CONFIRMED=FALSE); " +
+                "END;";
+        
+        public static final String VALIDATE_DELETE_ORDER_TRIGGER = "CREATE TRIGGER IF NOT EXISTS VALIDATE_DELETE_ORDER " +
+                "BEFORE DELETE ON ORDERS " +
+                "BEGIN " +
+                "	SELECT RAISE(ABORT, 'CAN_T CANCEL AN ORDER AFTER SECOND DAY THAT IS DONE') " +
+                "	WHERE EXISTS (SELECT 1 FROM ORDERS WHERE OLD.ORDERDATE < date('now')-2 OR OLD.CONFIRMED=TRUE); " +
                 "END;";
     }
 }

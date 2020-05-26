@@ -87,4 +87,13 @@ public class ProductDAO {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public double getProductPrice(String productname) {
+        try {
+            return this.appClient.AskForProductPrice(productname);
+        } catch (IOException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0.0;
+    }
 }

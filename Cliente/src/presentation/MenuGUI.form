@@ -483,6 +483,9 @@
                   <Value id="MONETIZATION_ON"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNewSaleActionPerformed"/>
+              </Events>
             </Component>
             <Component class="newscomponents.RSButtonBigIcon_new" name="btnPrintReport">
               <Properties>
@@ -498,6 +501,9 @@
                   <Value id="PRINT"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPrintReportActionPerformed"/>
+              </Events>
             </Component>
             <Component class="newscomponents.RSButtonBigIcon_new" name="btnViewAdverts">
               <Properties>
@@ -512,6 +518,9 @@
                   <Value id="NEW_RELEASES"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnViewAdvertsActionPerformed"/>
+              </Events>
             </Component>
             <Component class="newscomponents.RSButtonBigIcon_new" name="btnConfirmOrders">
               <Properties>
@@ -527,6 +536,9 @@
                   <Value id="SHOP"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConfirmOrdersActionPerformed"/>
+              </Events>
             </Component>
             <Component class="newscomponents.RSButtonBigIcon_new" name="btnRegisterProduct">
               <Properties>

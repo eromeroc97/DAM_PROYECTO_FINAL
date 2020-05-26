@@ -278,23 +278,43 @@ public class MenuGUI extends javax.swing.JFrame {
         btnNewSale.setBgHover(new java.awt.Color(255, 137, 25));
         btnNewSale.setEnabled(false);
         btnNewSale.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.MONETIZATION_ON);
+        btnNewSale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewSaleActionPerformed(evt);
+            }
+        });
 
         btnPrintReport.setBackground(new java.awt.Color(239, 96, 0));
         btnPrintReport.setText("Print Report");
         btnPrintReport.setBgHover(new java.awt.Color(255, 137, 25));
         btnPrintReport.setEnabled(false);
         btnPrintReport.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.PRINT);
+        btnPrintReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintReportActionPerformed(evt);
+            }
+        });
 
         btnViewAdverts.setBackground(new java.awt.Color(239, 96, 0));
         btnViewAdverts.setText("View Adverts");
         btnViewAdverts.setBgHover(new java.awt.Color(255, 137, 25));
         btnViewAdverts.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.NEW_RELEASES);
+        btnViewAdverts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewAdvertsActionPerformed(evt);
+            }
+        });
 
         btnConfirmOrders.setBackground(new java.awt.Color(239, 96, 0));
         btnConfirmOrders.setText("Confirm Orders");
         btnConfirmOrders.setBgHover(new java.awt.Color(255, 137, 25));
         btnConfirmOrders.setEnabled(false);
         btnConfirmOrders.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.SHOP);
+        btnConfirmOrders.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmOrdersActionPerformed(evt);
+            }
+        });
 
         btnRegisterProduct.setBackground(new java.awt.Color(239, 96, 0));
         btnRegisterProduct.setText("Register Product");
@@ -443,6 +463,26 @@ public class MenuGUI extends javax.swing.JFrame {
         ProductsGUI prod = new ProductsGUI(this, true);
         prod.setVisible(true);
     }//GEN-LAST:event_btnRegisterProductActionPerformed
+
+    private void btnConfirmOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmOrdersActionPerformed
+        ConfirmOrdersGUI cogui = new ConfirmOrdersGUI(this, true);
+        cogui.setVisible(true);
+    }//GEN-LAST:event_btnConfirmOrdersActionPerformed
+
+    private void btnPrintReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintReportActionPerformed
+        PrintReportGUI prgui = new PrintReportGUI(this, true);
+        prgui.setVisible(true);
+    }//GEN-LAST:event_btnPrintReportActionPerformed
+
+    private void btnNewSaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewSaleActionPerformed
+        NewSaleGUI nsgui = new NewSaleGUI(this, true, myUser);
+        nsgui.setVisible(true);
+    }//GEN-LAST:event_btnNewSaleActionPerformed
+
+    private void btnViewAdvertsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewAdvertsActionPerformed
+        ViewAdvertsGUI vagui = new ViewAdvertsGUI(this, true);
+        vagui.setVisible(true);
+    }//GEN-LAST:event_btnViewAdvertsActionPerformed
     
     public void setLanguageUI(){
         this.btnMenu.setText(PropertiesController.getLangValue("menu"));

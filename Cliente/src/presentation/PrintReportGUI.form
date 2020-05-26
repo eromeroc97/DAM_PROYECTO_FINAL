@@ -166,6 +166,9 @@
               <Value id="CLOSE"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCloseActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonShape" name="btnUsersReport">
           <Properties>
