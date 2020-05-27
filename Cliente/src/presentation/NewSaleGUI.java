@@ -8,6 +8,7 @@ package presentation;
 import domain.Product;
 import domain.RegistredUser;
 import domain.Ticket;
+import java.awt.event.KeyEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import utilities.PropertiesController;
@@ -111,7 +112,7 @@ public class NewSaleGUI extends javax.swing.JDialog {
 
         lblTicket.setForeground(new java.awt.Color(239, 96, 0));
         lblTicket.setText("Ticket");
-        lblTicket.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.LIST);
+        lblTicket.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.RECEIPT);
 
         tblTicket.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -161,6 +162,19 @@ public class NewSaleGUI extends javax.swing.JDialog {
         txtUnitPrice.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtUnitPrice.setText("0");
         txtUnitPrice.setColorMaterial(new java.awt.Color(239, 96, 0));
+        txtUnitPrice.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtUnitPriceFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtUnitPriceFocusLost(evt);
+            }
+        });
+        txtUnitPrice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUnitPriceKeyTyped(evt);
+            }
+        });
 
         lblUnits.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblUnits.setForeground(new java.awt.Color(255, 255, 255));
@@ -183,6 +197,19 @@ public class NewSaleGUI extends javax.swing.JDialog {
         txtUnits.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtUnits.setText("1");
         txtUnits.setColorMaterial(new java.awt.Color(239, 96, 0));
+        txtUnits.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtUnitsFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtUnitsFocusLost(evt);
+            }
+        });
+        txtUnits.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUnitsKeyTyped(evt);
+            }
+        });
 
         btnAddToTicket.setBackground(new java.awt.Color(239, 96, 0));
         btnAddToTicket.setText("Add To Ticket");
@@ -369,12 +396,94 @@ public class NewSaleGUI extends javax.swing.JDialog {
             }
             t.confirmTicket();
         }
+        //Generate report
+        
+        
+        //Show report
+        
+        
+        //close 
+        this.dispose();
     }//GEN-LAST:event_btnPrintTicketActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        setLanguageUI();
         getProductPrice();
     }//GEN-LAST:event_formWindowOpened
 
+    private void txtUnitsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUnitsFocusGained
+        txtUnits.selectAll();
+    }//GEN-LAST:event_txtUnitsFocusGained
+
+    private void txtUnitPriceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUnitPriceFocusGained
+        txtUnitPrice.selectAll();
+    }//GEN-LAST:event_txtUnitPriceFocusGained
+
+    private void txtUnitsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnitsKeyTyped
+        char c = evt.getKeyChar();
+        if (!((c >= '0') && (c <= '9') ||
+           (c == KeyEvent.VK_BACK_SPACE) ||
+           (c == KeyEvent.VK_DELETE))) {
+          getToolkit().beep();
+          evt.consume();
+        }
+    }//GEN-LAST:event_txtUnitsKeyTyped
+
+    private void txtUnitPriceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnitPriceKeyTyped
+        char c = evt.getKeyChar();
+        if (!((c >= '0') && (c <= '9') ||
+           (c == KeyEvent.VK_BACK_SPACE) ||
+           (c == KeyEvent.VK_DELETE) ||
+                (c == '.') || (c == ','))) {
+          getToolkit().beep();
+          evt.consume();
+        }
+        boolean dot = txtUnitPrice.getText().contains("."); //Si existe un '.' previamente
+        if(c == ','){
+            evt.setKeyChar('.');
+            c = evt.getKeyChar();
+        }
+        if(c == '.' && dot){
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtUnitPriceKeyTyped
+
+    private void txtUnitPriceFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUnitPriceFocusLost
+        String price = txtUnitPrice.getText();
+        double parser = Double.parseDouble(price);
+        parser = round(parser, 2);
+        txtUnitPrice.setText(Double.toString(parser));
+    }//GEN-LAST:event_txtUnitPriceFocusLost
+
+    private void txtUnitsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUnitsFocusLost
+        String units = txtUnits.getText();
+        int u = Integer.parseInt(units);
+        if(u < 1)
+            u = 1;
+        txtUnits.setText(Integer.toString(u));
+    }//GEN-LAST:event_txtUnitsFocusLost
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+    
+    private void setLanguageUI(){
+        this.lblNewSale.setText(PropertiesController.getLangValue("newsale"));
+        this.lblAddProduct.setText(PropertiesController.getLangValue("addproduct"));
+        this.lblTicket.setText(PropertiesController.getLangValue("ticket"));
+        this.lblUnits.setText(PropertiesController.getLangValue("units"));
+        this.lblUnitPrice.setText(PropertiesController.getLangValue("unitprice"));
+        this.btnAddToTicket.setText(PropertiesController.getLangValue("addtoticket"));
+        this.btnPrintTicket.setText(PropertiesController.getLangValue("printticket"));
+        this.btnRemoveFromTicket.setText(PropertiesController.getLangValue("removefromticket"));
+    }
+    
     /**
      * @param args the command line arguments
      */

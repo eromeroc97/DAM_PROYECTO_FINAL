@@ -96,4 +96,56 @@ public class ProductDAO {
         }
         return 0.0;
     }
+
+    public LinkedList<Product> getSecurityStockProductsList() {
+        LinkedList<Product> products = new LinkedList<>();
+        LinkedList<String> prodData = new LinkedList<>();
+        try {
+            prodData = this.appClient.AskForSecurityStockProductsList();
+        } catch (IOException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for(int i = 0; i < prodData.size(); i++){
+            String[] data = prodData.get(i).split(";");
+            Product p = new Product(Integer.parseInt(data[0]),
+                    data[1],
+                Double.parseDouble(data[2]),
+                Integer.parseInt(data[3]),
+                Integer.parseInt(data[4]),
+                Integer.parseInt(data[5]),
+                Integer.parseInt(data[6]),
+                data[7].equals("1"));
+            products.add(p);
+        }
+        
+        
+        return products;
+    }
+
+    public LinkedList<Product> getZeroProductsList() {
+        LinkedList<Product> products = new LinkedList<>();
+        LinkedList<String> prodData = new LinkedList<>();
+        try {
+            prodData = this.appClient.AskForZeroProductsList();
+        } catch (IOException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for(int i = 0; i < prodData.size(); i++){
+            String[] data = prodData.get(i).split(";");
+            Product p = new Product(Integer.parseInt(data[0]),
+                    data[1],
+                Double.parseDouble(data[2]),
+                Integer.parseInt(data[3]),
+                Integer.parseInt(data[4]),
+                Integer.parseInt(data[5]),
+                Integer.parseInt(data[6]),
+                data[7].equals("1"));
+            products.add(p);
+        }
+        
+        
+        return products;
+    }
 }

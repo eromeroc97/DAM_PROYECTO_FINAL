@@ -240,6 +240,11 @@ public class MenuGUI extends javax.swing.JFrame {
         btnSendAdverts.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnSendAdverts.setEnabled(false);
         btnSendAdverts.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.NEW_RELEASES);
+        btnSendAdverts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendAdvertsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout ActionPanelLayout = new javax.swing.GroupLayout(ActionPanel);
         ActionPanel.setLayout(ActionPanelLayout);
@@ -483,6 +488,11 @@ public class MenuGUI extends javax.swing.JFrame {
         ViewAdvertsGUI vagui = new ViewAdvertsGUI(this, true);
         vagui.setVisible(true);
     }//GEN-LAST:event_btnViewAdvertsActionPerformed
+
+    private void btnSendAdvertsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendAdvertsActionPerformed
+        SendAdvertGUI sagui = new SendAdvertGUI(this, true, myUser);
+        sagui.setVisible(true);
+    }//GEN-LAST:event_btnSendAdvertsActionPerformed
     
     public void setLanguageUI(){
         this.btnMenu.setText(PropertiesController.getLangValue("menu"));

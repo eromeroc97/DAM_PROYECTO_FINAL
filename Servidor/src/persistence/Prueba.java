@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package presentation;
+package persistence;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,12 +14,12 @@ import java.util.logging.Logger;
  *
  * @author erome
  */
-public class Main {
+public class Prueba {
     public static void main(String[] args){
         try {
-            Desktop.getDesktop().open(new File("./TeamDev.pdf"));
-        } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            ReportCreator rc = new ReportCreator(ReportCreator.PRODUCTS_REPORT);
+        } catch (SQLException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

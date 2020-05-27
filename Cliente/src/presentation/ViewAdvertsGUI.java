@@ -5,6 +5,12 @@
  */
 package presentation;
 
+import domain.Advert;
+import java.text.SimpleDateFormat;
+import java.util.LinkedList;
+import javax.swing.table.DefaultTableModel;
+import utilities.PropertiesController;
+
 /**
  *
  * @author erome
@@ -39,6 +45,11 @@ public class ViewAdvertsGUI extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(50, 51, 52));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(239, 96, 0), 2));
@@ -71,6 +82,11 @@ public class ViewAdvertsGUI extends javax.swing.JDialog {
         tblAdverts.setBackgoundHover(new java.awt.Color(239, 96, 0));
         tblAdverts.setColorPrimaryText(new java.awt.Color(0, 0, 0));
         tblAdverts.setColorSecundaryText(new java.awt.Color(0, 0, 0));
+        tblAdverts.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblAdvertsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblAdverts);
 
         txtAdvert.setEditable(false);
@@ -133,6 +149,43 @@ public class ViewAdvertsGUI extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        setLanguageUI();
+        fillAdvertsTable(createTableModelAdverts());
+    }//GEN-LAST:event_formWindowOpened
+
+    private void tblAdvertsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAdvertsMouseClicked
+        if(tblAdverts.getSelectedRow() != -1)
+            txtAdvert.setText((String)tblAdverts.getValueAt(tblAdverts.getSelectedRow(), 3));
+    }//GEN-LAST:event_tblAdvertsMouseClicked
+
+    private DefaultTableModel createTableModelAdverts(){
+        DefaultTableModel model = new DefaultTableModel();
+        
+        model.addColumn(PropertiesController.getLangValue("advertid"));
+        model.addColumn(PropertiesController.getLangValue("username"));
+        model.addColumn(PropertiesController.getLangValue("date"));
+        model.addColumn(PropertiesController.getLangValue("message"));
+        
+        return model;
+    }
+    
+    private void fillAdvertsTable(DefaultTableModel model){
+        Advert a = new Advert();
+        LinkedList<Advert> advs = a.getDao().getAdvertList();
+        for(Advert ad : advs){
+            Object[] obj = new Object[]{ad.getIdadvert(), ad.getUsername(), 
+                new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(ad.getDate()),
+                ad.getMessage()};
+            model.addRow(obj);
+        }
+        this.tblAdverts.setModel(model);
+    }
+    
+    private void setLanguageUI(){
+        this.lblAdverts.setText(PropertiesController.getLangValue("adverts"));
+    }
+    
     /**
      * @param args the command line arguments
      */

@@ -37,4 +37,11 @@ public interface IServerProtocol {
     public static final int RECOVER_PRODUCT = 22;
     public static final int GET_PRODUCT_PRICE = 23;
     public static final int CREATE_SALES = 24;
+    public static final int SEND_ADVERT = 25;
+    public static final int GET_ADVERT_LIST = 26;
+    public static final int GET_SECURITY_STOCK_PRODUCT_LIST = 27;
+    public static final int GET_ZERO_STOCK_PRODUCT_LIST = 28;
+    public static final int CREATE_REPORT = 29;
+    public static final int GET_REPORT_LIST = 30;
+    public static final int GET_REPORT = 31;
 }

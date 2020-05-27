@@ -44,6 +44,7 @@ public class ProductsGUI extends javax.swing.JDialog {
         btnDelete = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnClose = new RSMaterialComponent.RSButtonIconOne();
         chkShowDeleted = new RSMaterialComponent.RSCheckBoxMaterial();
+        btnUpdateTable = new RSMaterialComponent.RSButtonIconOne();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
@@ -134,6 +135,15 @@ public class ProductsGUI extends javax.swing.JDialog {
             }
         });
 
+        btnUpdateTable.setBackground(new java.awt.Color(239, 96, 0));
+        btnUpdateTable.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnUpdateTable.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.SYNC);
+        btnUpdateTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateTableActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -143,9 +153,11 @@ public class ProductsGUI extends javax.swing.JDialog {
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addComponent(chkShowDeleted, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(57, 57, 57)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnUpdateTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)
                         .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
@@ -167,7 +179,8 @@ public class ProductsGUI extends javax.swing.JDialog {
                         .addContainerGap()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblProducts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(chkShowDeleted, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(chkShowDeleted, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnUpdateTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -253,6 +266,10 @@ public class ProductsGUI extends javax.swing.JDialog {
     private void chkShowDeletedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowDeletedActionPerformed
         fillProductTable(createProductTableModel());
     }//GEN-LAST:event_chkShowDeletedActionPerformed
+
+    private void btnUpdateTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTableActionPerformed
+        fillProductTable(createProductTableModel());
+    }//GEN-LAST:event_btnUpdateTableActionPerformed
 
     private void setLanguageUI(){
         this.lblProducts.setText(PropertiesController.getLangValue("products"));
@@ -358,6 +375,7 @@ public class ProductsGUI extends javax.swing.JDialog {
     private RSMaterialComponent.RSButtonMaterialIconOne btnCreate;
     private RSMaterialComponent.RSButtonMaterialIconOne btnDelete;
     private RSMaterialComponent.RSButtonMaterialIconOne btnEdit;
+    private RSMaterialComponent.RSButtonIconOne btnUpdateTable;
     private RSMaterialComponent.RSCheckBoxMaterial chkShowDeleted;
     private javax.swing.JScrollPane jScrollPane1;
     private RSMaterialComponent.RSLabelTextIcon lblProducts;

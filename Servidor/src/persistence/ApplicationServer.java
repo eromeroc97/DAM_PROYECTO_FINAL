@@ -260,6 +260,46 @@ public class ApplicationServer implements Runnable{
                     CreateSales(bfr, pw);
                     break;
                 }
+                case IServerProtocol.SEND_ADVERT:{
+                    SendAdvert(bfr, pw);
+                    break;
+                }
+                case IServerProtocol.GET_ADVERT_LIST:{
+                    try {
+                        GetAdvertList(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                        break;
+                }
+                case IServerProtocol.GET_SECURITY_STOCK_PRODUCT_LIST:{
+                    try {
+                        GetSecurityStockProductList(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
+                case IServerProtocol.GET_ZERO_STOCK_PRODUCT_LIST:{
+                    try {
+                        GetZeroStockProductList(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
+                case IServerProtocol.CREATE_REPORT:{
+                    CreateReport(bfr, pw);
+                    break;
+                }
+                case IServerProtocol.GET_REPORT_LIST:{
+                    GetReportList(bfr, pw);
+                    break;
+                }
+                case IServerProtocol.GET_REPORT:{
+                    GetReport(bfr, pw);
+                    break;
+                }
                 
             }
         }
@@ -601,6 +641,80 @@ public class ApplicationServer implements Runnable{
                     man.executeNonQuery(sql);
                 }
             }
+        }
+
+        private void SendAdvert(BufferedReader bfr, PrintWriter pw) throws IOException {
+            String uID = bfr.readLine();
+            String formatdate = bfr.readLine();
+            String msg = bfr.readLine();
+            String sql = "INSERT INTO ADVERTS (IDUSER, DATE, MESSAGE) VALUES("+uID+",'"+formatdate+"','"+msg+"');";
+            man.executeNonQuery(sql);
+        }
+
+        private void GetAdvertList(BufferedReader bfr, PrintWriter pw) throws SQLException {
+            String sql = "SELECT A.IDADVERT, U.USERNAME, A.DATE, A.MESSAGE FROM ADVERTS A, USERS U "
+                    + "WHERE A.IDUSER = U.IDUSER;";
+            ResultSet rs = man.executeQuery(sql);
+            while(rs.next()){
+                String data = rs.getInt(1)+";"+rs.getString(2)+";"+rs.getString(3)+";"+rs.getString(4);
+                pw.println(data);
+            }
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();
+        }
+
+        private void GetSecurityStockProductList(BufferedReader bfr, PrintWriter pw) throws SQLException {
+            String sql = "SELECT * FROM PRODUCTS WHERE STOCK <= SECURITYSTOCK ORDER BY IDPRODUCT ASC;";
+            ResultSet rs = man.executeQuery(sql);
+            
+            while(rs.next()){
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int stock = rs.getInt(4);
+                int secStock = rs.getInt(5);
+                int minStock = rs.getInt(6);
+                int defaultorderamount = rs.getInt(7);
+                int deleted = rs.getInt(8);
+                String product = id+";"+name+";"+price+";"+stock+";"+secStock+";"+minStock+";"+defaultorderamount+";"+deleted;
+                pw.println(product);
+                pw.flush();
+            }
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();
+        }
+
+        private void GetZeroStockProductList(BufferedReader bfr, PrintWriter pw) throws SQLException {
+            String sql = "SELECT * FROM PRODUCTS WHERE STOCK=0 ORDER BY IDPRODUCT ASC;";
+            ResultSet rs = man.executeQuery(sql);
+            
+            while(rs.next()){
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int stock = rs.getInt(4);
+                int secStock = rs.getInt(5);
+                int minStock = rs.getInt(6);
+                int defaultorderamount = rs.getInt(7);
+                int deleted = rs.getInt(8);
+                String product = id+";"+name+";"+price+";"+stock+";"+secStock+";"+minStock+";"+defaultorderamount+";"+deleted;
+                pw.println(product);
+                pw.flush();
+            }
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();
+        }
+
+        private void CreateReport(BufferedReader bfr, PrintWriter pw) {
+            
+        }
+
+        private void GetReportList(BufferedReader bfr, PrintWriter pw) {
+            
+        }
+
+        private void GetReport(BufferedReader bfr, PrintWriter pw) {
+            
         }
 
         

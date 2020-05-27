@@ -1,6 +1,2 @@
-USUARIO		CONTRASEÑA		ROL
-----------	-------------		----------
-
-SYSADMIN 	1234			SYSADMIN
-Pedro		1234			VENTAS
-Ana Maria	1234			GERENCIA
+SYSADMIN 1234
+juan 1234

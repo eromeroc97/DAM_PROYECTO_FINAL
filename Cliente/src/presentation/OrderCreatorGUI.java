@@ -6,6 +6,11 @@
 
 package presentation;
 
+import domain.Product;
+import java.util.LinkedList;
+import javax.swing.table.DefaultTableModel;
+import utilities.PropertiesController;
+
 /**
  *
  * @author erome
@@ -35,16 +40,21 @@ public class OrderCreatorGUI extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProducts = new RSMaterialComponent.RSTableMetroCustom();
         lblUnits = new javax.swing.JLabel();
-        rSTextFieldOne1 = new RSMaterialComponent.RSTextFieldOne();
+        txtUnits = new RSMaterialComponent.RSTextFieldOne();
         btnDone = new RSMaterialComponent.RSButtonIconOne();
         btnCancel = new RSMaterialComponent.RSButtonIconOne();
-        lblUnits1 = new javax.swing.JLabel();
+        lblTotalOrderCost = new javax.swing.JLabel();
         txtTotalCost = new RSMaterialComponent.RSTextFieldOne();
-        lblUnits2 = new javax.swing.JLabel();
+        lblEuro = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(50, 51, 52));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(239, 96, 0), 2));
@@ -56,20 +66,36 @@ public class OrderCreatorGUI extends javax.swing.JDialog {
         btnAllProducts.setBackground(new java.awt.Color(239, 96, 0));
         btnAllProducts.setToolTipText("All Products");
         btnAllProducts.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnAllProducts.setEnabled(false);
         btnAllProducts.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         btnAllProducts.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.ALL_INCLUSIVE);
+        btnAllProducts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAllProductsActionPerformed(evt);
+            }
+        });
 
         btnSecurityProducts.setBackground(new java.awt.Color(239, 96, 0));
         btnSecurityProducts.setToolTipText("Security Stock Products");
         btnSecurityProducts.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnSecurityProducts.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         btnSecurityProducts.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.ANNOUNCEMENT);
+        btnSecurityProducts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSecurityProductsActionPerformed(evt);
+            }
+        });
 
         btnZeroProducts.setBackground(new java.awt.Color(239, 96, 0));
         btnZeroProducts.setToolTipText("Zero Stock Products");
         btnZeroProducts.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnZeroProducts.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         btnZeroProducts.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.NOT_INTERESTED);
+        btnZeroProducts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnZeroProductsActionPerformed(evt);
+            }
+        });
 
         tblProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -90,10 +116,10 @@ public class OrderCreatorGUI extends javax.swing.JDialog {
         lblUnits.setForeground(new java.awt.Color(255, 255, 255));
         lblUnits.setText("Units:");
 
-        rSTextFieldOne1.setForeground(new java.awt.Color(239, 96, 0));
-        rSTextFieldOne1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        rSTextFieldOne1.setText("0");
-        rSTextFieldOne1.setBorderColor(new java.awt.Color(239, 96, 0));
+        txtUnits.setForeground(new java.awt.Color(239, 96, 0));
+        txtUnits.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtUnits.setText("0");
+        txtUnits.setBorderColor(new java.awt.Color(239, 96, 0));
 
         btnDone.setBackground(new java.awt.Color(0, 204, 0));
         btnDone.setBackgroundHover(new java.awt.Color(0, 255, 0));
@@ -108,9 +134,9 @@ public class OrderCreatorGUI extends javax.swing.JDialog {
             }
         });
 
-        lblUnits1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblUnits1.setForeground(new java.awt.Color(255, 255, 255));
-        lblUnits1.setText("Total Order Cost");
+        lblTotalOrderCost.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblTotalOrderCost.setForeground(new java.awt.Color(255, 255, 255));
+        lblTotalOrderCost.setText("Total Order Cost");
 
         txtTotalCost.setEditable(false);
         txtTotalCost.setForeground(new java.awt.Color(239, 96, 0));
@@ -118,9 +144,9 @@ public class OrderCreatorGUI extends javax.swing.JDialog {
         txtTotalCost.setText("0");
         txtTotalCost.setBorderColor(new java.awt.Color(239, 96, 0));
 
-        lblUnits2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblUnits2.setForeground(new java.awt.Color(239, 96, 0));
-        lblUnits2.setText("€");
+        lblEuro.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblEuro.setForeground(new java.awt.Color(239, 96, 0));
+        lblEuro.setText("€");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -137,13 +163,13 @@ public class OrderCreatorGUI extends javax.swing.JDialog {
                                 .addContainerGap()
                                 .addComponent(lblUnits)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rSTextFieldOne1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtUnits, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(lblUnits1)
+                                .addComponent(lblTotalOrderCost)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(txtTotalCost, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblUnits2))
+                                .addComponent(lblEuro))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(btnSecurityProducts, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
@@ -177,10 +203,10 @@ public class OrderCreatorGUI extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUnits)
-                    .addComponent(rSTextFieldOne1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblUnits1)
+                    .addComponent(txtUnits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTotalOrderCost)
                     .addComponent(txtTotalCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblUnits2))
+                    .addComponent(lblEuro))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -207,6 +233,82 @@ public class OrderCreatorGUI extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void btnAllProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAllProductsActionPerformed
+        btnAllProducts.setEnabled(false);
+        btnZeroProducts.setEnabled(true);
+        btnSecurityProducts.setEnabled(true);
+        fillProductTable(createProductTableModel());
+    }//GEN-LAST:event_btnAllProductsActionPerformed
+
+    private void btnSecurityProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSecurityProductsActionPerformed
+        btnAllProducts.setEnabled(true);
+        btnZeroProducts.setEnabled(true);
+        btnSecurityProducts.setEnabled(false);
+        fillProductTable(createProductTableModel());
+    }//GEN-LAST:event_btnSecurityProductsActionPerformed
+
+    private void btnZeroProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZeroProductsActionPerformed
+        btnAllProducts.setEnabled(true);
+        btnZeroProducts.setEnabled(false);
+        btnSecurityProducts.setEnabled(true);
+        fillProductTable(createProductTableModel());
+    }//GEN-LAST:event_btnZeroProductsActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        btnAllProducts.setEnabled(false);
+        fillProductTable(createProductTableModel());
+        setLanguageUI();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void setLanguageUI(){
+        this.lblNewOrder.setText(PropertiesController.getLangValue("neworder"));
+        this.lblUnits.setText(PropertiesController.getLangValue("units"));
+        this.lblTotalOrderCost.setText(PropertiesController.getLangValue("totalordercost"));
+    }
+    
+    private DefaultTableModel createProductTableModel(){
+        DefaultTableModel model = new DefaultTableModel();
+        
+        model.addColumn(PropertiesController.getLangValue("idproduct"));
+        model.addColumn(PropertiesController.getLangValue("productname"));
+        model.addColumn(PropertiesController.getLangValue("price"));
+        model.addColumn(PropertiesController.getLangValue("stock"));
+        model.addColumn(PropertiesController.getLangValue("securitystock"));
+        model.addColumn(PropertiesController.getLangValue("minimumstock"));
+        
+        return model;
+    }
+    
+    private void fillProductTable(DefaultTableModel model){
+        Product p = new Product();
+        LinkedList<Product> productsList = new LinkedList<>();
+        if(!this.btnAllProducts.isEnabled())
+            productsList = p.getDao().getProductsList();
+        else if(!this.btnSecurityProducts.isEnabled())
+            productsList = p.getDao().getSecurityStockProductsList();
+        else if(!this.btnZeroProducts.isEnabled())
+            productsList = p.getDao().getZeroProductsList();
+        
+        for(int i = 0; i < productsList.size(); i++){
+            String deleted = PropertiesController.getLangValue("no");;
+            if(productsList.get(i).isDeleted()){
+                deleted = PropertiesController.getLangValue("yes");
+            }
+            Object[] row = new Object[]{
+                productsList.get(i).getIdproduct(),
+                productsList.get(i).getProductname(),
+                productsList.get(i).getPrice(),
+                productsList.get(i).getStock(),
+                productsList.get(i).getSecuritystock(),
+                productsList.get(i).getMinimumstock()
+            };
+            if(!productsList.get(i).isDeleted())
+                model.addRow(row);
+        }
+        this.tblProducts.setModel(model);
+        tblProducts.clearSelection();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -257,13 +359,13 @@ public class OrderCreatorGUI extends javax.swing.JDialog {
     private RSMaterialComponent.RSButtonShapeIcon btnZeroProducts;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblEuro;
     private RSMaterialComponent.RSLabelTextIcon lblNewOrder;
+    private javax.swing.JLabel lblTotalOrderCost;
     private javax.swing.JLabel lblUnits;
-    private javax.swing.JLabel lblUnits1;
-    private javax.swing.JLabel lblUnits2;
-    private RSMaterialComponent.RSTextFieldOne rSTextFieldOne1;
     private RSMaterialComponent.RSTableMetroCustom tblProducts;
     private RSMaterialComponent.RSTextFieldOne txtTotalCost;
+    private RSMaterialComponent.RSTextFieldOne txtUnits;
     // End of variables declaration//GEN-END:variables
 
 }

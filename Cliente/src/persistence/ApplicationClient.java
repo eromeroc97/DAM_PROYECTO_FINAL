@@ -5,6 +5,7 @@
  */
 package persistence;
 
+import domain.Advert;
 import domain.InMail;
 import domain.Permission;
 import domain.Product;
@@ -899,5 +900,151 @@ public class ApplicationClient{
             pw.flush();
             
         }
+    }
+
+    public void AskForSendAdvert(Advert a) throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.SEND_ADVERT);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(a.getIduser());
+            pw.println(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(a.getDate()));
+            pw.println(a.getMessage());
+            pw.flush();
+        }
+    }
+    
+    public LinkedList<String> AskForGetAdvertList() throws IOException{
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.GET_ADVERT_LIST);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            LinkedList<String> resultado = new LinkedList<>();
+            
+            String linea = "";
+            while(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){
+                linea = bfr.readLine();
+                if(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){                        
+                    resultado.add(linea);
+                }
+            }
+            
+            
+            return resultado;
+        }
+        
+        return new LinkedList<>();
+    }
+
+    LinkedList<String> AskForSecurityStockProductsList() throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.GET_SECURITY_STOCK_PRODUCT_LIST);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            LinkedList<String> resultado = new LinkedList<>();
+            
+            String linea = "";
+            while(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){
+                linea = bfr.readLine();
+                if(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){                        
+                    resultado.add(linea);
+                }
+            }
+            
+            
+            return resultado;
+        }
+        
+        return new LinkedList<>();
+    }
+
+    LinkedList<String> AskForZeroProductsList() throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.GET_ZERO_STOCK_PRODUCT_LIST);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            LinkedList<String> resultado = new LinkedList<>();
+            
+            String linea = "";
+            while(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){
+                linea = bfr.readLine();
+                if(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){                        
+                    resultado.add(linea);
+                }
+            }
+            
+            
+            return resultado;
+        }
+        
+        return new LinkedList<>();
     }
 }

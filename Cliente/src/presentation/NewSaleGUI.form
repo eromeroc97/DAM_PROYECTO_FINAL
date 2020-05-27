@@ -174,7 +174,7 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Ticket"/>
             <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
-              <Value id="LIST"/>
+              <Value id="RECEIPT"/>
             </Property>
           </Properties>
         </Component>
@@ -324,6 +324,11 @@
                   <Color blue="0" green="60" red="ef" type="rgb"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtUnitPriceFocusGained"/>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtUnitPriceFocusLost"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtUnitPriceKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblUnits">
               <Properties>
@@ -373,6 +378,11 @@
                   <Color blue="0" green="60" red="ef" type="rgb"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtUnitsFocusGained"/>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtUnitsFocusLost"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtUnitsKeyTyped"/>
+              </Events>
             </Component>
             <Component class="RSMaterialComponent.RSButtonMaterialOne" name="btnAddToTicket">
               <Properties>
