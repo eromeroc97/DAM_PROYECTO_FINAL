@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class Prueba {
     public static void main(String[] args){
         try {
-            ReportCreator rc = new ReportCreator(ReportCreator.PRODUCTS_REPORT);
+            ReportCreator rc = new ReportCreator(ReportCreator.FULL_SALES_REPORT);
         } catch (SQLException ex) {
             Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
         }

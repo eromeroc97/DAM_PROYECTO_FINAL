@@ -5,7 +5,11 @@
  */
 package persistence;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -15,8 +19,10 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import presentation.ServerConfigGUI;
 import utilities.Encrypt;
 import utilities.Utilidades;
@@ -289,7 +295,13 @@ public class ApplicationServer implements Runnable{
                     break;
                 }
                 case IServerProtocol.CREATE_REPORT:{
-                    CreateReport(bfr, pw);
+                    try {
+                        CreateReport(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     break;
                 }
                 case IServerProtocol.GET_REPORT_LIST:{
@@ -600,7 +612,7 @@ public class ApplicationServer implements Runnable{
             int pDefOrdAmount = Integer.parseInt(bfr.readLine());
             
             String sql = "UPDATE PRODUCTS SET PRODUCTNAME = '"+pName.toUpperCase()+"', PRICE = "+pPrice+", STOCK = "+pStock+", SECURITYSTOCK = "+pSecStock+","
-                    + " MINIMUMSTOCK = "+pMinStock+", DEFATULTORDERAMOUNT = "+pDefOrdAmount+" WHERE IDPRODUCT="+pId+";";
+                    + " MINIMUMSTOCK = "+pMinStock+", DEFAULTORDERAMOUNT = "+pDefOrdAmount+" WHERE IDPRODUCT="+pId+";";
             man.executeNonQuery(sql);
         }
 
@@ -641,6 +653,14 @@ public class ApplicationServer implements Runnable{
                     man.executeNonQuery(sql);
                 }
             }
+            //Creamos el ticket de venta
+            try {
+                ReportCreator rc = new ReportCreator(ReportCreator.TICKET_REPORT, new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(formatDate));
+            } catch (ParseException | SQLException ex) {
+                Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //Devolvemos el ticket de venta al cliente
+            
         }
 
         private void SendAdvert(BufferedReader bfr, PrintWriter pw) throws IOException {
@@ -705,16 +725,84 @@ public class ApplicationServer implements Runnable{
             pw.flush();
         }
 
-        private void CreateReport(BufferedReader bfr, PrintWriter pw) {
+        private void CreateReport(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException, ParseException {
+            int type = Integer.parseInt(bfr.readLine());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            Date day = null;
+            ReportCreator rc = null;
+            switch(type){
+                case IServerProtocol.TYPE_USERS_REPORT:
+                    rc = new ReportCreator(ReportCreator.USERS_REPORT);
+                    break;
+                case IServerProtocol.TYPE_FULL_ORDERS_REPORT:
+                    rc = new ReportCreator(ReportCreator.FULL_ORDERS_REPORT);
+                    break;
+                case IServerProtocol.TYPE_DAILY_ORDERS_REPORT:
+                    day = sdf.parse(bfr.readLine());
+                    rc = new ReportCreator(ReportCreator.DAILY_ORDERS_REPORT, day);
+                    break;
+                case IServerProtocol.TYPE_FULL_EXPENSES_BENEFITS_REPORT:
+                    rc = new ReportCreator(ReportCreator.FULL_EXPESES_BENEFITS_REPORT);
+                    break;
+                case IServerProtocol.TYPE_DAILY_EXPENSES_BENEFITS_REPORT:
+                    day = sdf.parse(bfr.readLine());
+                    rc = new ReportCreator(ReportCreator.DAILY_EXPENSES_BENEFITS_REPORT, day);
+                    break;
+                case IServerProtocol.TYPE_FULL_SALES_REPORT:
+                    rc = new ReportCreator(ReportCreator.FULL_SALES_REPORT);
+                    break;
+                case IServerProtocol.TYPE_DAILY_SALES_REPORT:
+                    day = sdf.parse(bfr.readLine());
+                    rc = new ReportCreator(ReportCreator.DAILY_EXPENSES_BENEFITS_REPORT, day);
+                    break;
+                case IServerProtocol.TYPE_PRODUCTS_REPORT:
+                    rc = new ReportCreator(ReportCreator.PRODUCTS_REPORT);
+                    break;
+                case IServerProtocol.TYPE_DELETED_PRODUCTS_REPORT:
+                    rc = new ReportCreator(ReportCreator.DELETED_PRODUCTS_REPORT);
+                    break;
+                case IServerProtocol.TYPE_TICKET_REPORT:
+                    day = sdf.parse(bfr.readLine());
+                    rc = new ReportCreator(ReportCreator.TICKET_REPORT, day);
+                    break;
+            }
+            
+            pw.println(rc.getFilename());
+            pw.flush();
             
         }
 
-        private void GetReportList(BufferedReader bfr, PrintWriter pw) {
-            
+        private void GetReportList(BufferedReader bfr, PrintWriter pw) {            
+            File root = new File("./serverfiles/reports/");
+            if(!root.exists()){
+                root.mkdir();
+                pw.println(IServerProtocol.END_INFO_TRANSFER);
+                pw.flush();
+            }else{
+                File[] allFiles = root.listFiles();
+                for(File f : allFiles){
+                    if(f.getName().endsWith(".pdf"))
+                        pw.println(f.getName());
+                }
+                pw.println(IServerProtocol.END_INFO_TRANSFER);
+                pw.flush();
+            }
         }
 
-        private void GetReport(BufferedReader bfr, PrintWriter pw) {
+        private void GetReport(BufferedReader bfr, PrintWriter pw) throws IOException {
+            String filename = bfr.readLine();
+            int method = Integer.parseInt(bfr.readLine());
             
+            File report = new File("./serverfiles/reports/"+filename);
+            
+            if(method == IServerProtocol.METHOD_MAIL){
+                
+            }else if(method == IServerProtocol.METHOD_CLIENT){
+                
+            }
+            
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();            
         }
 
         
