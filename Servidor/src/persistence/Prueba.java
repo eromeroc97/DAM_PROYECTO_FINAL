@@ -5,21 +5,18 @@
  */
 package persistence;
 
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author erome
  */
 public class Prueba {
     public static void main(String[] args){
-        try {
-            ReportCreator rc = new ReportCreator(ReportCreator.FULL_SALES_REPORT);
-        } catch (SQLException ex) {
-            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        String filename = "./serverfiles/reports/ProductsReport_28-05-2020-01-42-48.pdf";
+        String email = "e.romerociudad@outlook.com";
+        MailSender ms = new MailSender();
+        String filetype = filename.split("_")[0];
+        ms.sendFileMail(filetype, email, filename);
+
     }
 }

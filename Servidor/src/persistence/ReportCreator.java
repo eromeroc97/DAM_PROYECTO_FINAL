@@ -168,7 +168,9 @@ public class ReportCreator {
     private void DailyOrdersReport(String day) throws SQLException, FileNotFoundException, DocumentException{
         String[] header = new String[]{"ID ORDER", "PRODUCT", "ORDER DATE", "UNITS", "CONFIRMED", "ORDER COST"};
         LinkedList<String[]> list = new LinkedList<>();
-        String sql = "SELECT O.IDORDER, P.PRODUCTNAME, O.ORDERDATE, O.UNITS, O.CONFIRMED, O.UNITS*P.PRICE FROM ORDERS O, PRODUCTS P WHERE O.IDPRODUCT = P.IDPRODUCT AND O.ORDERDATE='"+day+"';";
+        String sql = "SELECT O.IDORDER, P.PRODUCTNAME, O.ORDERDATE, O.UNITS, O.CONFIRMED, O.UNITS*P.PRICE "
+                + "FROM ORDERS O, PRODUCTS P "
+                + "WHERE O.IDPRODUCT = P.IDPRODUCT AND O.ORDERDATE BETWEEN ('"+day.replaceAll("-", "/")+"'-1) AND '"+day.replaceAll("-", "/")+"';";
         ResultSet rs = man.executeQuery(sql);
         while(rs.next()){
             String[] data = new String[header.length]; 
@@ -212,7 +214,9 @@ public class ReportCreator {
         LinkedList<String[]> list = new LinkedList<>();
         String[] data = new String[header.length]; 
         //expenses
-        String sql = "SELECT SUM(O.UNITS*P.PRICE) AS 'EXPENSES' FROM ORDERS O, PRODUCTS P WHERE P.IDPRODUCT = O.IDPRODUCT AND O.ORDERDATE='"+day+"';";
+        String sql = "SELECT SUM(O.UNITS*P.PRICE) AS 'EXPENSES' "
+                + "FROM ORDERS O, PRODUCTS P "
+                + "WHERE P.IDPRODUCT = O.IDPRODUCT AND O.ORDERDATE BETWEEN ('"+day.replaceAll("-", "/")+"'-1) AND '"+day.replaceAll("-", "/")+"';";
         ResultSet rs = man.executeQuery(sql);
         if(rs.next()){
             data[0] = Double.toString(rs.getDouble(1));
@@ -253,9 +257,10 @@ public class ReportCreator {
     
     private void DailySalesReport(String day) throws SQLException, FileNotFoundException, DocumentException{
         String[] header = new String[]{"ID SALE", "PRODUCT", "SELLER", "SALE PRICE", "UNITS", "SALE DATE", "TOTAL VALUE"};
-        LinkedList<String[]> list = new LinkedList<>();
+        LinkedList<String[]> list = new LinkedList<>();        
         String sql = "SELECT S.IDSALE, P.PRODUCTNAME, U.USERNAME, S.SALEPRICE, S.UNITS, S.SALEDATE, S.UNITS*S.SALEPRICE "
-                + "FROM SALES S, PRODUCTS P, USERS U WHERE S.IDPRODUCT=P.IDPRODUCT AND U.IDUSER=S.IDUSER AND S.SALEDATE='"+day+"';";
+                + "FROM SALES S, PRODUCTS P, USERS U "
+                + "WHERE S.IDPRODUCT=P.IDPRODUCT AND U.IDUSER=S.IDUSER AND S.SALEDATE BETWEEN ('"+day.replaceAll("-", "/")+"'-1) AND '"+day.replaceAll("-", "/")+"';";
         ResultSet rs = man.executeQuery(sql);
         while(rs.next()){
             String[] data = new String[header.length]; 

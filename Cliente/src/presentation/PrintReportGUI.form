@@ -181,6 +181,9 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUsersReportActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonShape" name="btnFullSalesReport">
           <Properties>
@@ -196,6 +199,9 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFullSalesReportActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonShapeIcon" name="btnSendMail">
           <Properties>
@@ -213,6 +219,9 @@
               <Value id="MAIL_OUTLINE"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSendMailActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonShapeIcon" name="btnOpenPDF">
           <Properties>
@@ -242,6 +251,9 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFullOrdersReportActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonShape" name="btnDailySalesReport">
           <Properties>
@@ -257,6 +269,9 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDailySalesReportActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonShape" name="btDailyOrdersReport">
           <Properties>
@@ -269,6 +284,9 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btDailyOrdersReportActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonShape" name="btnProductsReport">
           <Properties>
@@ -284,6 +302,9 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProductsReportActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonShape" name="btnFullExpensesBenefitsReport">
           <Properties>
@@ -296,6 +317,9 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFullExpensesBenefitsReportActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonShape" name="btnDeletedProductsReport">
           <Properties>
@@ -311,6 +335,9 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeletedProductsReportActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonShape" name="btnDailyExpensesBenefitsReport">
           <Properties>
@@ -323,6 +350,9 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDailyExpensesBenefitsReportActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

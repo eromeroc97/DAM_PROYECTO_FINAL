@@ -970,7 +970,7 @@ public class ApplicationClient{
         return new LinkedList<>();
     }
 
-    LinkedList<String> AskForSecurityStockProductsList() throws IOException {
+    public LinkedList<String> AskForSecurityStockProductsList() throws IOException {
         Socket conexion;
         InetSocketAddress direccionServidor;
         direccionServidor=
@@ -1009,7 +1009,7 @@ public class ApplicationClient{
         return new LinkedList<>();
     }
 
-    LinkedList<String> AskForZeroProductsList() throws IOException {
+    public LinkedList<String> AskForZeroProductsList() throws IOException {
         Socket conexion;
         InetSocketAddress direccionServidor;
         direccionServidor=
@@ -1040,11 +1040,73 @@ public class ApplicationClient{
                     resultado.add(linea);
                 }
             }
-            
-            
             return resultado;
         }
-        
         return new LinkedList<>();
+    }
+    
+    public String AskForCreateReport(int type, Date day) throws IOException{
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.CREATE_REPORT);
+        pw.flush();
+        
+        String resultado = null;
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(type);
+            if(day != null)
+                pw.println(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(day));
+            pw.flush();
+            resultado = bfr.readLine();
+        }
+        return resultado;
+    }
+    
+    public File AskForGetReport(String filename, int method) throws IOException{
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.GET_REPORT);
+        pw.flush();
+        
+        File resultado = null;
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(filename);
+            pw.println(method);
+            if(method == IServerProtocol.METHOD_MAIL)
+                pw.println(username);
+            pw.flush();
+            //resultado = bfr.readLine();
+        }
+        return resultado;
     }
 }

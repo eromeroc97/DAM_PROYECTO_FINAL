@@ -5,18 +5,26 @@
  */
 package presentation;
 
+import domain.Report;
+import java.util.Date;
+import utilities.IServerProtocol;
+
 /**
  *
  * @author erome
  */
 public class PrintReportGUI extends javax.swing.JDialog {
-
+    
+    private java.awt.Frame parent;
+    private String lastFilename;
+    
     /**
      * Creates new form PrintReportGUI
      */
     public PrintReportGUI(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.parent = parent;
     }
 
     /**
@@ -67,18 +75,33 @@ public class PrintReportGUI extends javax.swing.JDialog {
         btnUsersReport.setText("Users Report");
         btnUsersReport.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnUsersReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnUsersReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUsersReportActionPerformed(evt);
+            }
+        });
 
         btnFullSalesReport.setBackground(new java.awt.Color(239, 96, 0));
         btnFullSalesReport.setText("Full Sales Report");
         btnFullSalesReport.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnFullSalesReport.setForma(RSMaterialComponent.RSButtonShape.FORMA.ROUND_LEFT);
         btnFullSalesReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnFullSalesReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFullSalesReportActionPerformed(evt);
+            }
+        });
 
         btnSendMail.setBackground(new java.awt.Color(239, 96, 0));
         btnSendMail.setText("Send Report to Mail");
         btnSendMail.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnSendMail.setForma(RSMaterialComponent.RSButtonShapeIcon.FORMA.ROUND_BOTTOM);
         btnSendMail.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.MAIL_OUTLINE);
+        btnSendMail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendMailActionPerformed(evt);
+            }
+        });
 
         btnOpenPDF.setBackground(new java.awt.Color(239, 96, 0));
         btnOpenPDF.setText("Open Report Here");
@@ -90,39 +113,74 @@ public class PrintReportGUI extends javax.swing.JDialog {
         btnFullOrdersReport.setText("Full Orders Report");
         btnFullOrdersReport.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnFullOrdersReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnFullOrdersReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFullOrdersReportActionPerformed(evt);
+            }
+        });
 
         btnDailySalesReport.setBackground(new java.awt.Color(239, 96, 0));
         btnDailySalesReport.setText("Daily Sales Report");
         btnDailySalesReport.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnDailySalesReport.setForma(RSMaterialComponent.RSButtonShape.FORMA.ROUND_LEFT);
         btnDailySalesReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnDailySalesReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDailySalesReportActionPerformed(evt);
+            }
+        });
 
         btDailyOrdersReport.setBackground(new java.awt.Color(239, 96, 0));
         btDailyOrdersReport.setText("Daily Orders Report");
         btDailyOrdersReport.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btDailyOrdersReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btDailyOrdersReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDailyOrdersReportActionPerformed(evt);
+            }
+        });
 
         btnProductsReport.setBackground(new java.awt.Color(239, 96, 0));
         btnProductsReport.setText("Products Report");
         btnProductsReport.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnProductsReport.setForma(RSMaterialComponent.RSButtonShape.FORMA.ROUND_LEFT);
         btnProductsReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnProductsReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProductsReportActionPerformed(evt);
+            }
+        });
 
         btnFullExpensesBenefitsReport.setBackground(new java.awt.Color(239, 96, 0));
         btnFullExpensesBenefitsReport.setText("Full Expenses - Benefits Report");
         btnFullExpensesBenefitsReport.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnFullExpensesBenefitsReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnFullExpensesBenefitsReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFullExpensesBenefitsReportActionPerformed(evt);
+            }
+        });
 
         btnDeletedProductsReport.setBackground(new java.awt.Color(239, 96, 0));
         btnDeletedProductsReport.setText("Deleted Products Report");
         btnDeletedProductsReport.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnDeletedProductsReport.setForma(RSMaterialComponent.RSButtonShape.FORMA.ROUND_LEFT);
         btnDeletedProductsReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnDeletedProductsReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeletedProductsReportActionPerformed(evt);
+            }
+        });
 
         btnDailyExpensesBenefitsReport.setBackground(new java.awt.Color(239, 96, 0));
         btnDailyExpensesBenefitsReport.setText("Daily Expenses - Benefits Report");
         btnDailyExpensesBenefitsReport.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnDailyExpensesBenefitsReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnDailyExpensesBenefitsReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDailyExpensesBenefitsReportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -215,6 +273,75 @@ public class PrintReportGUI extends javax.swing.JDialog {
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnUsersReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsersReportActionPerformed
+        Report r = new Report();
+        lastFilename = r.getDao().createReport(IServerProtocol.TYPE_USERS_REPORT, null);
+    }//GEN-LAST:event_btnUsersReportActionPerformed
+
+    private void btnFullOrdersReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFullOrdersReportActionPerformed
+        Report r = new Report();
+        lastFilename = r.getDao().createReport(IServerProtocol.TYPE_FULL_ORDERS_REPORT, null);
+    }//GEN-LAST:event_btnFullOrdersReportActionPerformed
+
+    private void btnFullSalesReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFullSalesReportActionPerformed
+        Report r = new Report();
+        lastFilename = r.getDao().createReport(IServerProtocol.TYPE_FULL_SALES_REPORT, null);
+    }//GEN-LAST:event_btnFullSalesReportActionPerformed
+
+    private void btnProductsReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductsReportActionPerformed
+        Report r = new Report();
+        lastFilename = r.getDao().createReport(IServerProtocol.TYPE_PRODUCTS_REPORT, null);
+    }//GEN-LAST:event_btnProductsReportActionPerformed
+
+    private void btnDeletedProductsReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletedProductsReportActionPerformed
+        Report r = new Report();
+        lastFilename = r.getDao().createReport(IServerProtocol.TYPE_DELETED_PRODUCTS_REPORT, null);
+    }//GEN-LAST:event_btnDeletedProductsReportActionPerformed
+
+    private void btnFullExpensesBenefitsReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFullExpensesBenefitsReportActionPerformed
+        Report r = new Report();
+        lastFilename = r.getDao().createReport(IServerProtocol.TYPE_FULL_EXPENSES_BENEFITS_REPORT, null);
+    }//GEN-LAST:event_btnFullExpensesBenefitsReportActionPerformed
+
+    private void btnSendMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendMailActionPerformed
+        if(lastFilename != null){
+            Report r = new Report();
+            r.getDao().getReport(lastFilename, IServerProtocol.METHOD_MAIL);
+
+            lastFilename = null;
+        }
+    }//GEN-LAST:event_btnSendMailActionPerformed
+
+    private void btDailyOrdersReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDailyOrdersReportActionPerformed
+        SelectDateGUI sdgui = new SelectDateGUI(this.parent, true);
+        sdgui.setVisible(true);
+        Date date = sdgui.getDate();
+        if(date != null){
+            Report r = new Report();
+            lastFilename = r.getDao().createReport(IServerProtocol.TYPE_DAILY_ORDERS_REPORT, date);
+        }
+    }//GEN-LAST:event_btDailyOrdersReportActionPerformed
+
+    private void btnDailySalesReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDailySalesReportActionPerformed
+        SelectDateGUI sdgui = new SelectDateGUI(this.parent, true);
+        sdgui.setVisible(true);
+        Date date = sdgui.getDate();
+        if(date != null){
+            Report r = new Report();
+            lastFilename = r.getDao().createReport(IServerProtocol.TYPE_DAILY_SALES_REPORT, date);
+        }
+    }//GEN-LAST:event_btnDailySalesReportActionPerformed
+
+    private void btnDailyExpensesBenefitsReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDailyExpensesBenefitsReportActionPerformed
+        SelectDateGUI sdgui = new SelectDateGUI(this.parent, true);
+        sdgui.setVisible(true);
+        Date date = sdgui.getDate();
+        if(date != null){
+            Report r = new Report();
+            lastFilename = r.getDao().createReport(IServerProtocol.TYPE_DAILY_EXPENSES_BENEFITS_REPORT, date);
+        }
+    }//GEN-LAST:event_btnDailyExpensesBenefitsReportActionPerformed
 
     /**
      * @param args the command line arguments

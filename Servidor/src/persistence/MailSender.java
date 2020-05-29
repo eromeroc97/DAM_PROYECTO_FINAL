@@ -6,13 +6,20 @@
 package persistence;
 
 import java.util.Properties;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 /**
  *
@@ -48,8 +55,49 @@ public class MailSender {
             message.setText(String.format("USERNAME: %s\nPASSWORD: %s",user, pass));
             // Envia el mensaje
             Transport.send(message);
-      } catch (MessagingException ex) {
-            System.out.println("Unable to send message: "+ex.getMessage());
-      }
+        } catch (MessagingException ex) {
+              System.out.println("Unable to send message: "+ex.getMessage());
+        }
     }
+    
+    public void sendFileMail(String filetype, String emailAddress, String filename){
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(email, password);
+            }
+        });
+        try {
+            // Define message
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(email));
+            message.setSubject("Bussines Control System: Report Received");
+            message.addRecipient(Message.RecipientType.TO,new InternetAddress(emailAddress));
+            
+            //Creamos el cuerpo del mensaje
+            BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText(String.format("REPORT: %s",filetype));
+            
+            Multipart multipart = new MimeMultipart();
+            
+            multipart.addBodyPart(messageBodyPart);
+            
+            //Adjuntamos el fichero
+            messageBodyPart = new MimeBodyPart();
+            DataSource source = new FileDataSource(filename);
+            messageBodyPart.setDataHandler(new DataHandler(source));
+            messageBodyPart.setFileName(filename.substring(filename.lastIndexOf('\\'))); //Solo el nombre del archivo
+            
+            multipart.addBodyPart(messageBodyPart);
+
+            // Send the complete message parts
+            message.setContent(multipart);
+            
+            // Envia el mensaje
+            Transport.send(message);
+        } catch (MessagingException ex) {
+              System.out.println("Unable to send message: "+ex.getMessage());
+        }
+    }
+    
+    
 }

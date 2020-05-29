@@ -5,11 +5,8 @@
  */
 package persistence;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -22,7 +19,6 @@ import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import presentation.ServerConfigGUI;
 import utilities.Encrypt;
 import utilities.Utilidades;
@@ -309,7 +305,11 @@ public class ApplicationServer implements Runnable{
                     break;
                 }
                 case IServerProtocol.GET_REPORT:{
-                    GetReport(bfr, pw);
+                    try {
+                        GetReport(bfr, pw);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     break;
                 }
                 
@@ -753,7 +753,7 @@ public class ApplicationServer implements Runnable{
                     break;
                 case IServerProtocol.TYPE_DAILY_SALES_REPORT:
                     day = sdf.parse(bfr.readLine());
-                    rc = new ReportCreator(ReportCreator.DAILY_EXPENSES_BENEFITS_REPORT, day);
+                    rc = new ReportCreator(ReportCreator.DAILY_SALES_REPORT, day);
                     break;
                 case IServerProtocol.TYPE_PRODUCTS_REPORT:
                     rc = new ReportCreator(ReportCreator.PRODUCTS_REPORT);
@@ -789,14 +789,24 @@ public class ApplicationServer implements Runnable{
             }
         }
 
-        private void GetReport(BufferedReader bfr, PrintWriter pw) throws IOException {
+        private void GetReport(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
             String filename = bfr.readLine();
             int method = Integer.parseInt(bfr.readLine());
             
             File report = new File("./serverfiles/reports/"+filename);
+            if(filename.startsWith("Ticket")){
+                report = new File("./serverfiles/reports/ticket/"+filename); //si es un ticket lo buscaremos en la carpeta de tickets
+            }
             
             if(method == IServerProtocol.METHOD_MAIL){
-                
+                String user = bfr.readLine();
+                String sql = "SELECT P.EMAIL FROM PROFILES P, USERS U WHERE P.IDUSER = (SELECT IDUSER FROM USERS WHERE USERNAME='"+user+"');";
+                ResultSet rs = man.executeQuery(sql);
+                rs.next();
+                String email = rs.getString(1);
+                MailSender ms = new MailSender();
+                String filetype = filename.split("_")[0];
+                ms.sendFileMail(filetype, email, report.getAbsolutePath());
             }else if(method == IServerProtocol.METHOD_CLIENT){
                 
             }

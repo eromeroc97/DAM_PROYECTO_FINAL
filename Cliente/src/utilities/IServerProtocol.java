@@ -41,4 +41,21 @@ public interface IServerProtocol {
     public static final int GET_ADVERT_LIST = 26;
     public static final int GET_SECURITY_STOCK_PRODUCT_LIST = 27;
     public static final int GET_ZERO_STOCK_PRODUCT_LIST = 28;
+    public static final int CREATE_REPORT = 29;
+    public static final int GET_REPORT_LIST = 30;
+    public static final int GET_REPORT = 31;
+    
+    public static final int METHOD_MAIL = 100;
+    public static final int METHOD_CLIENT = 101;
+    
+    public static final int TYPE_USERS_REPORT = 200;
+    public static final int TYPE_FULL_ORDERS_REPORT = 201;
+    public static final int TYPE_DAILY_ORDERS_REPORT = 202;
+    public static final int TYPE_FULL_EXPENSES_BENEFITS_REPORT = 203;
+    public static final int TYPE_DAILY_EXPENSES_BENEFITS_REPORT = 204;
+    public static final int TYPE_FULL_SALES_REPORT = 205;
+    public static final int TYPE_DAILY_SALES_REPORT = 206;
+    public static final int TYPE_PRODUCTS_REPORT = 207;
+    public static final int TYPE_DELETED_PRODUCTS_REPORT = 208;
+    public static final int TYPE_TICKET_REPORT = 209;
 }
