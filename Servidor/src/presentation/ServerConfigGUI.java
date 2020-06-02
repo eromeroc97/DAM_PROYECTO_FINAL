@@ -44,6 +44,10 @@ public class ServerConfigGUI extends javax.swing.JFrame {
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("resources/server_icon_32.png")));
     }
     
+    private void startTelegramBot(){
+        telegram.BotInitializer initializer = new telegram.BotInitializer(this.txtLog);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -342,6 +346,7 @@ public class ServerConfigGUI extends javax.swing.JFrame {
         server = new LoginServer(Integer.parseInt(txtPort.getText()), this.txtLog, this);
         Thread serverThr = new Thread(server);
         serverThr.start();
+        startTelegramBot();
         btnStartServer.setEnabled(false);
         btnStopServer.setEnabled(true);
         txtPort.setEditable(false);

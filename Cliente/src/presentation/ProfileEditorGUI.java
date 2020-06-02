@@ -46,7 +46,7 @@ public class ProfileEditorGUI extends javax.swing.JDialog {
         this.txtName.setText(profile.getName());
         this.txtSurname.setText(profile.getSurname());
         this.txtEmail.setText(profile.getEmail());
-        this.txtPhone.setText(Long.toString(profile.getPhone()));
+        this.txtTelegramUser.setText(profile.getTelegramUser());
     }
 
     /**
@@ -63,11 +63,11 @@ public class ProfileEditorGUI extends javax.swing.JDialog {
         txtName = new RSMaterialComponent.RSTextFieldOne();
         txtSurname = new RSMaterialComponent.RSTextFieldOne();
         txtEmail = new RSMaterialComponent.RSTextFieldOne();
-        txtPhone = new RSMaterialComponent.RSTextFieldOne();
+        txtTelegramUser = new RSMaterialComponent.RSTextFieldOne();
         lblName = new javax.swing.JLabel();
         lblSurname = new javax.swing.JLabel();
         lblEmail = new javax.swing.JLabel();
-        lblPhone = new javax.swing.JLabel();
+        lblTelegramUser = new javax.swing.JLabel();
         btnEditSave = new RSMaterialComponent.RSButtonIconTwo();
         btnCancelClose = new RSMaterialComponent.RSButtonIconOne();
 
@@ -100,16 +100,11 @@ public class ProfileEditorGUI extends javax.swing.JDialog {
         txtEmail.setPhColor(new java.awt.Color(239, 96, 0));
         txtEmail.setPlaceholder("");
 
-        txtPhone.setEditable(false);
-        txtPhone.setForeground(new java.awt.Color(239, 96, 0));
-        txtPhone.setBorderColor(new java.awt.Color(239, 96, 0));
-        txtPhone.setPhColor(new java.awt.Color(239, 96, 0));
-        txtPhone.setPlaceholder("");
-        txtPhone.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtPhoneKeyTyped(evt);
-            }
-        });
+        txtTelegramUser.setEditable(false);
+        txtTelegramUser.setForeground(new java.awt.Color(239, 96, 0));
+        txtTelegramUser.setBorderColor(new java.awt.Color(239, 96, 0));
+        txtTelegramUser.setPhColor(new java.awt.Color(239, 96, 0));
+        txtTelegramUser.setPlaceholder("");
 
         lblName.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblName.setForeground(new java.awt.Color(255, 255, 255));
@@ -123,9 +118,9 @@ public class ProfileEditorGUI extends javax.swing.JDialog {
         lblEmail.setForeground(new java.awt.Color(255, 255, 255));
         lblEmail.setText("Email");
 
-        lblPhone.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblPhone.setForeground(new java.awt.Color(255, 255, 255));
-        lblPhone.setText("Phone");
+        lblTelegramUser.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblTelegramUser.setForeground(new java.awt.Color(255, 255, 255));
+        lblTelegramUser.setText("Telegram User");
 
         btnEditSave.setBackground(new java.awt.Color(239, 96, 0));
         btnEditSave.setBackgroundHover(new java.awt.Color(255, 137, 25));
@@ -156,11 +151,11 @@ public class ProfileEditorGUI extends javax.swing.JDialog {
                         .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtSurname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTelegramUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblName)
                             .addComponent(lblSurname)
                             .addComponent(lblEmail)
-                            .addComponent(lblPhone)
+                            .addComponent(lblTelegramUser)
                             .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(MainPanelLayout.createSequentialGroup()
@@ -194,9 +189,9 @@ public class ProfileEditorGUI extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblPhone)
+                .addComponent(lblTelegramUser)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTelegramUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -222,7 +217,7 @@ public class ProfileEditorGUI extends javax.swing.JDialog {
             txtName.setEditable(true);
             txtSurname.setEditable(true);
             txtEmail.setEditable(true);
-            txtPhone.setEditable(true);
+            txtTelegramUser.setEditable(true);
             
         }else if(btnEditSave.getIcons().equals(ICONS.SAVE)){ //Guardar cambios
             btnCancelClose.setIcons(ICONS.CLOSE); //Cuando guardo cambios puedo cerrar la edicion
@@ -230,29 +225,19 @@ public class ProfileEditorGUI extends javax.swing.JDialog {
             txtName.setEditable(false);
             txtSurname.setEditable(false);
             txtEmail.setEditable(false);
-            txtPhone.setEditable(false);
+            txtTelegramUser.setEditable(false);
             
             //Modifico y guardo el perfil
             this.profile.setName(txtName.getText());
             this.profile.setSurname(txtSurname.getText());
             this.profile.setEmail(txtEmail.getText());
-            this.profile.setPhone(Long.parseLong(txtPhone.getText()));
+            this.profile.setTelegramUser(txtTelegramUser.getText());
             
             profile.getDao().setProfileData(profile, idUser);
             profile = profile.getDao().getProfileData(idUser);
             setProfileIntoFields();
         }
     }//GEN-LAST:event_btnEditSaveActionPerformed
-
-    private void txtPhoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPhoneKeyTyped
-        char c = evt.getKeyChar();
-        if (!((c >= '0') && (c <= '9') ||
-           (c == KeyEvent.VK_BACK_SPACE) ||
-           (c == KeyEvent.VK_DELETE))) {
-          getToolkit().beep();
-          evt.consume();
-        }
-    }//GEN-LAST:event_txtPhoneKeyTyped
 
     private void btnCancelCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelCloseActionPerformed
         if(btnCancelClose.getIcons().equals(ICONS.CLOSE)){
@@ -263,7 +248,7 @@ public class ProfileEditorGUI extends javax.swing.JDialog {
             txtName.setEditable(false);
             txtSurname.setEditable(false);
             txtEmail.setEditable(false);
-            txtPhone.setEditable(false);
+            txtTelegramUser.setEditable(false);
             setProfileIntoFields();           
         }
     }//GEN-LAST:event_btnCancelCloseActionPerformed
@@ -273,7 +258,7 @@ public class ProfileEditorGUI extends javax.swing.JDialog {
         this.lblName.setText(PropertiesController.getLangValue("name"));
         this.lblSurname.setText(PropertiesController.getLangValue("surname"));
         this.lblEmail.setText(PropertiesController.getLangValue("email"));
-        this.lblPhone.setText(PropertiesController.getLangValue("phone"));
+        this.lblTelegramUser.setText(PropertiesController.getLangValue("telegramuser"));
     }
     
     /**
@@ -325,11 +310,11 @@ public class ProfileEditorGUI extends javax.swing.JDialog {
     private RSMaterialComponent.RSLabelTextIcon lblEditProfile;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblName;
-    private javax.swing.JLabel lblPhone;
     private javax.swing.JLabel lblSurname;
+    private javax.swing.JLabel lblTelegramUser;
     private RSMaterialComponent.RSTextFieldOne txtEmail;
     private RSMaterialComponent.RSTextFieldOne txtName;
-    private RSMaterialComponent.RSTextFieldOne txtPhone;
     private RSMaterialComponent.RSTextFieldOne txtSurname;
+    private RSMaterialComponent.RSTextFieldOne txtTelegramUser;
     // End of variables declaration//GEN-END:variables
 }

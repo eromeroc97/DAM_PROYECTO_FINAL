@@ -5,3 +5,5 @@ ENVIO DE EMAIL JAVA: https://es.stackoverflow.com/questions/138220/enviar-correo
 	LIBRERIA JAVAMAIL: https://github.com/javaee/javamail/releases (13/04/2020)
 	SOLUCION ERROR TLS: https://dzone.com/articles/sending-mail-using-javamail-api-for-gmail-server (13/04/2020)
 ENVÍO Y RECEPCION DE ARCHIVOS POR SOCKET: https://es.stackoverflow.com/questions/128415/env%C3%ADo-y-recepci%C3%B3n-de-archivos-por-socket-tcp
+API TELEGRAM BOT: https://github.com/rubenlagus/TelegramBots
+CREACION DE TECLADOS DE RESPUESTA: https://stackoverflow.com/questions/46315088/telegram-api-cant-get-phone-number

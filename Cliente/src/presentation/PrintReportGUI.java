@@ -55,6 +55,7 @@ public class PrintReportGUI extends javax.swing.JDialog {
         btnFullExpensesBenefitsReport = new RSMaterialComponent.RSButtonShape();
         btnDeletedProductsReport = new RSMaterialComponent.RSButtonShape();
         btnDailyExpensesBenefitsReport = new RSMaterialComponent.RSButtonShape();
+        btnSelectReport = new RSMaterialComponent.RSButtonShape();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
@@ -192,6 +193,21 @@ public class PrintReportGUI extends javax.swing.JDialog {
             }
         });
 
+        btnSelectReport.setBackground(new java.awt.Color(255, 255, 255));
+        btnSelectReport.setForeground(new java.awt.Color(239, 96, 0));
+        btnSelectReport.setText("Select Created Report");
+        btnSelectReport.setBackgroundHover(new java.awt.Color(204, 204, 204));
+        btnSelectReport.setForegroundHover(new java.awt.Color(239, 96, 0));
+        btnSelectReport.setForegroundText(new java.awt.Color(239, 96, 0));
+        btnSelectReport.setForma(RSMaterialComponent.RSButtonShape.FORMA.ROUND_LEFT);
+        btnSelectReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnSelectReport.setRippleColor(new java.awt.Color(239, 96, 0));
+        btnSelectReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectReportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -214,7 +230,8 @@ public class PrintReportGUI extends javax.swing.JDialog {
                 .addComponent(btnDeletedProductsReport, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(btnDailyExpensesBenefitsReport, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSelectReport, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(41, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,7 +270,9 @@ public class PrintReportGUI extends javax.swing.JDialog {
                     .addComponent(btnFullExpensesBenefitsReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDeletedProductsReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDailyExpensesBenefitsReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDailyExpensesBenefitsReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSelectReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(btnOpenPDF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -377,6 +396,10 @@ public class PrintReportGUI extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnOpenPDFActionPerformed
 
+    private void btnSelectReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectReportActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSelectReportActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -430,6 +453,7 @@ public class PrintReportGUI extends javax.swing.JDialog {
     private RSMaterialComponent.RSButtonShape btnFullSalesReport;
     private RSMaterialComponent.RSButtonShapeIcon btnOpenPDF;
     private RSMaterialComponent.RSButtonShape btnProductsReport;
+    private RSMaterialComponent.RSButtonShape btnSelectReport;
     private RSMaterialComponent.RSButtonShapeIcon btnSendMail;
     private RSMaterialComponent.RSButtonShape btnUsersReport;
     private javax.swing.JPanel jPanel1;

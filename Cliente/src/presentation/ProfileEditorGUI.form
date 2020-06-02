@@ -59,11 +59,11 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="txtSurname" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="txtEmail" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtPhone" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtTelegramUser" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblName" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblSurname" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblEmail" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblPhone" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTelegramUser" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="txtName" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
@@ -106,9 +106,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="txtEmail" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="lblPhone" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblTelegramUser" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="txtPhone" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtTelegramUser" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="19" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -171,7 +171,7 @@
             <Property name="placeholder" type="java.lang.String" value=""/>
           </Properties>
         </Component>
-        <Component class="RSMaterialComponent.RSTextFieldOne" name="txtPhone">
+        <Component class="RSMaterialComponent.RSTextFieldOne" name="txtTelegramUser">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -185,9 +185,6 @@
             </Property>
             <Property name="placeholder" type="java.lang.String" value=""/>
           </Properties>
-          <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPhoneKeyTyped"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblName">
           <Properties>
@@ -222,7 +219,7 @@
             <Property name="text" type="java.lang.String" value="Email"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblPhone">
+        <Component class="javax.swing.JLabel" name="lblTelegramUser">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="14" style="1"/>
@@ -230,7 +227,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Phone"/>
+            <Property name="text" type="java.lang.String" value="Telegram User"/>
           </Properties>
         </Component>
         <Component class="RSMaterialComponent.RSButtonIconTwo" name="btnEditSave">

@@ -7,7 +7,6 @@ package persistence;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -422,12 +421,12 @@ public class ApplicationServer implements Runnable{
 
         private void GetUserProfilePetition(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
             int iduser = Integer.parseInt(bfr.readLine());
-            String sql = "SELECT IDUSER, NAME, SURNAME, EMAIL, PHONE FROM PROFILES WHERE IDUSER = "+iduser+";";
+            String sql = "SELECT IDUSER, NAME, SURNAME, EMAIL, TELEGRAMUSER FROM PROFILES WHERE IDUSER = "+iduser+";";
             if((man.executeQuery(sql)).next()){
                 String name = (man.executeQuery(sql)).getString(2);
                 String surname = (man.executeQuery(sql)).getString(3);
                 String email = (man.executeQuery(sql)).getString(4);
-                Long phone = (man.executeQuery(sql)).getLong(5);
+                String tUser = (man.executeQuery(sql)).getString(5);
                 
                 if(name == null)
                     name = " ";
@@ -435,8 +434,10 @@ public class ApplicationServer implements Runnable{
                     surname = " ";
                 if(email == null)
                     email = " ";
+                if(tUser == null)
+                    tUser = " ";
                 
-                pw.println((man.executeQuery(sql)).getInt(1)+";"+name+";"+surname+";"+email+";"+phone);
+                pw.println((man.executeQuery(sql)).getInt(1)+";"+name+";"+surname+";"+email+";"+tUser);
                 pw.flush();
             }
             pw.println(IServerProtocol.END_INFO_TRANSFER);
@@ -447,14 +448,13 @@ public class ApplicationServer implements Runnable{
             int iduser = Integer.parseInt(bfr.readLine());
             String linea = bfr.readLine();
             String[] datos = linea.split(";");
-            String name = datos[0], surname = datos[1], email = datos[2];
-            Long phone = Long.parseLong(datos[3]);
+            String name = datos[0], surname = datos[1], email = datos[2], tUser = datos[3];
             String sql = "SELECT IDUSER FROM PROFILES WHERE IDUSER = "+iduser+";";
             if((man.executeQuery(sql)).next()){ //Ya existe el perfil
-                sql = "UPDATE PROFILES SET NAME = '"+name+"', SURNAME = '"+surname+"', EMAIL = '"+email+"', PHONE = "+phone+" WHERE IDUSER = "+iduser+";";
+                sql = "UPDATE PROFILES SET NAME = '"+name+"', SURNAME = '"+surname+"', EMAIL = '"+email+"', TELEGRAMUSER = '"+tUser+"' WHERE IDUSER = "+iduser+";";
                 man.executeNonQuery(sql);
             }else{ //No existe el perfil
-                sql = "INSERT INTO PROFILES VALUES("+iduser+", '"+name+"', '"+surname+"', '"+email+"', "+phone+")";
+                sql = "INSERT INTO PROFILES VALUES("+iduser+", '"+name+"', '"+surname+"', '"+email+"', '"+tUser+"')";
                 man.executeNonQuery(sql);
             }
         }

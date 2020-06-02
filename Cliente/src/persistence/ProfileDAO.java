@@ -33,13 +33,13 @@ public class ProfileDAO {
         String linea = null;
         try {
             linea = appClient.AskForUserProfile(idUser);
-            } catch (IOException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(ProfileDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         if(linea != null){
             String[] datos = linea.split(";");
-            Profile p = new Profile(Integer.parseInt(datos[0]), datos[1], datos[2], datos[3], Long.parseLong(datos[4]));
+            Profile p = new Profile(Integer.parseInt(datos[0]), datos[1], datos[2], datos[3], datos[4]);
             return p;
         }else
             return new Profile(); //Si no existe un perfil, devuelvo uno vacío
@@ -47,7 +47,7 @@ public class ProfileDAO {
     }
     
     public void setProfileData(Profile p, int idUser){
-        String valores = p.getName()+";"+p.getSurname()+";"+p.getEmail()+";"+p.getPhone();
+        String valores = p.getName()+";"+p.getSurname()+";"+p.getEmail()+";"+p.getTelegramUser();
         try {
             this.appClient.AskForSetProfile(idUser, valores);
         } catch (IOException ex) {

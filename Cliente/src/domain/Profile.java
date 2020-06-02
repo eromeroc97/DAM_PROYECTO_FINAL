@@ -16,16 +16,16 @@ public class Profile {
     private String name;
     private String surname;
     private String email;
-    private long phone;
+    private String telegramUser;
     
     private ProfileDAO dao;
 
-    public Profile(int idUser, String name, String surname, String email, long phone) {
+    public Profile(int idUser, String name, String surname, String email, String telegramUser) {
         this.idUser = idUser;
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.phone = phone;
+        this.telegramUser = telegramUser;
         this.dao = ProfileDAO.getInstance();
     }
     
@@ -34,14 +34,14 @@ public class Profile {
         this.name = "";
         this.surname = "";
         this.email = "";
-        this.phone = 0;
+        this.telegramUser = "";
     }
     
-    public Profile(String name, String surname, String email, long phone){
+    public Profile(String name, String surname, String email, String telegramUser){
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.phone = phone;
+        this.telegramUser = telegramUser;
         this.dao = ProfileDAO.getInstance();
     }
 
@@ -77,12 +77,12 @@ public class Profile {
         this.email = email;
     }
 
-    public long getPhone() {
-        return phone;
+    public String getTelegramUser() {
+        return telegramUser;
     }
 
-    public void setPhone(long phone) {
-        this.phone = phone;
+    public void setTelegramUser(String telegramUser) {
+        this.telegramUser = telegramUser;
     }
 
     public ProfileDAO getDao() {

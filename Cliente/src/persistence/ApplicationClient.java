@@ -334,7 +334,7 @@ public class ApplicationClient{
             if(!linea.equals(IServerProtocol.END_INFO_TRANSFER))
                 return linea;
         }
-        return null;
+        return "";
     }
     
     public void AskForSetProfile(int idUser, String valores) throws IOException{

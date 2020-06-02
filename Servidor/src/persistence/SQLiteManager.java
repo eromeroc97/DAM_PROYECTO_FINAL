@@ -210,7 +210,7 @@ public class SQLiteManager {
                 + "NAME TEXT,"
                 + "SURNAME TEXT,"
                 + "EMAIL TEXT,"
-                + "PHONE LONG,"
+                + "TELEGRAMUSER TEXT,"
                 + "FOREIGN KEY (IDUSER) REFERENCES USERS(IDUSER));";
         
         public static final String ADVERTS_TABLE = "CREATE TABLE IF NOT EXISTS ADVERTS("
