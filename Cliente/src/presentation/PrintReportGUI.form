@@ -239,6 +239,9 @@
               <Value id="OPEN_IN_NEW"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOpenPDFActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonShape" name="btnFullOrdersReport">
           <Properties>

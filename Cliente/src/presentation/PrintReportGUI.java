@@ -6,7 +6,12 @@
 package presentation;
 
 import domain.Report;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import utilities.IServerProtocol;
 
 /**
@@ -108,6 +113,11 @@ public class PrintReportGUI extends javax.swing.JDialog {
         btnOpenPDF.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnOpenPDF.setForma(RSMaterialComponent.RSButtonShapeIcon.FORMA.ROUND_TOP);
         btnOpenPDF.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.OPEN_IN_NEW);
+        btnOpenPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenPDFActionPerformed(evt);
+            }
+        });
 
         btnFullOrdersReport.setBackground(new java.awt.Color(239, 96, 0));
         btnFullOrdersReport.setText("Full Orders Report");
@@ -271,6 +281,15 @@ public class PrintReportGUI extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        File toDelete = new File("./clientfiles/temp/");
+        if(toDelete.exists()){
+            String[]entries = toDelete.list();
+            for(String s: entries){
+                File currentFile = new File(toDelete.getPath(),s);
+                currentFile.delete();
+            }
+            toDelete.delete();
+        }
         this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
 
@@ -342,6 +361,21 @@ public class PrintReportGUI extends javax.swing.JDialog {
             lastFilename = r.getDao().createReport(IServerProtocol.TYPE_DAILY_EXPENSES_BENEFITS_REPORT, date);
         }
     }//GEN-LAST:event_btnDailyExpensesBenefitsReportActionPerformed
+
+    private void btnOpenPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenPDFActionPerformed
+        if(lastFilename != null){
+            Report r = new Report();
+            File rec = r.getDao().getReport(lastFilename, IServerProtocol.METHOD_CLIENT);
+
+            lastFilename = null;
+            
+            try {
+                Desktop.getDesktop().open(rec);
+            } catch (IOException ex) {
+                Logger.getLogger(PrintReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnOpenPDFActionPerformed
 
     /**
      * @param args the command line arguments

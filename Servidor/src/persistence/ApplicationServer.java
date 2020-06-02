@@ -5,9 +5,13 @@
  */
 package persistence;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -808,7 +812,16 @@ public class ApplicationServer implements Runnable{
                 String filetype = filename.split("_")[0];
                 ms.sendFileMail(filetype, email, report.getAbsolutePath());
             }else if(method == IServerProtocol.METHOD_CLIENT){
-                
+                byte[] buffer = new byte[(int) report.length()];
+
+                FileInputStream fis = new FileInputStream(report);
+                BufferedInputStream bis = new BufferedInputStream(fis);
+                bis.read(buffer, 0, buffer.length);
+
+                OutputStream os = socket.getOutputStream();
+                os.write(buffer, 0, buffer.length);
+                os.flush();
+                os.close();
             }
             
             pw.println(IServerProtocol.END_INFO_TRANSFER);

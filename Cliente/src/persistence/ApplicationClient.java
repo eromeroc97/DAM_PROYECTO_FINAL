@@ -13,8 +13,11 @@ import domain.Ticket;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -1105,7 +1108,23 @@ public class ApplicationClient{
             if(method == IServerProtocol.METHOD_MAIL)
                 pw.println(username);
             pw.flush();
-            //resultado = bfr.readLine();
+            if(method == IServerProtocol.METHOD_CLIENT){
+                File CLIENTFILES = new File("./clientfiles/temp/");
+                if(!CLIENTFILES.exists())
+                    CLIENTFILES.mkdir();
+                
+                InputStream in = conexion.getInputStream();
+                int bytesRead;
+
+                OutputStream output = new FileOutputStream("./clientfiles/temp/"+filename);
+
+                byte[] buffer = new byte[1024];
+                while ((bytesRead = in.read(buffer)) != -1) {
+                    output.write(buffer, 0, bytesRead);
+                }
+                output.close();
+                resultado = new File("./clientfiles/temp/"+filename);
+            }
         }
         return resultado;
     }
