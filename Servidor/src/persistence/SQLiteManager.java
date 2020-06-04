@@ -125,7 +125,6 @@ public class SQLiteManager {
                 //TRIGGERS
                 stmt2.execute(TableCreator.VALIDATE_SALE_TRIGGER);
                 stmt2.execute(TableCreator.VALIDATE_ORDER_TRIGGER);
-                stmt2.execute(TableCreator.VALIDATE_DELETE_ORDER_TRIGGER);
                 stmt2.execute(TableCreator.AUTO_ORDER_TRIGGER);
                 stmt2.execute(TableCreator.CONFIRMED_ORDER_TRIGGER);
                 
@@ -210,7 +209,7 @@ public class SQLiteManager {
                 + "NAME TEXT,"
                 + "SURNAME TEXT,"
                 + "EMAIL TEXT,"
-                + "TELEGRAMUSER TEXT,"
+                + "TELEGRAMUSER TEXT UNIQUE,"
                 + "FOREIGN KEY (IDUSER) REFERENCES USERS(IDUSER));";
         
         public static final String ADVERTS_TABLE = "CREATE TABLE IF NOT EXISTS ADVERTS("
@@ -259,10 +258,10 @@ public class SQLiteManager {
         
         public static final String AUTO_ORDER_TRIGGER = "CREATE TRIGGER IF NOT EXISTS AUTO_ORDER " +
                 "AFTER UPDATE OF STOCK ON PRODUCTS " +
-                "WHEN NEW.STOCK <= OLD.SECURITYSTOCK AND (SELECT 1 FROM ORDERS WHERE IDPRODUCT=NEW.IDPRODUCT AND CONFIRMED=FALSE) <> 1 " +
+                "WHEN NEW.STOCK <= OLD.SECURITYSTOCK AND (SELECT COUNT(IDORDER) FROM ORDERS WHERE IDPRODUCT=NEW.IDPRODUCT AND CONFIRMED=FALSE) = 0 " +
                 "BEGIN " +
                 "	INSERT INTO ORDERS (IDPRODUCT, ORDERDATE, UNITS) " +
-                "	VALUES (NEW.IDPRODUCT, date('now'), " +
+                "	VALUES (NEW.IDPRODUCT, strftime('%d-%m-%Y %H:%M:%S','now'), " +
                 "	(SELECT DEFAULTORDERAMOUNT FROM PRODUCTS " +
                 "	WHERE PRODUCTS.IDPRODUCT=NEW.IDPRODUCT AND DEFAULTORDERAMOUNT > 0 )); " +
                 "END;";
@@ -273,19 +272,13 @@ public class SQLiteManager {
                 "	UPDATE PRODUCTS SET STOCK = STOCK + OLD.UNITS WHERE PRODUCTS.IDPRODUCT = OLD.IDPRODUCT; " +
                 "END;";
         
-        public static final String VALIDATE_ORDER_TRIGGER = "CREATE TRIGGER IF NOT EXISTS VALIDATE_ORDER\n" +
-                "AFTER INSERT ON ORDERS " +
+        public static final String VALIDATE_ORDER_TRIGGER = "CREATE TRIGGER IF NOT EXISTS VALIDATE_ORDER " +
+                "BEFORE INSERT ON ORDERS " +
                 "BEGIN " +
                 "	SELECT RAISE(IGNORE) " +
                 "	WHERE EXISTS (SELECT 1 FROM ORDERS WHERE IDPRODUCT=NEW.IDPRODUCT AND CONFIRMED=FALSE); " +
                 "END;";
         
-        public static final String VALIDATE_DELETE_ORDER_TRIGGER = "CREATE TRIGGER IF NOT EXISTS VALIDATE_DELETE_ORDER " +
-                "BEFORE DELETE ON ORDERS " +
-                "BEGIN " +
-                "	SELECT RAISE(ABORT, 'CAN_T CANCEL AN ORDER AFTER SECOND DAY THAT IS DONE') " +
-                "	WHERE EXISTS (SELECT 1 FROM ORDERS WHERE OLD.ORDERDATE < date('now')-2 OR OLD.CONFIRMED=TRUE); " +
-                "END;";
     }
 }
 

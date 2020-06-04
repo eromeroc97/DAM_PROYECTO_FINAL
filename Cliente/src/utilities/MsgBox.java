@@ -6,6 +6,7 @@
 package utilities;
 
 import java.awt.Color;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import rojeru_san.efectos.ValoresEnum;
 
@@ -20,6 +21,16 @@ public class MsgBox extends javax.swing.JFrame {
     public static final int WARNING_ICON = 1;
     public static final int ERROR_ICON = 2;
     
+    public static MsgBox create(JDialog parent, String msg){
+        MsgBox m = new MsgBox(parent, msg);
+        return m;
+    }
+    
+    public static MsgBox create(JDialog parent, String msg, int type_icon){
+        MsgBox m = new MsgBox(parent, msg, type_icon);
+        return m;
+    }
+    
     public static MsgBox create(JFrame parent, String msg){
         MsgBox m = new MsgBox(parent, msg);
         return m;
@@ -30,11 +41,42 @@ public class MsgBox extends javax.swing.JFrame {
         return m;
     }
     
-    private JFrame parent;
+    private JFrame parent = null;
+    private JDialog parent2 = null;
     
     private MsgBox() {
         initComponents();
         this.setAlwaysOnTop(true);
+        this.requestFocus();
+    }
+    
+    private MsgBox(String msg){
+        this();
+        texto.setText(msg);
+        icon.setVisible(false);
+    }
+    
+    private MsgBox(String msg, int type_icon){
+        this();
+        texto.setText(msg);
+        icon.setVisible(true);
+        switch(type_icon){
+            case INFO_ICON:{
+                icon.setIcons(ValoresEnum.ICONS.INFO_OUTLINE);
+                icon.setForeground(Color.CYAN);
+                break;
+            }
+            case WARNING_ICON:{
+                icon.setIcons(ValoresEnum.ICONS.WARNING);
+                icon.setForeground(Color.ORANGE);
+                break;
+            }
+            case ERROR_ICON:{
+                icon.setIcons(ValoresEnum.ICONS.ERROR);
+                icon.setForeground(Color.RED);
+                break;
+            }
+        }
     }
     
     private MsgBox(JFrame parent, String msg) {
@@ -42,7 +84,8 @@ public class MsgBox extends javax.swing.JFrame {
         this.parent = parent;
         texto.setText(msg);
         icon.setVisible(false);
-        this.parent.setEnabled(false);
+        if(parent != null)
+            this.parent.setEnabled(false);
     }
     
     private MsgBox(JFrame parent, String msg, int type_icon) {
@@ -65,7 +108,36 @@ public class MsgBox extends javax.swing.JFrame {
                 break;
             }
         }
-        
+    }
+    
+    private MsgBox(JDialog parent, String msg) {
+        this();
+        this.parent2 = parent;
+        texto.setText(msg);
+        icon.setVisible(false);
+        this.parent2.setEnabled(false);
+    }
+    
+    private MsgBox(JDialog parent, String msg, int type_icon) {
+        this(parent, msg);
+        icon.setVisible(true);
+        switch(type_icon){
+            case INFO_ICON:{
+                icon.setIcons(ValoresEnum.ICONS.INFO_OUTLINE);
+                icon.setForeground(Color.CYAN);
+                break;
+            }
+            case WARNING_ICON:{
+                icon.setIcons(ValoresEnum.ICONS.WARNING);
+                icon.setForeground(Color.ORANGE);
+                break;
+            }
+            case ERROR_ICON:{
+                icon.setIcons(ValoresEnum.ICONS.ERROR);
+                icon.setForeground(Color.RED);
+                break;
+            }
+        }
     }
 
     /**
@@ -163,7 +235,10 @@ public class MsgBox extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        this.parent.setEnabled(true);
+        if(this.parent != null)
+            this.parent.setEnabled(true);
+        if(this.parent2 != null)
+            this.parent2.setEnabled(true);
         this.dispose();
     }//GEN-LAST:event_btnOKActionPerformed
 

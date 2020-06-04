@@ -10,6 +10,9 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="windowOpened" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowOpened"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -69,7 +72,7 @@
                   <Component id="btnDailySalesReport" min="-2" pref="290" max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="btDailyOrdersReport" min="-2" pref="290" max="-2" attributes="0"/>
+                  <Component id="btnDailyOrdersReport" min="-2" pref="290" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="btnProductsReport" min="-2" pref="290" max="-2" attributes="0"/>
               </Group>
@@ -85,20 +88,17 @@
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="41" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="lblPrintReport" min="-2" pref="609" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="btnClose" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btnOpenPDF" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnSendMail" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="248" max="-2" attributes="0"/>
-                      </Group>
+                  <Component id="lblPrintReport" min="-2" pref="609" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="btnClose" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="225" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="btnSendMailReport" max="32767" attributes="0"/>
+                      <Component id="btnOpenReportHere" min="-2" pref="250" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -124,7 +124,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btDailyOrdersReport" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnDailyOrdersReport" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnProductsReport" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -138,9 +138,9 @@
                       <Component id="btnSelectReport" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="27" max="32767" attributes="0"/>
-                  <Component id="btnOpenPDF" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnOpenReportHere" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnSendMail" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnSendMailReport" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -207,7 +207,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFullSalesReportActionPerformed"/>
           </Events>
         </Component>
-        <Component class="RSMaterialComponent.RSButtonShapeIcon" name="btnSendMail">
+        <Component class="RSMaterialComponent.RSButtonShapeIcon" name="btnSendMailReport">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="60" red="ef" type="rgb"/>
@@ -216,18 +216,20 @@
             <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="19" green="89" red="ff" type="rgb"/>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="forma" type="RSMaterialComponent.RSButtonShapeIcon$FORMA" editor="org.netbeans.modules.form.editors.EnumEditor">
               <Value id="ROUND_BOTTOM"/>
             </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
               <Value id="MAIL_OUTLINE"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSendMailActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSendMailReportActionPerformed"/>
           </Events>
         </Component>
-        <Component class="RSMaterialComponent.RSButtonShapeIcon" name="btnOpenPDF">
+        <Component class="RSMaterialComponent.RSButtonShapeIcon" name="btnOpenReportHere">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="60" red="ef" type="rgb"/>
@@ -236,15 +238,17 @@
             <Property name="backgroundHover" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="19" green="89" red="ff" type="rgb"/>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="forma" type="RSMaterialComponent.RSButtonShapeIcon$FORMA" editor="org.netbeans.modules.form.editors.EnumEditor">
               <Value id="ROUND_TOP"/>
             </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icons" type="rojeru_san.efectos.ValoresEnum$ICONS" editor="org.netbeans.modules.form.editors.EnumEditor">
               <Value id="OPEN_IN_NEW"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOpenPDFActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOpenReportHereActionPerformed"/>
           </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonShape" name="btnFullOrdersReport">
@@ -280,7 +284,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDailySalesReportActionPerformed"/>
           </Events>
         </Component>
-        <Component class="RSMaterialComponent.RSButtonShape" name="btDailyOrdersReport">
+        <Component class="RSMaterialComponent.RSButtonShape" name="btnDailyOrdersReport">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="60" red="ef" type="rgb"/>
@@ -292,7 +296,7 @@
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btDailyOrdersReportActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDailyOrdersReportActionPerformed"/>
           </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonShape" name="btnProductsReport">

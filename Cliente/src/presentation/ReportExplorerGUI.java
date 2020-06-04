@@ -5,15 +5,19 @@
  */
 package presentation;
 
+import domain.Report;
+import java.util.LinkedList;
+import javax.swing.table.DefaultTableModel;
+import utilities.PropertiesController;
+
 /**
  *
  * @author erome
  */
 public class ReportExplorerGUI extends javax.swing.JDialog {
 
-    /**
-     * Creates new form ReportExplorerGUI
-     */
+    private String selectedFilename = null;
+    
     public ReportExplorerGUI(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -38,6 +42,11 @@ public class ReportExplorerGUI extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(50, 51, 52));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(239, 96, 0), 2));
@@ -51,26 +60,29 @@ public class ReportExplorerGUI extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Report", "Type", "Creation Date"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-        });
+        ));
         tblReports.setBackgoundHead(new java.awt.Color(239, 96, 0));
         tblReports.setBackgoundHover(new java.awt.Color(239, 96, 0));
         tblReports.setColorPrimaryText(new java.awt.Color(0, 0, 0));
         tblReports.setColorSecundaryText(new java.awt.Color(0, 0, 0));
+        tblReports.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblReportsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblReports);
 
         btnSelect.setBackground(new java.awt.Color(239, 96, 0));
         btnSelect.setText("Select");
         btnSelect.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnSelect.setEnabled(false);
+        btnSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectActionPerformed(evt);
+            }
+        });
 
         btnCancel.setBackground(new java.awt.Color(239, 96, 0));
         btnCancel.setText("Cancel");
@@ -134,6 +146,55 @@ public class ReportExplorerGUI extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
+        if(((String)tblReports.getValueAt(tblReports.getSelectedRow(), 2)).isBlank())
+            this.selectedFilename = (String)tblReports.getValueAt(tblReports.getSelectedRow(), 0)+"_"+(String)tblReports.getValueAt(tblReports.getSelectedRow(), 1)+".pdf";
+        else
+            this.selectedFilename = (String)tblReports.getValueAt(tblReports.getSelectedRow(), 0)+"_"+(String)tblReports.getValueAt(tblReports.getSelectedRow(), 1)+"_"+(String)tblReports.getValueAt(tblReports.getSelectedRow(), 2)+".pdf";
+        this.dispose();
+    }//GEN-LAST:event_btnSelectActionPerformed
+
+    private void tblReportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblReportsMouseClicked
+        if(tblReports.getSelectedRow() != -1){
+            btnSelect.setEnabled(true);
+        }
+    }//GEN-LAST:event_tblReportsMouseClicked
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        setLanguageUI();
+        fillReportsTable(createReportTableModel());
+    }//GEN-LAST:event_formWindowOpened
+
+    private void setLanguageUI(){
+        this.lblSelectReport.setText(PropertiesController.getLangValue("selectreport"));
+        this.btnCancel.setText(PropertiesController.getLangValue("cancel"));
+        this.btnSelect.setText(PropertiesController.getLangValue("select"));
+    }
+    
+    public String getSelectedFilename(){
+        return this.selectedFilename;
+    }
+    
+    private DefaultTableModel createReportTableModel(){
+        DefaultTableModel model = new DefaultTableModel();
+        
+        model.addColumn(PropertiesController.getLangValue("type"));
+        model.addColumn(PropertiesController.getLangValue("creationdate"));
+        model.addColumn(PropertiesController.getLangValue("applicationdate"));
+        
+        return model;
+    }
+    
+    private void fillReportsTable(DefaultTableModel model){
+        Report r = new Report();
+        LinkedList<String[]> reps = r.getDao().getReportsList();
+        for(int i = 0; i < reps.size(); i++){
+            Object[] row = new Object[]{reps.get(i)[0],reps.get(i)[1],reps.get(i)[2]};
+            model.addRow(row);
+        }
+        tblReports.setModel(model);
+    }
+    
     /**
      * @param args the command line arguments
      */

@@ -7,9 +7,13 @@
 package presentation;
 
 import domain.Product;
+import domain.Order;
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
+import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import utilities.PropertiesController;
+import utilities.Utilidades;
 
 /**
  *
@@ -17,9 +21,11 @@ import utilities.PropertiesController;
  */
 public class OrderCreatorGUI extends javax.swing.JDialog {
 
+    private JFrame parent;
     /** Creates new form OrderCreatorGUI */
     public OrderCreatorGUI(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.parent = (JFrame)parent;
         initComponents();
     }
 
@@ -120,10 +126,23 @@ public class OrderCreatorGUI extends javax.swing.JDialog {
         txtUnits.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtUnits.setText("0");
         txtUnits.setBorderColor(new java.awt.Color(239, 96, 0));
+        txtUnits.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtUnitsKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUnitsKeyTyped(evt);
+            }
+        });
 
         btnDone.setBackground(new java.awt.Color(0, 204, 0));
         btnDone.setBackgroundHover(new java.awt.Color(0, 255, 0));
         btnDone.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.DONE);
+        btnDone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDoneActionPerformed(evt);
+            }
+        });
 
         btnCancel.setBackground(new java.awt.Color(204, 0, 0));
         btnCancel.setBackgroundHover(new java.awt.Color(255, 0, 0));
@@ -259,6 +278,25 @@ public class OrderCreatorGUI extends javax.swing.JDialog {
         fillProductTable(createProductTableModel());
         setLanguageUI();
     }//GEN-LAST:event_formWindowOpened
+
+    private void txtUnitsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnitsKeyTyped
+        char c = evt.getKeyChar();
+        if (!((c >= '0') && (c <= '9') ||
+           (c == KeyEvent.VK_BACK_SPACE) ||
+           (c == KeyEvent.VK_DELETE))) {
+          getToolkit().beep();
+          evt.consume();
+        }
+    }//GEN-LAST:event_txtUnitsKeyTyped
+
+    private void txtUnitsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnitsKeyReleased
+        txtTotalCost.setText(Double.toString(Utilidades.round(Integer.parseInt(txtUnits.getText()) * (double)tblProducts.getValueAt(tblProducts.getSelectedRow(), 2),2)));
+    }//GEN-LAST:event_txtUnitsKeyReleased
+
+    private void btnDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoneActionPerformed
+        Order o = new Order((String)tblProducts.getValueAt(tblProducts.getSelectedRow(), 1), Integer.parseInt(txtUnits.getText()));
+        o.getDao().createOrder(o);
+    }//GEN-LAST:event_btnDoneActionPerformed
 
     private void setLanguageUI(){
         this.lblNewOrder.setText(PropertiesController.getLangValue("neworder"));

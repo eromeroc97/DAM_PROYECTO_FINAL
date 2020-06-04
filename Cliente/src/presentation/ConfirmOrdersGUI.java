@@ -5,6 +5,15 @@
  */
 package presentation;
 
+import domain.Order;
+import domain.Product;
+import java.text.SimpleDateFormat;
+import java.util.LinkedList;
+import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+import utilities.MsgBox;
+import utilities.PropertiesController;
+
 /**
  *
  * @author erome
@@ -34,12 +43,16 @@ public class ConfirmOrdersGUI extends javax.swing.JDialog {
         tblConfirmOrders = new RSMaterialComponent.RSTableMetro();
         btnConfirm = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnDelete = new RSMaterialComponent.RSButtonMaterialIconOne();
-        btnInfo = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnNewOrder = new RSMaterialComponent.RSButtonMaterialIconOne();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(50, 51, 52));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(239, 96, 0), 2));
@@ -65,6 +78,15 @@ public class ConfirmOrdersGUI extends javax.swing.JDialog {
 
             }
         ));
+        tblConfirmOrders.setBackgoundHead(new java.awt.Color(239, 96, 0));
+        tblConfirmOrders.setBackgoundHover(new java.awt.Color(239, 96, 0));
+        tblConfirmOrders.setColorPrimaryText(new java.awt.Color(0, 0, 0));
+        tblConfirmOrders.setColorSecundaryText(new java.awt.Color(0, 0, 0));
+        tblConfirmOrders.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblConfirmOrdersMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblConfirmOrders);
 
         btnConfirm.setBackground(new java.awt.Color(239, 96, 0));
@@ -72,18 +94,22 @@ public class ConfirmOrdersGUI extends javax.swing.JDialog {
         btnConfirm.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnConfirm.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnConfirm.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.DONE);
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmActionPerformed(evt);
+            }
+        });
 
         btnDelete.setBackground(new java.awt.Color(239, 96, 0));
         btnDelete.setText("Delete");
         btnDelete.setBackgroundHover(new java.awt.Color(255, 137, 25));
         btnDelete.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnDelete.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.DELETE);
-
-        btnInfo.setBackground(new java.awt.Color(239, 96, 0));
-        btnInfo.setText("Order Info");
-        btnInfo.setBackgroundHover(new java.awt.Color(255, 137, 25));
-        btnInfo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnInfo.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.INFO);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnNewOrder.setBackground(new java.awt.Color(239, 96, 0));
         btnNewOrder.setText("New Order");
@@ -112,9 +138,7 @@ public class ConfirmOrdersGUI extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(btnNewOrder, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addComponent(btnNewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(154, 154, 154)
@@ -131,10 +155,7 @@ public class ConfirmOrdersGUI extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnNewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnNewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -168,6 +189,78 @@ public class ConfirmOrdersGUI extends javax.swing.JDialog {
         ocgui.setVisible(true);
     }//GEN-LAST:event_btnNewOrderActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        this.setLanguageUI();
+        fillOrdersTable(createOrdersTableModel());
+    }//GEN-LAST:event_formWindowOpened
+
+    private void tblConfirmOrdersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblConfirmOrdersMouseClicked
+        selectedIndex = tblConfirmOrders.getSelectedRow();
+        if(selectedIndex != -1){
+            btnConfirm.setEnabled(true);
+            btnDelete.setEnabled(true);
+        }
+    }//GEN-LAST:event_tblConfirmOrdersMouseClicked
+
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        Order o = new Order();
+        o.getDao().confirmOrder((int)tblConfirmOrders.getValueAt(selectedIndex, 0));
+        fillOrdersTable(createOrdersTableModel());
+    }//GEN-LAST:event_btnConfirmActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        Order o = new Order();
+        o.getDao().cancelOrder((int)tblConfirmOrders.getValueAt(selectedIndex, 0));
+        fillOrdersTable(createOrdersTableModel());
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void setLanguageUI(){
+        this.btnConfirm.setText(PropertiesController.getLangValue("confirm"));
+        this.btnDelete.setText(PropertiesController.getLangValue("cancel"));
+        this.btnNewOrder.setText(PropertiesController.getLangValue("neworder"));
+        this.lblConfirmOrders.setText(PropertiesController.getLangValue("confirmorders"));
+    }
+    
+    private DefaultTableModel createOrdersTableModel(){
+        DefaultTableModel model = new DefaultTableModel();
+        
+        model.addColumn(PropertiesController.getLangValue("idorder"));
+        model.addColumn(PropertiesController.getLangValue("productname"));
+        model.addColumn(PropertiesController.getLangValue("orderdate"));
+        model.addColumn(PropertiesController.getLangValue("units"));
+        model.addColumn(PropertiesController.getLangValue("confirmed"));
+        
+        return model;
+    }
+    
+    int selectedIndex = -1;
+    private void fillOrdersTable(DefaultTableModel model){
+        Order o = new Order();
+        LinkedList<Order> orderList = o.getDao().getOrderList();
+
+        for(int i = 0; i < orderList.size(); i++){
+            String confirmed = PropertiesController.getLangValue("no");;
+            if(orderList.get(i).isConfirmed()){
+                confirmed = PropertiesController.getLangValue("yes");
+            }
+            Object[] row = new Object[]{
+                orderList.get(i).getIdorder(),
+                orderList.get(i).getProduct(),
+                new SimpleDateFormat("dd-MM-yyyy").format(orderList.get(i).getOrderdate()),
+                orderList.get(i).getUnits(),
+                confirmed
+            };
+            model.addRow(row);
+        }
+        
+        this.tblConfirmOrders.setModel(model);
+        tblConfirmOrders.clearSelection();
+        selectedIndex = -1;
+        
+        btnConfirm.setEnabled(false);
+        btnDelete.setEnabled(false);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -215,7 +308,6 @@ public class ConfirmOrdersGUI extends javax.swing.JDialog {
     private RSMaterialComponent.RSButtonIconOne btnClose;
     private RSMaterialComponent.RSButtonMaterialIconOne btnConfirm;
     private RSMaterialComponent.RSButtonMaterialIconOne btnDelete;
-    private RSMaterialComponent.RSButtonMaterialIconOne btnInfo;
     private RSMaterialComponent.RSButtonMaterialIconOne btnNewOrder;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

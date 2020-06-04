@@ -94,12 +94,12 @@ public class ApplicationServer implements Runnable{
         public void run(){
             try {
                 resolvePetition();
-            } catch (IOException ex) {
+            } catch (IOException | SQLException ex) {
                 Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
-        private void resolvePetition() throws IOException{
+        private void resolvePetition() throws IOException, SQLException{
             BufferedReader bfr = Utilidades.getBufferedReader(socket.getInputStream());
             PrintWriter pw = Utilidades.getPrintWriter(socket.getOutputStream());
             
@@ -115,207 +115,117 @@ public class ApplicationServer implements Runnable{
             int code = Integer.parseInt(bfr.readLine());
             switch(code){
                 case IServerProtocol.LOGOUT:
-                {
                     LogOutPetition();
                     break;
-                }
                 case IServerProtocol.ROLEINFO:
-                {
-                    try {
-                        RoleInfoPetition(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    RoleInfoPetition(bfr, pw);
                     break;
-                }
                 case IServerProtocol.RECEIVED_MAIL:
-                {
-                    try {
-                        ReceivedMailPetition(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    ReceivedMailPetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.SENT_MAIL:{
-                    try {
-                        SentMailPetition(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                case IServerProtocol.SENT_MAIL:
+                    SentMailPetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.SEND_INMAIL:{
+                case IServerProtocol.SEND_INMAIL:
                     SendInMailPetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.GET_USERS_LIST:{
-                    try {
-                        GetUsersListPetition(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                case IServerProtocol.GET_USERS_LIST:
+                    GetUsersListPetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.CREATE_NEW_USER:{
-                    try {
-                        CreateNewUserPetition(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                case IServerProtocol.CREATE_NEW_USER:
+                    CreateNewUserPetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.DELETE_USER:{
+                case IServerProtocol.DELETE_USER:
                     DeleteUserPetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.GET_PROFILE:{
-                    try {
-                        GetUserProfilePetition(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                case IServerProtocol.GET_PROFILE:
+                    GetUserProfilePetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.SET_PROFILE:{
-                    try {
-                        SetUserProfilePetition(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;                    
-                }
-                case IServerProtocol.CHANGE_PASSWORD:{
+                case IServerProtocol.SET_PROFILE:
+                    SetUserProfilePetition(bfr, pw);
+                    break;
+                case IServerProtocol.CHANGE_PASSWORD:
                     ChangeUserPasswordPetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.GET_ROLES_LIST:{
-                    try {
-                        GetRolesListPetition(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                case IServerProtocol.GET_ROLES_LIST:
+                    GetRolesListPetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.SET_USER_ROLE:{
+                case IServerProtocol.SET_USER_ROLE:
                     SetUserRolePetition(bfr,pw);
                     break;
-                }
-                case IServerProtocol.DELETE_ROLE:{
+                case IServerProtocol.DELETE_ROLE:
                     DeleteRolePetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.GET_PERMS_LIST:{
-                    try {
-                        GetPermsListPetition(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                case IServerProtocol.GET_PERMS_LIST:
+                    GetPermsListPetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.CREATE_NEW_ROLE:{
+                case IServerProtocol.CREATE_NEW_ROLE:
                     CreateNewRolePetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.NEW_PASSWORD:{
-                    try {
-                        SetNewPasswordPetition(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                case IServerProtocol.NEW_PASSWORD:
+                    SetNewPasswordPetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.COMMUNICATE_READED_MAIL:{
+                case IServerProtocol.COMMUNICATE_READED_MAIL:
                     CommunicateReadedInMailPetition(bfr, pw);
                     break;
-                }
-                case IServerProtocol.GET_PRODUCTS_LIST:{
-                    try {
-                        GetProductsList(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                case IServerProtocol.GET_PRODUCTS_LIST:
+                    GetProductsList(bfr, pw);
                     break;
-                }
-                case IServerProtocol.CREATE_NEW_PRODUCT:{
+                case IServerProtocol.CREATE_NEW_PRODUCT:
                     CreateNewProduct(bfr,pw);
                     break;
-                }
-                case IServerProtocol.EDIT_PRODUCT:{
+                case IServerProtocol.EDIT_PRODUCT:
                     EditProduct(bfr,pw);
                     break;
-                }
-                case IServerProtocol.DELETE_PRODUCT:{
+                case IServerProtocol.DELETE_PRODUCT:
                     DeleteProduct(bfr, pw);
                     break;
-                }
-                case IServerProtocol.RECOVER_PRODUCT:{
+                case IServerProtocol.RECOVER_PRODUCT:
                     RecoverProduct(bfr, pw);
                     break;
-                }
-                case IServerProtocol.GET_PRODUCT_PRICE:{
-                    try {
-                        GetProductPrice(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                case IServerProtocol.GET_PRODUCT_PRICE:
+                    GetProductPrice(bfr, pw);
                     break;
-                }
-                case IServerProtocol.CREATE_SALES:{
+                case IServerProtocol.CREATE_SALES:
                     CreateSales(bfr, pw);
                     break;
-                }
-                case IServerProtocol.SEND_ADVERT:{
+                case IServerProtocol.SEND_ADVERT:
                     SendAdvert(bfr, pw);
                     break;
-                }
-                case IServerProtocol.GET_ADVERT_LIST:{
-                    try {
-                        GetAdvertList(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                        break;
-                }
-                case IServerProtocol.GET_SECURITY_STOCK_PRODUCT_LIST:{
-                    try {
-                        GetSecurityStockProductList(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                case IServerProtocol.GET_ADVERT_LIST:
+                    GetAdvertList(bfr, pw);
                     break;
-                }
-                case IServerProtocol.GET_ZERO_STOCK_PRODUCT_LIST:{
-                    try {
-                        GetZeroStockProductList(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                case IServerProtocol.GET_SECURITY_STOCK_PRODUCT_LIST:
+                    GetSecurityStockProductList(bfr, pw);
                     break;
-                }
-                case IServerProtocol.CREATE_REPORT:{
+                case IServerProtocol.GET_ZERO_STOCK_PRODUCT_LIST:
+                    GetZeroStockProductList(bfr, pw);
+                    break;
+                case IServerProtocol.CREATE_REPORT:
                     try {
                         CreateReport(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ParseException ex) {
                         Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
-                }
-                case IServerProtocol.GET_REPORT_LIST:{
+                case IServerProtocol.GET_REPORT_LIST:
                     GetReportList(bfr, pw);
                     break;
-                }
-                case IServerProtocol.GET_REPORT:{
-                    try {
-                        GetReport(bfr, pw);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                case IServerProtocol.GET_REPORT:
+                    GetReport(bfr, pw);
                     break;
-                }
-                
+                case IServerProtocol.CREATE_NEW_ORDER:
+                    CreateNewOrder(bfr, pw);
+                    break;
+                case IServerProtocol.GET_ORDER_LIST:
+                    GetOrderList(bfr, pw);
+                    break;                   
+                case IServerProtocol.CANCEL_ORDER:
+                    CancelOrder(bfr, pw);
+                    break;
+                case IServerProtocol.CONFIRM_ORDER:
+                    ConfirmOrder(bfr, pw);
+                    break;
             }
         }
         
@@ -438,6 +348,11 @@ public class ApplicationServer implements Runnable{
                     tUser = " ";
                 
                 pw.println((man.executeQuery(sql)).getInt(1)+";"+name+";"+surname+";"+email+";"+tUser);
+                pw.flush();
+            }else{
+                sql = "INSERT INTO PROFILES (IDUSER) VALUES("+iduser+")";
+                man.executeNonQuery(sql);
+                pw.println(iduser+"; ; ; ; "); //resuelve el error de perfil inexistente
                 pw.flush();
             }
             pw.println(IServerProtocol.END_INFO_TRANSFER);
@@ -658,13 +573,17 @@ public class ApplicationServer implements Runnable{
                 }
             }
             //Creamos el ticket de venta
+            ReportCreator rc = null;
             try {
-                ReportCreator rc = new ReportCreator(ReportCreator.TICKET_REPORT, new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(formatDate));
+                rc = new ReportCreator(ReportCreator.TICKET_REPORT, new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(formatDate));
             } catch (ParseException | SQLException ex) {
                 Logger.getLogger(ApplicationServer.class.getName()).log(Level.SEVERE, null, ex);
+                rc = null;
             }
             //Devolvemos el ticket de venta al cliente
-            
+            if(rc != null)
+            pw.println(rc.getFilename());
+            pw.flush();
         }
 
         private void SendAdvert(BufferedReader bfr, PrintWriter pw) throws IOException {
@@ -826,6 +745,54 @@ public class ApplicationServer implements Runnable{
             
             pw.println(IServerProtocol.END_INFO_TRANSFER);
             pw.flush();            
+        }
+
+        private void CreateNewOrder(BufferedReader bfr, PrintWriter pw) throws IOException, SQLException {
+            String pName = bfr.readLine();
+            String oDate = bfr.readLine();
+            String oUnits = bfr.readLine();
+            
+            String sql = "INSERT INTO ORDERS(IDPRODUCT, ORDERDATE, UNITS) "
+                    + "VALUES((SELECT IDPRODUCT FROM PRODUCTS WHERE PRODUCTNAME='"+pName+"'), '"+oDate+"', "+oUnits+");";
+            man.executeNonQuery(sql);
+            
+            sql = "SELECT 1 FROM ORDERS WHERE IDPRODUCT=(SELECT IDPRODUCT FROM PRODUCTS WHERE PRODUCTNAME='"+pName+"') AND ORDERDATE='"+oDate+"'";
+            if((man.executeQuery(sql)).next())
+                pw.println("1");
+            else
+                pw.println("0");
+            pw.flush();
+            
+        }
+
+        private void GetOrderList(BufferedReader bfr, PrintWriter pw) throws SQLException {
+            String sql = "SELECT O.IDORDER, P.PRODUCTNAME, O.ORDERDATE, O.UNITS, O.CONFIRMED FROM ORDERS O, PRODUCTS P WHERE O.IDPRODUCT = P.IDPRODUCT;";
+            ResultSet rs = man.executeQuery(sql);
+            
+            while(rs.next()){
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                String date = rs.getString(3);
+                int units = rs.getInt(4);
+                int confirmed = rs.getInt(5);
+                String order = id+";"+name+";"+date+";"+units+";"+confirmed+";";
+                pw.println(order);
+                pw.flush();
+            }
+            pw.println(IServerProtocol.END_INFO_TRANSFER);
+            pw.flush();
+        }
+
+        private void CancelOrder(BufferedReader bfr, PrintWriter pw) throws IOException {
+            String idOrder = bfr.readLine();
+            String sql = "DELETE FROM ORDERS WHERE IDORDER = "+idOrder+" AND ORDERDATE >= date('now','-2 day') AND CONFIRMED=FALSE;";
+            man.executeNonQuery(sql);
+        }
+
+        private void ConfirmOrder(BufferedReader bfr, PrintWriter pw) throws IOException {
+            String idOrder = bfr.readLine();
+            String sql = "UPDATE ORDERS SET CONFIRMED=TRUE WHERE IDORDER = "+idOrder+";";
+            man.executeNonQuery(sql);
         }
 
         

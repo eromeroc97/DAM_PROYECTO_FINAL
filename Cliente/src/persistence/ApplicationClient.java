@@ -7,6 +7,7 @@ package persistence;
 
 import domain.Advert;
 import domain.InMail;
+import domain.Order;
 import domain.Permission;
 import domain.Product;
 import domain.Ticket;
@@ -870,7 +871,7 @@ public class ApplicationClient{
         return productprice;
     }
 
-    public void AskForCreateSales(Ticket ticket) throws IOException {
+    public String AskForCreateSales(Ticket ticket) throws IOException {
         Socket conexion;
         InetSocketAddress direccionServidor;
         direccionServidor=
@@ -890,6 +891,7 @@ public class ApplicationClient{
         pw.println(IServerProtocol.CREATE_SALES);
         pw.flush();
         
+        String filename = null;
         double productprice = 0.0;
         int confirmation = Integer.parseInt(bfr.readLine());
         if(confirmation == 1){
@@ -902,7 +904,10 @@ public class ApplicationClient{
             pw.println(IServerProtocol.END_INFO_TRANSFER);
             pw.flush();
             
+            filename = bfr.readLine();
+            
         }
+        return filename;
     }
 
     public void AskForSendAdvert(Advert a) throws IOException {
@@ -1127,5 +1132,163 @@ public class ApplicationClient{
             }
         }
         return resultado;
+    }
+
+    public LinkedList<String> AskForGetOrderList() throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.GET_ORDER_LIST);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            LinkedList<String> resultado = new LinkedList<>();
+            
+            String linea = "";
+            while(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){
+                linea = bfr.readLine();
+                if(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){                        
+                    resultado.add(linea);
+                }
+            }
+            return resultado;
+        }
+        return new LinkedList<>();
+    }
+
+    public boolean AskForCreateOrder(Order order) throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.CREATE_NEW_ORDER);
+        pw.flush();
+        
+        boolean resultado = false;
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(order.getProduct());
+            pw.println(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(order.getOrderdate()));
+            pw.println(order.getUnits());
+            pw.flush();
+            resultado = (Integer.parseInt(bfr.readLine()) == 1);
+        }
+        return resultado;
+    }
+
+    public void AskForCancelOrder(int idorder) throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.CANCEL_ORDER);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(idorder);
+            pw.flush();
+        }
+    }
+
+    public void AskForConfirmOrder(int idorder) throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.CONFIRM_ORDER);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            pw.println(idorder);
+            pw.flush();
+        }
+    }
+
+    public LinkedList<String> AskForGetReportList() throws IOException {
+        Socket conexion;
+        InetSocketAddress direccionServidor;
+        direccionServidor=
+           new InetSocketAddress(ServerIP, port);
+        conexion=new Socket();
+        //Sending HandShake
+        conexion.connect(direccionServidor);
+        
+        //Getting streams
+        PrintWriter pw=Utilidades.getPrintWriter(conexion.getOutputStream());
+        BufferedReader bfr=Utilidades.getBufferedReader(conexion.getInputStream());
+        
+        //Protocol - User checking        
+        pw.println(this.username);
+        pw.flush();
+        
+        pw.println(IServerProtocol.GET_REPORT_LIST);
+        pw.flush();
+        
+        int confirmation = Integer.parseInt(bfr.readLine());
+        if(confirmation == 1){
+            LinkedList<String> resultado = new LinkedList<>();
+            
+            String linea = "";
+            while(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){
+                linea = bfr.readLine();
+                if(!linea.equals(IServerProtocol.END_INFO_TRANSFER)){                        
+                    resultado.add(linea);
+                }
+            }
+            return resultado;
+        }
+        return new LinkedList<>();
     }
 }

@@ -7,10 +7,18 @@ package presentation;
 
 import domain.Product;
 import domain.RegistredUser;
+import domain.Report;
 import domain.Ticket;
+import java.awt.Desktop;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
+import utilities.IServerProtocol;
 import utilities.PropertiesController;
 
 /**
@@ -394,16 +402,22 @@ public class NewSaleGUI extends javax.swing.JDialog {
                 double pUnitPrice = (double)tblTicket.getValueAt(i, 2);
                 t.add(pName, pUnit, pUnitPrice);
             }
-            t.confirmTicket();
+            File ticket = t.confirmTicket();
+            
+            try {
+                Desktop.getDesktop().open(ticket);
+            } catch (IOException ex) {
+                Logger.getLogger(PrintReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            try { //Espera para que cargue el archivo en PDF
+                Thread.sleep(2000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(NewSaleGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.dispose();
+            
         }
-        //Generate report
-        
-        
-        //Show report
-        
-        
-        //close 
-        this.dispose();
     }//GEN-LAST:event_btnPrintTicketActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened

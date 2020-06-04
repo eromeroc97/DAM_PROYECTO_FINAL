@@ -81,45 +81,45 @@ public class ReportCreator {
             day = new SimpleDateFormat("dd-MM-yyyy").format(daydate);
         
         switch(this.type){
-            case 1:
+            case USERS_REPORT:
                 this.filename = "UsersReport_"+date+".pdf";
                 UsersReport();
                 break;
 
-            case 2:
+            case FULL_ORDERS_REPORT:
                 this.filename = "FullOrdersReport_"+date+".pdf";
                 FullOrdersReport();
                 break;
-            case 3:
+            case DAILY_ORDERS_REPORT:
                 this.filename = "DailyOrdersReport_"+date+"_"+day+".pdf";
                 DailyOrdersReport(day);
                 break;
-            case 4:
+            case FULL_EXPESES_BENEFITS_REPORT:
                 this.filename = "FullExpensesBenefitsReport_"+date+".pdf";
                 FullExpensesBenefitsReport();
                 break;
-            case 5:
+            case DAILY_EXPENSES_BENEFITS_REPORT:
                 this.filename = "DailyExpensesBenefitsReport_"+date+"_"+day+".pdf";
                 DailyExpensesBenefitsReport(day);
                 break;
-            case 6:
+            case FULL_SALES_REPORT:
                 this.filename = "FullSalesReport_"+date+".pdf";
                 FullSalesReport();
                 break;
-            case 7:
+            case DAILY_SALES_REPORT:
                 this.filename = "DailySalesReport_"+date+"_"+day+".pdf";
                 DailySalesReport(day);
                 break;
-            case 8:
+            case PRODUCTS_REPORT:
                 this.filename = "ProductsReport_"+date+".pdf";
                 ProductsReport();
                 break;
 
-            case 9:
+            case DELETED_PRODUCTS_REPORT:
                 this.filename = "DeletedProductsReport_"+date+".pdf";
                 DeletedProductsReport();
                 break;
-            case 10:
+            case TICKET_REPORT:
                 this.filename = "Ticket_"+date+".pdf";
                 TicketReport(day);
                 break;
@@ -222,7 +222,7 @@ public class ReportCreator {
             data[0] = Double.toString(rs.getDouble(1));
         }
         //benefits
-        sql = "SELECT SUM(S.UNITS*P.PRICE) AS 'BENEFITS' FROM SALES S, PRODUCTS P WHERE P.IDPRODUCT = S.IDPRODUCT AND S.SALEDATE='"+day+"';";
+        sql = "SELECT SUM(S.UNITS*P.PRICE) AS 'BENEFITS' FROM SALES S, PRODUCTS P WHERE P.IDPRODUCT = S.IDPRODUCT AND S.SALEDATE BETWEEN ('"+day.replaceAll("-", "/")+"'-1) AND '"+day.replaceAll("-", "/")+"';";
         rs = man.executeQuery(sql);
         if(rs.next()){
             data[1] = Double.toString(rs.getDouble(1));

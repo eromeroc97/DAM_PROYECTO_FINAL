@@ -7,6 +7,8 @@ package presentation;
 
 import domain.Product;
 import java.awt.event.KeyEvent;
+import utilities.PropertiesController;
+import utilities.Utilidades;
 
 /**
  *
@@ -67,6 +69,11 @@ public class ProductEditorGUI extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         mainPanel.setBackground(new java.awt.Color(50, 51, 52));
         mainPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(239, 96, 0), 2));
@@ -105,22 +112,25 @@ public class ProductEditorGUI extends javax.swing.JDialog {
 
         lblStock.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblStock.setForeground(new java.awt.Color(255, 255, 255));
+        lblStock.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblStock.setText("Actual Stock");
 
         lblSegurityStock.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblSegurityStock.setForeground(new java.awt.Color(255, 255, 255));
+        lblSegurityStock.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblSegurityStock.setText("Security Stock");
 
         lblMinimumStock.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblMinimumStock.setForeground(new java.awt.Color(255, 255, 255));
+        lblMinimumStock.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblMinimumStock.setText("Minimum Stock");
 
         lblOrderAmount.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblOrderAmount.setForeground(new java.awt.Color(255, 255, 255));
+        lblOrderAmount.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblOrderAmount.setText("Order Amount");
 
         chkOrderAmount.setForeground(new java.awt.Color(239, 96, 0));
-        chkOrderAmount.setSelected(true);
         chkOrderAmount.setText("Activate Auto Order");
         chkOrderAmount.setColorCheck(new java.awt.Color(255, 137, 25));
         chkOrderAmount.setColorUnCheck(new java.awt.Color(239, 96, 0));
@@ -203,6 +213,7 @@ public class ProductEditorGUI extends javax.swing.JDialog {
         txtOrderAmount.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtOrderAmount.setText("0");
         txtOrderAmount.setBorderColor(new java.awt.Color(239, 96, 0));
+        txtOrderAmount.setEnabled(false);
         txtOrderAmount.setPhColor(new java.awt.Color(239, 96, 0));
         txtOrderAmount.setPlaceholder("");
         txtOrderAmount.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -221,43 +232,40 @@ public class ProductEditorGUI extends javax.swing.JDialog {
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnDone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(93, 93, 93))
-            .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(chkOrderAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(lblProductEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblOrderAmount)
                             .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(txtOrderAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblProductEditor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
-                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblStock)
-                                .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(18, 18, 18)
-                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(mainPanelLayout.createSequentialGroup()
-                                    .addGap(10, 10, 10)
-                                    .addComponent(txtSecStock, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(lblSegurityStock))
-                            .addGap(18, 18, 18)
+                                .addComponent(chkOrderAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnDone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(lblMinimumStock)
-                                .addGroup(mainPanelLayout.createSequentialGroup()
-                                    .addGap(10, 10, 10)
-                                    .addComponent(txtMinStock, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addComponent(txtPrice, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(lblOrderAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtOrderAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtPrice, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                                    .addComponent(lblStock, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtSecStock, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                                    .addComponent(lblSegurityStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(txtName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtMinStock, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(lblMinimumStock, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,7 +303,9 @@ public class ProductEditorGUI extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -382,18 +392,9 @@ public class ProductEditorGUI extends javax.swing.JDialog {
     private void txtPriceFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPriceFocusLost
         String price = txtPrice.getText();
         double parser = Double.parseDouble(price);
-        parser = round(parser, 2);
+        parser = Utilidades.round(parser, 2);
         txtPrice.setText(Double.toString(parser));
     }//GEN-LAST:event_txtPriceFocusLost
-
-    public static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-
-        long factor = (long) Math.pow(10, places);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
-    }
     
     private void btnDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoneActionPerformed
         if(editionmode){ //editar
@@ -440,6 +441,21 @@ public class ProductEditorGUI extends javax.swing.JDialog {
             txtOrderAmount.selectAll();
     }//GEN-LAST:event_txtOrderAmountFocusGained
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        setLanguageUI();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void setLanguageUI(){
+        this.lblProductEditor.setText(PropertiesController.getLangValue("producteditor"));
+        this.lblMinimumStock.setText(PropertiesController.getLangValue("minimumstock"));
+        this.lblOrderAmount.setText(PropertiesController.getLangValue("defaultorderamount"));
+        this.lblSegurityStock.setText(PropertiesController.getLangValue("securitystock"));
+        this.lblStock.setText(PropertiesController.getLangValue("stock"));
+        this.txtPrice.setPlaceholder(PropertiesController.getLangValue("providerprice"));
+        this.txtName.setPlaceholder(PropertiesController.getLangValue("productname"));
+        this.chkOrderAmount.setText(PropertiesController.getLangValue("activateautoorder"));
+    }
+    
     /**
      * @param args the command line arguments
      */

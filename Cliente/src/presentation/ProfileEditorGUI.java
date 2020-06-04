@@ -7,7 +7,6 @@ package presentation;
 
 import domain.Profile;
 import domain.RegistredUser;
-import java.awt.event.KeyEvent;
 import rojeru_san.efectos.ValoresEnum.ICONS;
 import utilities.PropertiesController;
 
@@ -43,6 +42,8 @@ public class ProfileEditorGUI extends javax.swing.JDialog {
     }
     
     private void setProfileIntoFields(){
+        Profile p = new Profile();
+        this.profile = p.getDao().getProfileData(idUser);
         this.txtName.setText(profile.getName());
         this.txtSurname.setText(profile.getSurname());
         this.txtEmail.setText(profile.getEmail());

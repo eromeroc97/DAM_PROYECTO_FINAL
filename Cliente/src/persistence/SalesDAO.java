@@ -6,9 +6,11 @@
 package persistence;
 
 import domain.Ticket;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utilities.IServerProtocol;
 
 
 /**
@@ -22,11 +24,13 @@ public class SalesDAO {
         this.appClient = ApplicationClient.getClient();
     }
     
-    public void insertTicket(Ticket ticket){
+    public File insertTicket(Ticket ticket){
         try {
-            this.appClient.AskForCreateSales(ticket);
+            String filename = this.appClient.AskForCreateSales(ticket);
+            return this.appClient.AskForGetReport(filename, IServerProtocol.METHOD_CLIENT);
         } catch (IOException ex) {
             Logger.getLogger(SalesDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
     }
 }

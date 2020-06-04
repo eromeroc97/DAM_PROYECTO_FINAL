@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import utilities.IServerProtocol;
+import utilities.PropertiesController;
 
 /**
  *
@@ -46,11 +47,11 @@ public class PrintReportGUI extends javax.swing.JDialog {
         btnClose = new RSMaterialComponent.RSButtonIconOne();
         btnUsersReport = new RSMaterialComponent.RSButtonShape();
         btnFullSalesReport = new RSMaterialComponent.RSButtonShape();
-        btnSendMail = new RSMaterialComponent.RSButtonShapeIcon();
-        btnOpenPDF = new RSMaterialComponent.RSButtonShapeIcon();
+        btnSendMailReport = new RSMaterialComponent.RSButtonShapeIcon();
+        btnOpenReportHere = new RSMaterialComponent.RSButtonShapeIcon();
         btnFullOrdersReport = new RSMaterialComponent.RSButtonShape();
         btnDailySalesReport = new RSMaterialComponent.RSButtonShape();
-        btDailyOrdersReport = new RSMaterialComponent.RSButtonShape();
+        btnDailyOrdersReport = new RSMaterialComponent.RSButtonShape();
         btnProductsReport = new RSMaterialComponent.RSButtonShape();
         btnFullExpensesBenefitsReport = new RSMaterialComponent.RSButtonShape();
         btnDeletedProductsReport = new RSMaterialComponent.RSButtonShape();
@@ -60,6 +61,11 @@ public class PrintReportGUI extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(50, 51, 52));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(239, 96, 0), 2));
@@ -98,25 +104,29 @@ public class PrintReportGUI extends javax.swing.JDialog {
             }
         });
 
-        btnSendMail.setBackground(new java.awt.Color(239, 96, 0));
-        btnSendMail.setText("Send Report to Mail");
-        btnSendMail.setBackgroundHover(new java.awt.Color(255, 137, 25));
-        btnSendMail.setForma(RSMaterialComponent.RSButtonShapeIcon.FORMA.ROUND_BOTTOM);
-        btnSendMail.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.MAIL_OUTLINE);
-        btnSendMail.addActionListener(new java.awt.event.ActionListener() {
+        btnSendMailReport.setBackground(new java.awt.Color(239, 96, 0));
+        btnSendMailReport.setText("Send Report to Mail");
+        btnSendMailReport.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnSendMailReport.setEnabled(false);
+        btnSendMailReport.setForma(RSMaterialComponent.RSButtonShapeIcon.FORMA.ROUND_BOTTOM);
+        btnSendMailReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnSendMailReport.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.MAIL_OUTLINE);
+        btnSendMailReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSendMailActionPerformed(evt);
+                btnSendMailReportActionPerformed(evt);
             }
         });
 
-        btnOpenPDF.setBackground(new java.awt.Color(239, 96, 0));
-        btnOpenPDF.setText("Open Report Here");
-        btnOpenPDF.setBackgroundHover(new java.awt.Color(255, 137, 25));
-        btnOpenPDF.setForma(RSMaterialComponent.RSButtonShapeIcon.FORMA.ROUND_TOP);
-        btnOpenPDF.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.OPEN_IN_NEW);
-        btnOpenPDF.addActionListener(new java.awt.event.ActionListener() {
+        btnOpenReportHere.setBackground(new java.awt.Color(239, 96, 0));
+        btnOpenReportHere.setText("Open Report Here");
+        btnOpenReportHere.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnOpenReportHere.setEnabled(false);
+        btnOpenReportHere.setForma(RSMaterialComponent.RSButtonShapeIcon.FORMA.ROUND_TOP);
+        btnOpenReportHere.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnOpenReportHere.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.OPEN_IN_NEW);
+        btnOpenReportHere.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOpenPDFActionPerformed(evt);
+                btnOpenReportHereActionPerformed(evt);
             }
         });
 
@@ -141,13 +151,13 @@ public class PrintReportGUI extends javax.swing.JDialog {
             }
         });
 
-        btDailyOrdersReport.setBackground(new java.awt.Color(239, 96, 0));
-        btDailyOrdersReport.setText("Daily Orders Report");
-        btDailyOrdersReport.setBackgroundHover(new java.awt.Color(255, 137, 25));
-        btDailyOrdersReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btDailyOrdersReport.addActionListener(new java.awt.event.ActionListener() {
+        btnDailyOrdersReport.setBackground(new java.awt.Color(239, 96, 0));
+        btnDailyOrdersReport.setText("Daily Orders Report");
+        btnDailyOrdersReport.setBackgroundHover(new java.awt.Color(255, 137, 25));
+        btnDailyOrdersReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnDailyOrdersReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btDailyOrdersReportActionPerformed(evt);
+                btnDailyOrdersReportActionPerformed(evt);
             }
         });
 
@@ -221,7 +231,7 @@ public class PrintReportGUI extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnDailySalesReport, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(btDailyOrdersReport, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDailyOrdersReport, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnProductsReport, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -234,16 +244,15 @@ public class PrintReportGUI extends javax.swing.JDialog {
                 .addComponent(btnSelectReport, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(41, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, 609, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnOpenPDF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSendMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(248, 248, 248))))
+                .addComponent(lblPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, 609, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(225, 225, 225)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnSendMailReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnOpenReportHere, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -263,7 +272,7 @@ public class PrintReportGUI extends javax.swing.JDialog {
                     .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btDailyOrdersReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDailyOrdersReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnProductsReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -274,9 +283,9 @@ public class PrintReportGUI extends javax.swing.JDialog {
                     .addComponent(btnDailyExpensesBenefitsReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSelectReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(btnOpenPDF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnOpenReportHere, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSendMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSendMailReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -315,43 +324,50 @@ public class PrintReportGUI extends javax.swing.JDialog {
     private void btnUsersReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsersReportActionPerformed
         Report r = new Report();
         lastFilename = r.getDao().createReport(IServerProtocol.TYPE_USERS_REPORT, null);
+        checkFile();
     }//GEN-LAST:event_btnUsersReportActionPerformed
 
     private void btnFullOrdersReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFullOrdersReportActionPerformed
         Report r = new Report();
         lastFilename = r.getDao().createReport(IServerProtocol.TYPE_FULL_ORDERS_REPORT, null);
+        checkFile();
     }//GEN-LAST:event_btnFullOrdersReportActionPerformed
 
     private void btnFullSalesReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFullSalesReportActionPerformed
         Report r = new Report();
         lastFilename = r.getDao().createReport(IServerProtocol.TYPE_FULL_SALES_REPORT, null);
+        checkFile();
     }//GEN-LAST:event_btnFullSalesReportActionPerformed
 
     private void btnProductsReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductsReportActionPerformed
         Report r = new Report();
         lastFilename = r.getDao().createReport(IServerProtocol.TYPE_PRODUCTS_REPORT, null);
+        checkFile();
     }//GEN-LAST:event_btnProductsReportActionPerformed
 
     private void btnDeletedProductsReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletedProductsReportActionPerformed
         Report r = new Report();
         lastFilename = r.getDao().createReport(IServerProtocol.TYPE_DELETED_PRODUCTS_REPORT, null);
+        checkFile();
     }//GEN-LAST:event_btnDeletedProductsReportActionPerformed
 
     private void btnFullExpensesBenefitsReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFullExpensesBenefitsReportActionPerformed
         Report r = new Report();
         lastFilename = r.getDao().createReport(IServerProtocol.TYPE_FULL_EXPENSES_BENEFITS_REPORT, null);
+        checkFile();
     }//GEN-LAST:event_btnFullExpensesBenefitsReportActionPerformed
 
-    private void btnSendMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendMailActionPerformed
+    private void btnSendMailReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendMailReportActionPerformed
         if(lastFilename != null){
             Report r = new Report();
             r.getDao().getReport(lastFilename, IServerProtocol.METHOD_MAIL);
 
             lastFilename = null;
         }
-    }//GEN-LAST:event_btnSendMailActionPerformed
+        checkFile();
+    }//GEN-LAST:event_btnSendMailReportActionPerformed
 
-    private void btDailyOrdersReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDailyOrdersReportActionPerformed
+    private void btnDailyOrdersReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDailyOrdersReportActionPerformed
         SelectDateGUI sdgui = new SelectDateGUI(this.parent, true);
         sdgui.setVisible(true);
         Date date = sdgui.getDate();
@@ -359,7 +375,8 @@ public class PrintReportGUI extends javax.swing.JDialog {
             Report r = new Report();
             lastFilename = r.getDao().createReport(IServerProtocol.TYPE_DAILY_ORDERS_REPORT, date);
         }
-    }//GEN-LAST:event_btDailyOrdersReportActionPerformed
+        checkFile();
+    }//GEN-LAST:event_btnDailyOrdersReportActionPerformed
 
     private void btnDailySalesReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDailySalesReportActionPerformed
         SelectDateGUI sdgui = new SelectDateGUI(this.parent, true);
@@ -369,6 +386,7 @@ public class PrintReportGUI extends javax.swing.JDialog {
             Report r = new Report();
             lastFilename = r.getDao().createReport(IServerProtocol.TYPE_DAILY_SALES_REPORT, date);
         }
+        checkFile();
     }//GEN-LAST:event_btnDailySalesReportActionPerformed
 
     private void btnDailyExpensesBenefitsReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDailyExpensesBenefitsReportActionPerformed
@@ -379,9 +397,10 @@ public class PrintReportGUI extends javax.swing.JDialog {
             Report r = new Report();
             lastFilename = r.getDao().createReport(IServerProtocol.TYPE_DAILY_EXPENSES_BENEFITS_REPORT, date);
         }
+        checkFile();
     }//GEN-LAST:event_btnDailyExpensesBenefitsReportActionPerformed
 
-    private void btnOpenPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenPDFActionPerformed
+    private void btnOpenReportHereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenReportHereActionPerformed
         if(lastFilename != null){
             Report r = new Report();
             File rec = r.getDao().getReport(lastFilename, IServerProtocol.METHOD_CLIENT);
@@ -393,13 +412,48 @@ public class PrintReportGUI extends javax.swing.JDialog {
             } catch (IOException ex) {
                 Logger.getLogger(PrintReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
+            checkFile();
         }
-    }//GEN-LAST:event_btnOpenPDFActionPerformed
+    }//GEN-LAST:event_btnOpenReportHereActionPerformed
 
     private void btnSelectReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectReportActionPerformed
-        // TODO add your handling code here:
+        ReportExplorerGUI regui = new ReportExplorerGUI(null, true);
+        regui.setVisible(true);
+        if(regui.getSelectedFilename()!=null)
+            this.lastFilename = regui.getSelectedFilename();
+        checkFile();
     }//GEN-LAST:event_btnSelectReportActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        setLanguageUI();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void setLanguageUI(){
+        this.lblPrintReport.setText(PropertiesController.getLangValue("printreport"));
+        this.btnDailyExpensesBenefitsReport.setText(PropertiesController.getLangValue("dailyexpesesbenefitsreport"));
+        this.btnDailySalesReport.setText(PropertiesController.getLangValue("dailysalesreport"));
+        this.btnDailyOrdersReport.setText(PropertiesController.getLangValue("dailyordersreport"));
+        this.btnDeletedProductsReport.setText(PropertiesController.getLangValue("deletedproductsreport"));
+        this.btnFullExpensesBenefitsReport.setText(PropertiesController.getLangValue("fullexpensesbenefitsreport"));
+        this.btnFullOrdersReport.setText(PropertiesController.getLangValue("fullordersreport"));
+        this.btnFullSalesReport.setText(PropertiesController.getLangValue("fullsalesreport"));
+        this.btnOpenReportHere.setText(PropertiesController.getLangValue("openreporthere"));
+        this.btnProductsReport.setText(PropertiesController.getLangValue("productsreport"));
+        this.btnSelectReport.setText(PropertiesController.getLangValue("selectreport"));
+        this.btnSendMailReport.setText(PropertiesController.getLangValue("sendmailreport"));
+        this.btnUsersReport.setText(PropertiesController.getLangValue("usersreport"));
+    }
+    
+    private void checkFile(){
+        if(lastFilename == null){
+            btnSendMailReport.setEnabled(false);
+            btnOpenReportHere.setEnabled(false);
+        }else{
+            btnSendMailReport.setEnabled(true);
+            btnOpenReportHere.setEnabled(true);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -443,18 +497,18 @@ public class PrintReportGUI extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private RSMaterialComponent.RSButtonShape btDailyOrdersReport;
     private RSMaterialComponent.RSButtonIconOne btnClose;
     private RSMaterialComponent.RSButtonShape btnDailyExpensesBenefitsReport;
+    private RSMaterialComponent.RSButtonShape btnDailyOrdersReport;
     private RSMaterialComponent.RSButtonShape btnDailySalesReport;
     private RSMaterialComponent.RSButtonShape btnDeletedProductsReport;
     private RSMaterialComponent.RSButtonShape btnFullExpensesBenefitsReport;
     private RSMaterialComponent.RSButtonShape btnFullOrdersReport;
     private RSMaterialComponent.RSButtonShape btnFullSalesReport;
-    private RSMaterialComponent.RSButtonShapeIcon btnOpenPDF;
+    private RSMaterialComponent.RSButtonShapeIcon btnOpenReportHere;
     private RSMaterialComponent.RSButtonShape btnProductsReport;
     private RSMaterialComponent.RSButtonShape btnSelectReport;
-    private RSMaterialComponent.RSButtonShapeIcon btnSendMail;
+    private RSMaterialComponent.RSButtonShapeIcon btnSendMailReport;
     private RSMaterialComponent.RSButtonShape btnUsersReport;
     private javax.swing.JPanel jPanel1;
     private RSMaterialComponent.RSLabelTextIcon lblPrintReport;

@@ -244,6 +244,10 @@
               <Color blue="0" green="60" red="ef" type="rgb"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtUnitsKeyReleased"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtUnitsKeyTyped"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonIconOne" name="btnDone">
           <Properties>
@@ -257,6 +261,9 @@
               <Value id="DONE"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDoneActionPerformed"/>
+          </Events>
         </Component>
         <Component class="RSMaterialComponent.RSButtonIconOne" name="btnCancel">
           <Properties>

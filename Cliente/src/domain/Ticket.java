@@ -5,6 +5,7 @@
  */
 package domain;
 
+import java.io.File;
 import java.util.Date;
 import java.util.LinkedList;
 import persistence.SalesDAO;
@@ -49,9 +50,9 @@ public class Ticket {
         return pNames.get(pos)+";"+pUnits.get(pos)+";"+pUnitPrices.get(pos);
     }
         
-    public void confirmTicket(){
+    public File confirmTicket(){
         saledate = new Date();
-        this.dao.insertTicket(this);
+        return this.dao.insertTicket(this);
     }
 
     public int getIdUser() {
