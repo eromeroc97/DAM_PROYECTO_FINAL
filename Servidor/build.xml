@@ -8,6 +8,23 @@
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
 <project name="Servidor" default="default" basedir=".">
+    <!-- MI MODIFICACION PARA GENERAR EL JAR UNICO -->
+    
+    <target name = "-post-jar">
+        <jar jarfile="${dist.jar}" update = "true">
+            <zipfileset src="./dist/lib/itextpdf-5.4.0.jar" excludes="META_INF/*"/>
+            <zipfileset src="./dist/lib/javax.activation-1.2.0.jar" excludes="META_INF/*"/>
+            <zipfileset src="./dist/lib/javax.mail.jar" excludes="META_INF/*"/>
+            <zipfileset src="./dist/lib/RSMaterialComponents_3.0.jar" excludes="META_INF/*"/>
+            <zipfileset src="./dist/lib/sqlite-jdbc-3.27.2.1.jar" excludes="META_INF/*"/>
+            <zipfileset src="./dist/lib/telegrambots-4.8.1-jar-with-dependencies.jar" excludes="META_INF/*"/>
+            <manifest>
+                <attribute name = "Main-Class" value = "presentation.ServerConfigGUI"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <!-- FIN MODIFICACION PARA GENERAR EL JAR UNICO -->
     <description>Builds, tests, and runs the project Servidor.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--

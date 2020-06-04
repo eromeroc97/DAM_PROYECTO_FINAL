@@ -8,6 +8,22 @@
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
 <project name="Cliente" default="default" basedir=".">
+    <!-- MI MODIFICACION PARA GENERAR EL JAR UNICO -->
+    
+    <target name = "-post-jar">
+        <jar jarfile="${dist.jar}" update = "true">
+            <zipfileset src="./dist/lib/AbsoluteLayout.jar" excludes="META_INF/*"/>
+            <zipfileset src="./dist/lib/NefAnimacion_V2.1_jdk18.jar" excludes="META_INF/*"/>
+            <zipfileset src="./dist/lib/RSMaterialComponents_3.0.jar" excludes="META_INF/*"/>
+            <zipfileset src="./dist/lib/RSPanelSlider.jar" excludes="META_INF/*"/>
+            <zipfileset src="./dist/lib/swingx-core-1.6.2-2.jar" excludes="META_INF/*"/>
+            <manifest>
+                <attribute name = "Main-Class" value = "presentation.LoginGUI"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <!-- FIN MODIFICACION PARA GENERAR EL JAR UNICO -->
     <description>Builds, tests, and runs the project Cliente.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--
