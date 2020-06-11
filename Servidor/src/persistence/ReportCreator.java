@@ -197,7 +197,7 @@ public class ReportCreator {
             data[0] = Double.toString(rs.getDouble(1));
         }
         //benefits
-        sql = "SELECT SUM(S.UNITS*P.PRICE) AS 'BENEFITS' FROM SALES S, PRODUCTS P WHERE P.IDPRODUCT = S.IDPRODUCT;";
+        sql = "SELECT SUM(S.UNITS*S.SALEPRICE) AS 'BENEFITS' FROM SALES S;";
         rs = man.executeQuery(sql);
         if(rs.next()){
             data[1] = Double.toString(rs.getDouble(1));
@@ -222,7 +222,7 @@ public class ReportCreator {
             data[0] = Double.toString(rs.getDouble(1));
         }
         //benefits
-        sql = "SELECT SUM(S.UNITS*P.PRICE) AS 'BENEFITS' FROM SALES S, PRODUCTS P WHERE P.IDPRODUCT = S.IDPRODUCT AND S.SALEDATE BETWEEN ('"+day.replaceAll("-", "/")+"'-1) AND '"+day.replaceAll("-", "/")+"';";
+        sql = "SELECT SUM(S.UNITS*S.SALEPRICE) AS 'BENEFITS' FROM SALES S WHERE S.SALEDATE BETWEEN ('"+day.replaceAll("-", "/")+"'-1) AND '"+day.replaceAll("-", "/")+"';";
         rs = man.executeQuery(sql);
         if(rs.next()){
             data[1] = Double.toString(rs.getDouble(1));

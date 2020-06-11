@@ -236,7 +236,7 @@ public class ProfileEditorGUI extends javax.swing.JDialog {
             
             profile.getDao().setProfileData(profile, idUser);
             profile = profile.getDao().getProfileData(idUser);
-            setProfileIntoFields();
+            this.dispose();
         }
     }//GEN-LAST:event_btnEditSaveActionPerformed
 

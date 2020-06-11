@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import persistence.ApplicationClient;
 import utilities.Encrypt;
+import utilities.MsgBox;
 
 /**
  *
@@ -168,9 +169,6 @@ public class ConnectionConfiguratorGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfigActionPerformed
-                    
-        //Comprobaciones de datos introducidos correctamente
-
         //Guardado de los datos
         String clientConfPath = "./clientfiles/client.cconf";
 
@@ -183,7 +181,7 @@ public class ConnectionConfiguratorGUI extends javax.swing.JFrame {
             String port = txtPort.getText();
             int connPort = Integer.parseInt(port);
             if(connPort <7000 || connPort >=10000)
-                JOptionPane.showMessageDialog(this, "Introduced Value is Not a Valid Port (Between 7000 and 9999)");
+                MsgBox.create(this, "Introduced Value is Not a Valid Port (Between 7000 and 9999)").setVisible(true);
             else{
                 File f = new File(clientConfPath);
                 try(FileWriter fw = new FileWriter(f)){
@@ -195,7 +193,7 @@ public class ConnectionConfiguratorGUI extends javax.swing.JFrame {
                 }
             }
         }catch(NumberFormatException ex){
-            JOptionPane.showMessageDialog(this, "Port Must Be A Number");
+            MsgBox.create(this, "Port Must Be A Number").setVisible(true);
         }
 
 

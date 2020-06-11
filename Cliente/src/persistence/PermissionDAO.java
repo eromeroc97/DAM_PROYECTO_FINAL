@@ -30,6 +30,11 @@ public class PermissionDAO {
         return instance;
     }
     
+    public void endConnection(){
+        this.appClient = null;
+        instance = null;
+    }
+    
     public LinkedList<Permission> getAllPermissions(){
         LinkedList<Permission> perms = new LinkedList<>();
         LinkedList<String> datos = new LinkedList<>();

@@ -563,8 +563,14 @@ public class MenuGUI extends javax.swing.JFrame {
     }
     
     private void endConnection(){
-        new domain.Role().getDao().endConnection();
+        new domain.Advert().getDao().endConnection();
         new domain.InMail().getDao().endConnection();
+        new domain.Order().getDao().endConnection();
+        new domain.Permission().getDao().endConnection();
+        new domain.Product().getDao().endConnection();
+        new domain.Profile().getDao().endConnection();
+        new domain.Report().getDao().endConnection();
+        new domain.Role().getDao().endConnection();        
     }
     
     private void showHideMenu(){

@@ -101,6 +101,7 @@ public class ApplicationClient{
         
         //Closing connection with login server
         myClient = null;
+        username = null;
         bfr.close();
         pw.close();
         conexion.close();

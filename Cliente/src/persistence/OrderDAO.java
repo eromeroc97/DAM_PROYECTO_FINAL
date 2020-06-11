@@ -24,6 +24,10 @@ public class OrderDAO {
         this.appClient = ApplicationClient.getClient();
     }
     
+    public void endConnection(){
+        this.appClient = null;
+    }
+    
     public LinkedList<Order> getOrderList(){
         try {
             LinkedList<String> data = appClient.AskForGetOrderList();

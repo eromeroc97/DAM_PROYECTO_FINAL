@@ -33,7 +33,7 @@ public class LoginGUI extends javax.swing.JFrame {
     }
     
     private void checkFirstRunning(){
-        if(!(new File("./clientfiles/client.cconf")).exists())
+        if(!(new File("./clientfiles/client.key")).exists())
             new FirstRunningGUI().setVisible(true);
     }
 

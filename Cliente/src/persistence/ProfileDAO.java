@@ -22,6 +22,11 @@ public class ProfileDAO {
         this.appClient = ApplicationClient.getClient();
     }
     
+    public void endConnection(){
+        this.appClient = null;
+        this.instance = null;
+    }
+    
     public static ProfileDAO getInstance(){
         if(instance == null)
             instance = new ProfileDAO();

@@ -8,6 +8,8 @@ package presentation;
 
 import domain.Product;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import rojeru_san.efectos.ValoresEnum;
@@ -220,6 +222,11 @@ public class ProductsGUI extends javax.swing.JDialog {
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
         ProductEditorGUI pedit = new ProductEditorGUI(this.parent, true); //editionmode = false
         pedit.setVisible(true);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ProductsGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         fillProductTable(createProductTableModel());
     }//GEN-LAST:event_btnCreateActionPerformed
 
@@ -251,6 +258,11 @@ public class ProductsGUI extends javax.swing.JDialog {
         Product p = new Product(pId, pName, pPrice, pStock, pSecStock, pMinStock, pDefOrdAmount);
         ProductEditorGUI pedit = new ProductEditorGUI(this.parent, true, p); //editionmode = true
         pedit.setVisible(true);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ProductsGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         fillProductTable(createProductTableModel());
     }//GEN-LAST:event_btnEditActionPerformed
 

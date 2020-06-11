@@ -51,4 +51,8 @@ public class AdvertDAO {
         }
         return ads;
     }
+    
+    public void endConnection(){
+        this.appClient = null;
+    }
 }

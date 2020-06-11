@@ -1,9 +1,11 @@
-ENCRIPTADO RSA: https://www.alvarodeleon.net/encriptar-y-desencriptar-con-rsa-en-java/ (02/04/2020)
 ENCRIPTADO TRIPLEDES/DESEDE: https://www.qualityinfosolutions.com/metodos-para-encriptar-y-desencriptar-en-java/ (30/03/2020)
 GENERACION STRING ALEATORIO ALFANUMERICO: https://www.baeldung.com/java-random-string (03/04/2020)
 ENVIO DE EMAIL JAVA: https://es.stackoverflow.com/questions/138220/enviar-correo-desde-java (13/04/2020)
 	LIBRERIA JAVAMAIL: https://github.com/javaee/javamail/releases (13/04/2020)
 	SOLUCION ERROR TLS: https://dzone.com/articles/sending-mail-using-javamail-api-for-gmail-server (13/04/2020)
-ENVÍO Y RECEPCION DE ARCHIVOS POR SOCKET: https://es.stackoverflow.com/questions/128415/env%C3%ADo-y-recepci%C3%B3n-de-archivos-por-socket-tcp
-API TELEGRAM BOT: https://github.com/rubenlagus/TelegramBots
-CREACION DE TECLADOS DE RESPUESTA: https://stackoverflow.com/questions/46315088/telegram-api-cant-get-phone-number
+ENVÍO Y RECEPCION DE ARCHIVOS POR SOCKET: https://es.stackoverflow.com/questions/128415/env%C3%ADo-y-recepci%C3%B3n-de-archivos-por-socket-tcp (28/05/2020)
+API TELEGRAM BOT: https://github.com/rubenlagus/TelegramBots (02/06/2020)
+
+ANALISIS DEL ENTORNO DE UNA EMPRESA: https://leadsfac.com/marketing/como-hacer-un-analisis-del-entorno-de-una-empresa/ (05/06/2020)
+ANALISIS CAME: https://www.pdcahome.com/8391/analisis-came/ (05/06/2020)
+SOCIEDAD LIMITADA: https://es.wikipedia.org/wiki/Sociedad_de_responsabilidad_limitada (05/06/2020)

@@ -23,6 +23,11 @@ public class ProductDAO {
         this.appClient = ApplicationClient.getClient();
     }
     
+    public void endConnection(){
+        this.appClient = null;
+        instance = null;
+    }
+    
     public static ProductDAO getInstance(){
         if(instance == null)
             instance = new ProductDAO();

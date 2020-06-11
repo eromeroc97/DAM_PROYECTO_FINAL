@@ -33,4 +33,8 @@ public class SalesDAO {
             return null;
         }
     }
+    
+    public void endConnection(){
+        this.appClient = null;
+    }
 }

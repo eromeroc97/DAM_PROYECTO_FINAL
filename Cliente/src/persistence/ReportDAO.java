@@ -62,4 +62,8 @@ public class ReportDAO {
         
         return reps;
     }
+    
+    public void endConnection(){
+        this.appClient = null;
+    }
 }
